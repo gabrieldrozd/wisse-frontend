@@ -1,0 +1,14 @@
+.tableContainer {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

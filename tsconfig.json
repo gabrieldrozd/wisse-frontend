@@ -1,0 +1,83 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "lib": [
+            "DOM",
+            "DOM.Iterable",
+            "ESNext"
+        ],
+        "allowJs": false,
+        "skipLibCheck": true,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@assets/*": [
+                "./src/_assets/*"
+            ],
+            "@styles/*": [
+                "./src/_styles/*"
+            ],
+            "@base/*": [
+                "./src/_styles/base.scss"
+            ],
+            "@colors/*": [
+                "./src/_styles/colors.scss"
+            ],
+            "@api/*": [
+                "./src/app/api/*"
+            ],
+            "@core/*": [
+                "./src/app/core/*"
+            ],
+            "@hooks/*": [
+                "./src/app/hooks/*"
+            ],
+            "@models/*": [
+                "./src/app/models/*"
+            ],
+            "@store/*": [
+                "./src/app/store/*"
+            ],
+            "@common/*": [
+                "./src/common/*"
+            ],
+            "@components/*": [
+                "./src/components/*"
+            ],
+            "@pages/*": [
+                "./src/pages/*"
+            ],
+            "@structures/*": [
+                "./src/structures/*"
+            ]
+        }
+    },
+    "include": [
+        "src",
+        "src/_assets",
+        "src/_styles",
+        "src/app",
+        "src/common",
+        "src/components",
+        "src/pages",
+        "src/structures"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
+    ]
+}

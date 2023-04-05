@@ -1,0 +1,45 @@
+@import "@base";
+@import "@colors";
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    border-right: 1px solid $gray-300;
+    box-shadow: 0 0 10px 1px $gray-300;
+}
+
+.navbarLogoSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    border-bottom: 1px solid $gray-300;
+    background-color: #6366f1;
+}
+
+.navbarLinksSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.navbarUserButtonSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    border-top: 1px solid $gray-300;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    border-bottom: 1px solid $gray-300;
+    box-shadow: 0 0 10px 1px $gray-300;
+}

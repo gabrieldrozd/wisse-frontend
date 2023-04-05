@@ -1,0 +1,92 @@
+@import "@base";
+@import "@colors";
+
+.root {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+
+    background-color: $indigo-500;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.dropdown {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-width: 0;
+    overflow: hidden;
+}
+
+.loginBtn {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: $neutral-50;
+    background-color: $indigo-400;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: $indigo-600;
+    }
+
+    @media (max-width: $break-md) {
+        border-radius: 0;
+        padding: 16px;
+    }
+}
+
+.dropdownLoginBtn {
+    display: block;
+    line-height: 1;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: $neutral-50;
+    background-color: $indigo-400;
+    font-weight: 500;
+    text-align: center;
+
+    &:hover {
+        color: $neutral-50;
+        background-color: $indigo-500;
+    }
+
+    @media (max-width: $break-md) {
+        border-radius: 0;
+        padding: 1rem;
+    }
+}
+
+.activeLoginBtn {
+    background-color: $indigo-600;
+}
+
+.burgerIcon {
+    display: block;
+    color: $neutral-50;
+
+    @media (min-width: $break-md) {
+        display: none;
+    }
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    @media (max-width: $break-md) {
+        display: none;
+    }
+}

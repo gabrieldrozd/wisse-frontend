@@ -1,0 +1,32 @@
+@import "@base";
+@import "@colors";
+
+.rootContainer {
+    margin: 0 0;
+    padding: 1rem 0;
+    background-color: #fafafa;
+    border-radius: 4rem;
+    text-align: center;
+
+    --tw-drop-shadow: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.aboutBtn {
+    padding: 0.5rem 1rem;
+    color: $neutral-50;
+    background-color: $indigo-400;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-radius: 1rem;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: $indigo-600;
+    }
+
+    @media (max-width: 900px) {
+        padding: 1rem;
+        border-radius: 0;
+    }
+}
