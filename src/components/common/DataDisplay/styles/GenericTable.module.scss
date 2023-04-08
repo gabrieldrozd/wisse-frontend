@@ -32,6 +32,10 @@
 /* TABLE BODY */
 .tableBody {
     background-color: $white;
+
+    &:focus {
+        outline: none;
+    }
 }
 
 .tableBodyRow {

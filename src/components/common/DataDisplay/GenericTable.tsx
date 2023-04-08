@@ -1,14 +1,15 @@
 import {Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
-import {flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
+import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
 import {PaginatedList} from "@models/api/pagination";
-import {useEffect, useState} from "react";
+import {createRef, useEffect, useState} from "react";
 import classes from "./styles/GenericTable.module.scss";
+import {useArrowKeySelect} from "@components/common/DataDisplay/useArrowKeySelect";
 
 export interface Props {
     /**
      * Tanstack React Table columns definition
      */
-    columns: any;
+    columns: ColumnDef<any, any>[];
     /**
      * PaginatedList object as a data holder for the table
      */
@@ -32,16 +33,18 @@ export interface Props {
 }
 
 export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow}: Props) => {
+    const tableBodyRef = createRef<HTMLTableSectionElement>();
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isAscending, setIsAscending] = useState(true);
     const totalPages = Math.ceil(data.pagination.totalItems / data.pagination.pageSize);
-
     const table = useReactTable({
         data: data.list,
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
     });
+
+    useArrowKeySelect({tableBodyRef, table, selectedRow, selectRow});
 
     const handlePageSizeChange = async (size: string | null) => {
         if (size) {
@@ -102,7 +105,7 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow}:
                         </tr>
                     ))}
                     </thead>
-                    <tbody className={classes.tableBody}>
+                    <tbody ref={tableBodyRef} tabIndex={0} className={classes.tableBody}>
                     {table.getRowModel().rows.map(row => {
                         const isSelected = selectedRow?.externalId === row.original.externalId;
                         return (
@@ -111,7 +114,6 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow}:
                                 className={`${classes.tableBodyRow} ${isSelected ? classes.selectedTableBodyRow : ""}`}
                                 onClick={async () => {
                                     await selectRow(row.original);
-                                    console.log(row.original.externalId);
                                 }}
                             >
                                 {row.getVisibleCells().map(cell => (

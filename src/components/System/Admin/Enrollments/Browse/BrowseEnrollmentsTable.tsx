@@ -1,15 +1,14 @@
+import {useState} from "react";
+import {Mark, Text} from "@mantine/core";
+import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {useEffect, useState} from "react";
-import {Button, Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
-import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import classes from "./styles/BrowseEnrollmentsTable.module.scss";
 import {getFullYears, getShortDate} from "@core/utilities/dateUtils";
 import {GenericTable} from "@components/common/DataDisplay/GenericTable";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
-const columns = [
+const columns: ColumnDef<EnrollmentBase, any>[] = [
     columnsHelper.accessor(x => x.applicant.firstName, {
         header: "First Name",
         cell: value => value.getValue(),
@@ -39,11 +38,20 @@ const columns = [
         cell: value => {
             switch (value.getValue()) {
                 case "Pending":
-                    return <Mark p={10} color="yellow" fw={500} style={{color: "black",borderRadius: "5px"}}>Pending</Mark>;
+                    return <Mark p={10} color="yellow" fw={500} style={{
+                        color: "black",
+                        borderRadius: "5px"
+                    }}>Pending</Mark>;
                 case "Approved":
-                    return <Mark p={10} color="green" fw={500} style={{color: "black",borderRadius: "5px"}}>Approved</Mark>;
+                    return <Mark p={10} color="green" fw={500} style={{
+                        color: "black",
+                        borderRadius: "5px"
+                    }}>Approved</Mark>;
                 case "Rejected":
-                    return <Mark p={10} color="red" fw={500} style={{color: "black",borderRadius: "5px"}}>Rejected</Mark>;
+                    return <Mark p={10} color="red" fw={500} style={{
+                        color: "black",
+                        borderRadius: "5px"
+                    }}>Rejected</Mark>;
             }
         },
     }),
