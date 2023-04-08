@@ -13,6 +13,21 @@ export const useAuthActions = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = authSlice.actions;
 
+    const refresh = async () => {
+        isLoading.set(true);
+        try {
+            const envelope = await authRequestAgent.query.refresh();
+            if (envelope.isSuccess) {
+                dispatch(actions.refresh(envelope.data));
+                return true;
+            }
+            dispatch(actions.logout());
+            return false;
+        } finally {
+            isLoading.set(false);
+        }
+    }
+
     const login = async (email: string, password: string) => {
         isLoading.set(true);
         try {
@@ -49,6 +64,7 @@ export const useAuthActions = () => {
     };
 
     return {
+        refresh,
         login,
         logout
     };

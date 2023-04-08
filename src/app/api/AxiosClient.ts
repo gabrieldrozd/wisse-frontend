@@ -2,6 +2,7 @@ import axios, {AxiosError, AxiosResponse} from "axios";
 import {DataEnvelope, Envelope} from "@models/api/dataEnvelope";
 import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {Notify} from "@core/services/Notify";
+import {ApplicationRouter} from "@core/routing/ApplicationRouter";
 
 const getEnvelope = (response: AxiosResponse<Envelope>): Envelope => response.data;
 const getDataEnvelope = <T>(response: AxiosResponse<DataEnvelope<T>>): DataEnvelope<T> => {
@@ -32,9 +33,18 @@ axiosClient.interceptors.response.use(
         if (envelope) {
             switch (envelope.statusCode) {
                 case 400:
+                    errorNotification(envelope);
+                    break;
                 case 401:
+                    errorNotification(envelope);
+                    ApplicationRouter.navigate("/").then();
+                    break;
                 case 403:
+                    errorNotification(envelope);
+                    break;
                 case 404:
+                    errorNotification(envelope);
+                    break;
                 case 500:
                     errorNotification(envelope);
                     break;
@@ -52,6 +62,10 @@ export class AxiosClient {
 
     static initialize(): AxiosClient {
         return new AxiosClient();
+    }
+
+    get<T>(url: string) {
+        return axiosClient.get<DataEnvelope<T>>(`${url}`).then(getDataEnvelope);
     }
 
     details<T>(url: string, id: string) {
