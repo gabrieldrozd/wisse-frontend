@@ -42,6 +42,7 @@
         "postcss": "^8.4.21",
         "react-redux": "^8.0.5",
         "react-router-dom": "^6.10.0",
+        "rsuite-table": "^5.10.3",
         "sass": "^1.60.0",
         "tailwindcss": "^3.3.0",
         "typescript": "^5.0.2",

@@ -1,7 +1,8 @@
 export interface EnrollmentBase {
     externalId: string;
-    enrollmentDate: Date;
-    enrollmentStatus: string;
+    enrolledOn: Date;
+    decisionDate: Date;
+    status: EnrollmentsStatus;
     applicant: ApplicantBase;
     contact: ContactBase;
 }
@@ -16,3 +17,5 @@ export interface ContactBase {
     email: string;
     phoneNumber: string;
 }
+
+export type EnrollmentsStatus = "Pending" | "Approved" | "Rejected";

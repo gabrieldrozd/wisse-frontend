@@ -42,7 +42,7 @@ const theme: MantineThemeOverride = {
         pink: ["#fdf2f8", "#fce7f3", "#fbcfe8", "#f9a8d4", "#f472b6", "#ec4899", "#db2777", "#be185d", "#9d174d", "#831843"],
         rose: ["#fff1f2", "#ffe4e6", "#fecdd3", "#fda4af", "#fb7185", "#f43f5e", "#e11d48", "#be123c", "#9f1239", "#881337"]
     },
-    fontFamily: "Quicksand, sans-serif",
+    fontFamily: "Montserrat, sans-serif",
     fontSizes: {
         xs: "0.75rem",
         sm: "0.875rem",

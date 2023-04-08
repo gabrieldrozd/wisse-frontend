@@ -10,8 +10,6 @@ export interface UserButtonSectionProps {
 export const AdminUserButtonSection = ({opened}: UserButtonSectionProps) => {
     const {selectors: {accessToken}} = useAuthSlice();
 
-    console.log(opened);
-
     return (
         <Navbar.Section
             className={classes.navbarUserButtonSection}

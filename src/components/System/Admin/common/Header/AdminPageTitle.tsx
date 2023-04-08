@@ -36,7 +36,7 @@ export const AdminPageTitle = ({links}: AdminPageTitleProps) => {
 
     return (
         <Paper bg="indigo.2" mx={20}>
-            <Title order={3} p={10} style={{fontFamily: "Quicksand"}}>
+            <Title order={2} p={10} fw={600}>
                 {title}
             </Title>
         </Paper>

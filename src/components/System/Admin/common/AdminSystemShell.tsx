@@ -44,9 +44,6 @@ export const AdminSystemShell = ({links, children}: AdminSystemShellProps) => {
                     height={{base: 50, md: 70}}
                 >
                     <AdminPageTitle links={links} />
-                    <Paper p={10}>
-                        <Text>Here we can go for some key command to search for actions or sth like that</Text>
-                    </Paper>
 
                     <MediaQuery largerThan="md" styles={{display: "none"}}>
                         <Burger
@@ -62,7 +59,7 @@ export const AdminSystemShell = ({links, children}: AdminSystemShellProps) => {
             }
         >
             <Flex direction="column" align="stretch" h="100%">
-                <Paper shadow="xl" radius="md" bg="#fff" h="100%" p={20}>
+                <Paper shadow="xl" radius="md" bg="white.0" h="100%" p={15}>
                     {children}
                 </Paper>
             </Flex>

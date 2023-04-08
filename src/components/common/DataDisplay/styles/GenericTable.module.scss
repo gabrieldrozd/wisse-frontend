@@ -44,6 +44,11 @@
     }
 }
 
+.selectedTableBodyRow {
+    background-color: $indigo-600 !important;
+    color: $white !important
+}
+
 .tableBodyCell {
     text-align: center !important;
     border-bottom: 1px solid $gray-300 !important;
