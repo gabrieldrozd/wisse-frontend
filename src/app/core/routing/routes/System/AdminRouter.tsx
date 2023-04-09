@@ -5,7 +5,7 @@ import {AdminDashboardPage} from "@pages/System/Admin/AdminDashboardPage";
 import {BrowseEnrollmentsPage} from "@pages/System/Admin/Enrollments/BrowseEnrollmentsPage";
 import {ApprovedEnrollmentsPage} from "@pages/System/Admin/Enrollments/ApprovedEnrollmentsPage";
 import {RejectedEnrollmentsPage} from "@pages/System/Admin/Enrollments/RejectedEnrollmentsPage";
-import {BrowseEnrollmentsContext} from "@components/System/Admin/Enrollments/Browse/context/BrowseEnrollmentsContext";
+import {BrowseEnrollmentsContext} from "@components/System/Admin/Enrollments/Browse/_context/BrowseEnrollmentsContext";
 
 export const AdminRouter = (
     <Route

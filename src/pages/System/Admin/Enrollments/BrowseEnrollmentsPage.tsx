@@ -1,38 +1,34 @@
-import {BrowseEnrollmentsTable} from "@components/System/Admin/Enrollments/Browse/BrowseEnrollmentsTable";
-import {Col, Grid} from "@mantine/core";
-import {
-    BrowseEnrollmentsActionsSection
-} from "@components/System/Admin/Enrollments/Browse/BrowseEnrollmentsActionsSection";
-import {
-    useBrowseEnrollmentsContext
-} from "@components/System/Admin/Enrollments/Browse/context/BrowseEnrollmentsContext";
 import {useEffect, useState} from "react";
+import {Col, Grid} from "@mantine/core";
+import {BrowseEnrollmentsDetails} from "@components/System/Admin/Enrollments/Browse/BrowseEnrollmentsDetails";
+import {useBrowseEnrollmentsContext} from "@components/System/Admin/Enrollments/Browse/_context/BrowseEnrollmentsContext";
+import {BrowseEnrollmentsTable} from "@components/System/Admin/Enrollments/Browse/BrowseEnrollmentsTable";
 
 export const BrowseEnrollmentsPage = () => {
-    const {enrollment} = useBrowseEnrollmentsContext();
+    const context = useBrowseEnrollmentsContext();
 
     const [tableSpan, setTableSpan] = useState(10);
     const [actionsSpan, setActionsSpan] = useState(2);
 
     useEffect(() => {
-        console.log(enrollment?.value?.applicant?.firstName ?? "No enrollment selected");
+        console.log(context.selected?.value?.applicant?.firstName ?? "No enrollment selected");
 
-        if (enrollment?.value?.externalId) {
-            setTableSpan(8);
-            setActionsSpan(4);
+        if (context.selected?.value?.externalId) {
+            setTableSpan(7);
+            setActionsSpan(5);
         } else {
             setTableSpan(12);
             setActionsSpan(0);
         }
-    }, [enrollment?.value?.externalId]);
+    }, [context.selected?.value?.externalId]);
 
     return (
-        <Grid style={{maxHeight: "100%"}}>
+        <Grid>
             <Col span={tableSpan}>
                 <BrowseEnrollmentsTable />
             </Col>
             <Col span={actionsSpan} hidden={actionsSpan === 0}>
-                <BrowseEnrollmentsActionsSection />
+                <BrowseEnrollmentsDetails />
             </Col>
         </Grid>
     );

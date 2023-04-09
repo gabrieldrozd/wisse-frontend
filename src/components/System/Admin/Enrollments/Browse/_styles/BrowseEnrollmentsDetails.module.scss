@@ -1,0 +1,26 @@
+@import "@base";
+@import "@colors";
+
+.rootContainer {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    background-color: $indigo-50;
+    border-radius: 10px;
+}
+
+.detailsContainer {
+    background-color: $indigo-200;
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 10px 10px 0 0;
+    background-color: $indigo-600;
+    color: $white;
+}
+

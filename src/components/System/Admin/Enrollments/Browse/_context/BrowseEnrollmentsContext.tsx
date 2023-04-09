@@ -1,12 +1,13 @@
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {createContext, FunctionComponent, ReactNode, useContext, useMemo, useState} from "react";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 
 export interface Props {
-    enrollment: {
+    selected: {
         value: EnrollmentBase;
         set: (enrollment: EnrollmentBase) => Promise<void>;
         unset: () => Promise<void>;
-    }
+    },
 }
 
 const Context = createContext<Props>({} as Props);
@@ -16,24 +17,26 @@ interface ContextProps {
     children: ReactNode;
 }
 
+// LOCAL STATE - no API calls here
+// only the state of some items that are not stored in the store
 export const BrowseEnrollmentsContext: FunctionComponent<ContextProps> = ({children}) => {
-    const [selectedEnrollment, setSelectedEnrollment] = useState<EnrollmentBase>({} as EnrollmentBase);
+    const [selected, setSelected] = useState<EnrollmentBase>({} as EnrollmentBase);
 
     const handleSelectEnrollment = async (enrollment: EnrollmentBase) => {
-        setSelectedEnrollment(enrollment);
-    }
+        setSelected(enrollment);
+    };
 
     const handleUnsetEnrollment = async () => {
-        setSelectedEnrollment({} as EnrollmentBase);
-    }
+        setSelected({} as EnrollmentBase);
+    };
 
     const contextObject = useMemo(() => ({
-        enrollment: {
-            value: selectedEnrollment,
+        selected: {
+            value: selected,
             set: handleSelectEnrollment,
             unset: handleUnsetEnrollment,
         }
-    }), [selectedEnrollment]);
+    }), [selected]);
 
     return (
         <Context.Provider value={contextObject}>

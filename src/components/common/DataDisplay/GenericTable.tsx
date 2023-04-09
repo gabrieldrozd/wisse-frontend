@@ -15,16 +15,16 @@ export interface Props {
      */
     data: PaginatedList<any>;
     /**
-     * Any object as a selected row
-     */
-    selectedRow: any;
-    /**
      * Function for fetching data
      * @param pageIndex - page index | default: 1
      * @param pageSize - page size | default: 10
      * @param isAscending - is ascending | default: true
      */
     fetchData: (pageIndex: number, pageSize: number, isAscending: boolean) => Promise<any>;
+    /**
+     * Any object as a selected row
+     */
+    selectedRow: any;
     /**
      * async function for selecting a row. Should be awaited in order to work properly
      * @param row - row data

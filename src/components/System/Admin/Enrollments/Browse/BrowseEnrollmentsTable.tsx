@@ -1,14 +1,10 @@
-import {useState} from "react";
-import {Badge, Mark, Text} from "@mantine/core";
+import {Badge, Text} from "@mantine/core";
 import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {getFullYears, getShortDate} from "@core/utilities/dateUtils";
 import {GenericTable} from "@components/common/DataDisplay/GenericTable";
-import {
-    useBrowseEnrollmentsContext
-} from "@components/System/Admin/Enrollments/Browse/context/BrowseEnrollmentsContext";
+import {useBrowseEnrollmentsContext} from "./_context/BrowseEnrollmentsContext";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -84,28 +80,17 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
 ];
 
 export const BrowseEnrollmentsTable = () => {
-    const {actions: {browseEnrollments}} = useEnrollmentSlice();
-    const [enrollmentsList, setEnrollmentsList] = useState<PaginatedList<EnrollmentBase>>(PaginatedList.default);
-    const {enrollment} = useBrowseEnrollmentsContext();
-
-    const fetchEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean) => {
-        const pagination: PaginationRequest = {
-            pageSize: pageSize,
-            pageIndex: pageIndex,
-            isAscending: true,
-        };
-        const enrollmentsData = await browseEnrollments(pagination);
-        setEnrollmentsList(enrollmentsData);
-    };
+    const context = useBrowseEnrollmentsContext();
+    const {actions, selectors} = useEnrollmentSlice();
 
     return (
         <GenericTable
             columns={columns}
-            data={enrollmentsList}
-            selectedRow={enrollment.value}
-            fetchData={fetchEnrollments}
-            selectRow={enrollment.set}
-            unselectRow={enrollment.unset}
+            data={selectors.enrollmentsList()}
+            fetchData={actions.browseEnrollments}
+            selectedRow={context.selected?.value}
+            selectRow={context.selected?.set}
+            unselectRow={context.selected?.unset}
         />
     );
 };

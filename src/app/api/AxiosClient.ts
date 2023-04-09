@@ -4,6 +4,12 @@ import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {Notify} from "@core/services/Notify";
 import {ApplicationRouter} from "@core/routing/ApplicationRouter";
 
+const sleep = (delay: number) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delay)
+    })
+}
+
 const getEnvelope = (response: AxiosResponse<Envelope>): Envelope => response.data;
 const getDataEnvelope = <T>(response: AxiosResponse<DataEnvelope<T>>): DataEnvelope<T> => {
     console.log("getDataEnvelope", response);
@@ -25,6 +31,7 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
     async (response: AxiosResponse<Envelope> | AxiosResponse<DataEnvelope<any>>) => {
+        await sleep(500); // TODO: mock delay
         return response;
     },
     (error: AxiosError<Envelope>) => {
@@ -68,8 +75,8 @@ export class AxiosClient {
         return axiosClient.get<DataEnvelope<T>>(`${url}`).then(getDataEnvelope);
     }
 
-    details<T>(url: string, id: string) {
-        return axiosClient.get<DataEnvelope<T>>(`${url}/${id}`).then(getDataEnvelope);
+    async details<T>(url: string, id: string) {
+        return await axiosClient.get<DataEnvelope<T>>(`${url}/${id}`).then(getDataEnvelope);
     }
 
     async browse<T>(url: string, pagination: PaginationRequest) {
@@ -79,6 +86,10 @@ export class AxiosClient {
     post<T>(url: string, body: {}) {
         console.log("post", url, body);
         return axiosClient.post<DataEnvelope<T>>(url, body).then(getDataEnvelope);
+    }
+
+    async put<T>(url: string, body: {}) {
+        return await axiosClient.put<DataEnvelope<T>>(url, body).then(getDataEnvelope);
     }
 }
 

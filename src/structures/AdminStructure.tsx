@@ -16,19 +16,25 @@ const links: LinkModel[] = [
             {
                 label: "Browse", path: "/admin/enrollments", title: "All Enrollments", helpers: [
                     "Select a specific enrollment by clicking on it",
-                    "Change selected enrollment with arrow keys",
+                    "Change selected enrollment with arrow keys or with mouse",
+                    "Unselect enrollment by clicking once again on it",
+                    "Scroll horizontally to see more columns with arrow keys or with mouse",
                 ]
             },
             {
                 label: "Approved", path: "/admin/enrollments/approved", title: "Approved Enrollments", helpers: [
                     "Select a specific enrollment by clicking on it",
-                    "Change selected enrollment with arrow keys",
+                    "Change selected enrollment with arrow keys or with mouse",
+                    "Unselect enrollment by clicking once again on it",
+                    "Scroll horizontally to see more columns with arrow keys or with mouse",
                 ]
             },
             {
                 label: "Rejected", path: "/admin/enrollments/rejected", title: "Rejected Enrollments", helpers: [
                     "Select a specific enrollment by clicking on it",
-                    "Change selected enrollment with arrow keys",
+                    "Change selected enrollment with arrow keys or with mouse",
+                    "Unselect enrollment by clicking once again on it",
+                    "Scroll horizontally to see more columns with arrow keys or with mouse",
                 ]
             },
         ]

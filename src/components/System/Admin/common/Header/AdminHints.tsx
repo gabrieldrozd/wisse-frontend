@@ -1,9 +1,8 @@
-import {ActionIcon, Flex, Group, Popover, Text} from "@mantine/core";
-import {IconInfoSquare, IconPointFilled} from "@tabler/icons-react";
-import {motion, Variants} from "framer-motion";
 import {useState} from "react";
+import {motion, Variants} from "framer-motion";
+import {ActionIcon, Popover, Text, Title} from "@mantine/core";
 import {LinkModel, NestedLinkModel} from "@core/routing/models/links";
-import {useLocation} from "react-router-dom";
+import {IconInfoSquare} from "@tabler/icons-react";
 
 const findHelpers = (links: LinkModel[]): string[] => {
     for (const link of links) {
@@ -34,7 +33,6 @@ interface Props {
 }
 
 export const AdminHints = ({links}: Props) => {
-    const location = useLocation();
     const [clicked, setClicked] = useState(false);
 
     const helpers = findHelpers(links);
@@ -49,8 +47,8 @@ export const AdminHints = ({links}: Props) => {
             opacity: 1
         },
         animate: {
-            scale: [1, 1.1, 1],
-            opacity: [1, 0.8, 1]
+            scale: [1, 1.2, 1],
+            opacity: [1, 0.6, 1]
         }
     };
 
@@ -63,7 +61,7 @@ export const AdminHints = ({links}: Props) => {
                     animate={!clicked ? "animate" : "initial"}
                     transition={{
                         loop: Infinity,
-                        duration: 0.5,
+                        duration: 0.75,
                         ease: "linear",
                         times: [0, 1],
                         repeatDelay: 2,
@@ -86,22 +84,36 @@ export const AdminHints = ({links}: Props) => {
                 </motion.div>
             </Popover.Target>
             <Popover.Dropdown mt={6}>
-                {helpers.map((helper, index) => (
-                    <Text
-                        key={index}
-                        py={10}
-                        px={20}
-                        mt={index === 0 ? 0 : 20}
-                        size="sm"
-                        style={{
-                            borderLeft: "3px solid #6366f1",
-                            boxShadow: "1px 2px 5px 0px rgba(51,51,51,0.5)",
-                            borderRadius: "5px",
-                        }}
+                <>
+                    <Title
+                        p={10}
+                        mb={10}
+                        bg="indigo.5"
+                        size="large"
+                        style={{borderRadius: "10px"}}
                     >
-                        {helper}
-                    </Text>
-                ))}
+                        <Text ml={10} color="white.0">
+                            Hints and tips for this page
+                        </Text>
+                    </Title>
+
+                    {helpers.map((helper, index) => (
+                        <Text
+                            key={index}
+                            py={10}
+                            px={20}
+                            mt={index === 0 ? 0 : 20}
+                            size="sm"
+                            style={{
+                                borderLeft: "3px solid #6366f1",
+                                boxShadow: "1px 2px 5px 0px rgba(51,51,51,0.5)",
+                                borderRadius: "5px",
+                            }}
+                        >
+                            {helper}
+                        </Text>
+                    ))}
+                </>
             </Popover.Dropdown>
         </Popover>
     );
