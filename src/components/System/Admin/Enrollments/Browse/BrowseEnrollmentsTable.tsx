@@ -1,11 +1,14 @@
 import {useState} from "react";
-import {Mark, Text} from "@mantine/core";
+import {Badge, Mark, Text} from "@mantine/core";
 import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {getFullYears, getShortDate} from "@core/utilities/dateUtils";
 import {GenericTable} from "@components/common/DataDisplay/GenericTable";
+import {
+    useBrowseEnrollmentsContext
+} from "@components/System/Admin/Enrollments/Browse/context/BrowseEnrollmentsContext";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -38,20 +41,11 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
         cell: value => {
             switch (value.getValue()) {
                 case "Pending":
-                    return <Mark p={10} color="yellow" fw={500} style={{
-                        color: "black",
-                        borderRadius: "5px"
-                    }}>Pending</Mark>;
+                    return <Badge color="yellow.5" variant="filled">Pending</Badge>;
                 case "Approved":
-                    return <Mark p={10} color="green" fw={500} style={{
-                        color: "black",
-                        borderRadius: "5px"
-                    }}>Approved</Mark>;
+                    return <Badge color="green.5" variant="filled">Approved</Badge>;
                 case "Rejected":
-                    return <Mark p={10} color="red" fw={500} style={{
-                        color: "black",
-                        borderRadius: "5px"
-                    }}>Rejected</Mark>;
+                    return <Badge color="red.5" variant="filled">Rejected</Badge>;
             }
         },
     }),
@@ -92,7 +86,7 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
 export const BrowseEnrollmentsTable = () => {
     const {actions: {browseEnrollments}} = useEnrollmentSlice();
     const [enrollmentsList, setEnrollmentsList] = useState<PaginatedList<EnrollmentBase>>(PaginatedList.default);
-    const [selectedEnrollment, setSelectedEnrollment] = useState<EnrollmentBase>();
+    const {enrollment} = useBrowseEnrollmentsContext();
 
     const fetchEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean) => {
         const pagination: PaginationRequest = {
@@ -104,17 +98,14 @@ export const BrowseEnrollmentsTable = () => {
         setEnrollmentsList(enrollmentsData);
     };
 
-    const selectEnrollment = async (enrollmentRow: EnrollmentBase) => {
-        setSelectedEnrollment(enrollmentRow);
-    };
-
     return (
         <GenericTable
             columns={columns}
             data={enrollmentsList}
-            selectedRow={selectedEnrollment}
+            selectedRow={enrollment.value}
             fetchData={fetchEnrollments}
-            selectRow={selectEnrollment}
+            selectRow={enrollment.set}
+            unselectRow={enrollment.unset}
         />
     );
 };

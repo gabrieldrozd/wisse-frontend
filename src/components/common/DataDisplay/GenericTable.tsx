@@ -30,9 +30,13 @@ export interface Props {
      * @param row - row data
      */
     selectRow: (objectRow: any) => Promise<void>;
+    /**
+     * async function for unselecting a row. Should be awaited in order to work properly
+     */
+    unselectRow: () => Promise<void>;
 }
 
-export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow}: Props) => {
+export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow, unselectRow}: Props) => {
     const tableBodyRef = createRef<HTMLTableSectionElement>();
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -113,6 +117,10 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow}:
                                 key={row.id}
                                 className={`${classes.tableBodyRow} ${isSelected ? classes.selectedTableBodyRow : ""}`}
                                 onClick={async () => {
+                                    if (isSelected) {
+                                        await unselectRow();
+                                        return;
+                                    }
                                     await selectRow(row.original);
                                 }}
                             >

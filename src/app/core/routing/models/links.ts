@@ -6,10 +6,12 @@ export interface LinkModel {
     icon: FC<any>;
     title?: string;
     links?: NestedLinkModel[];
+    helpers?: string[];
 }
 
 export interface NestedLinkModel {
     label: string;
     path: string;
-    title?: string
+    title?: string;
+    helpers?: string[];
 }

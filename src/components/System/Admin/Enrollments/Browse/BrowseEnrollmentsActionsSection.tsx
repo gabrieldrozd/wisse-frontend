@@ -1,6 +1,9 @@
-import {Button, Flex} from "@mantine/core";
+import {Flex, Text} from "@mantine/core";
+import {useBrowseEnrollmentsContext} from "./context/BrowseEnrollmentsContext";
 
 export const BrowseEnrollmentsActionsSection = () => {
+    const {enrollment} = useBrowseEnrollmentsContext();
+
     return (
         <Flex
             direction="column"
@@ -9,10 +12,14 @@ export const BrowseEnrollmentsActionsSection = () => {
             style={{
                 height: "100%",
                 width: "100%",
-                backgroundColor: "red",
+                backgroundColor: "cornflowerblue",
             }}
         >
-
+            {enrollment && (
+                <Text>
+                    {enrollment.value.externalId}
+                </Text>
+            )}
         </Flex>
     );
 };

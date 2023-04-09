@@ -12,8 +12,8 @@
     padding: 20px;
     width: 100%;
     white-space: nowrap;
-    min-height: 75vh;
-    max-height: 75vh;
+    min-height: 75vh !important;
+    max-height: 75vh !important;
     border-collapse: collapse;
 }
 
@@ -32,6 +32,11 @@
 /* TABLE BODY */
 .tableBody {
     background-color: $white;
+    user-select: auto;
+
+    // TODO: user-select is messing around the whole page, don't know why
+    // prompt not only appears in the table but also moves aroung the whole page
+    // needs to be fixed
 
     &:focus {
         outline: none;
@@ -50,7 +55,12 @@
 
 .selectedTableBodyRow {
     background-color: $indigo-600 !important;
-    color: $white !important
+    color: $white !important;
+
+    &:focus::before {
+        border: 1px solid #ccc;
+        box-shadow: 0 0 0 1px #ccc;
+    }
 }
 
 .tableBodyCell {

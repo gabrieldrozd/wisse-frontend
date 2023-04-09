@@ -1,11 +1,12 @@
 import {ReactNode, useState} from "react";
-import {AppShell, Navbar, Header, Text, MediaQuery, Burger, Flex, Paper, ScrollArea,} from "@mantine/core";
+import {AppShell, Navbar, Header, Text, MediaQuery, Burger, Flex, Paper, ScrollArea, Group,} from "@mantine/core";
 import {AdminLogoSection} from "@components/System/Admin/common/Navbar/AdminLogoSection";
 import {AdminLinksSection} from "@components/System/Admin/common/Navbar/AdminLinksSection";
 import {AdminUserButtonSection} from "@components/System/Admin/common/Navbar/AdminUserButtonSection";
 import {AdminPageTitle} from "@components/System/Admin/common/Header/AdminPageTitle";
 import {LinkModel} from "@core/routing/models/links";
 import classes from "./styles/AdminSystemShell.module.scss";
+import {AdminHints} from "@components/System/Admin/common/Header/AdminHints";
 
 export interface AdminSystemShellProps {
     links: LinkModel[];
@@ -45,16 +46,18 @@ export const AdminSystemShell = ({links, children}: AdminSystemShellProps) => {
                 >
                     <AdminPageTitle links={links} />
 
-                    <MediaQuery largerThan="md" styles={{display: "none"}}>
-                        <Burger
-                            opened={opened}
-                            onClick={() => setOpened((o) => !o)}
-                            size="xl"
-                            color="#333"
-                            ml="xl"
-                            mr="sm"
-                        />
-                    </MediaQuery>
+                    <Group>
+                        <AdminHints links={links} />
+                        <MediaQuery largerThan="md" styles={{display: "none"}}>
+                            <Burger
+                                opened={opened}
+                                onClick={() => setOpened((o) => !o)}
+                                size="xl"
+                                color="#333"
+                                mr="sm"
+                            />
+                        </MediaQuery>
+                    </Group>
                 </Header>
             }
         >
