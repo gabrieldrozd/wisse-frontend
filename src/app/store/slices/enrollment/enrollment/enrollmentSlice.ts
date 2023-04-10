@@ -7,11 +7,15 @@ import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
 
 export interface EnrollmentSliceState {
     list: PaginatedList<EnrollmentBase>;
+    approvedList: PaginatedList<EnrollmentBase>;
+    rejectedList: PaginatedList<EnrollmentBase>;
     details: EnrollmentDetails;
 }
 
 const initialState: EnrollmentSliceState = {
     list: PaginatedList.default<EnrollmentBase>(),
+    approvedList: PaginatedList.default<EnrollmentBase>(),
+    rejectedList: PaginatedList.default<EnrollmentBase>(),
     details: {} as EnrollmentDetails
 };
 
@@ -21,6 +25,12 @@ export const enrollmentSlice = createSlice({
     reducers: {
         setList: (state, action: PayloadAction<PaginatedList<EnrollmentBase>>) => {
             state.list = action.payload;
+        },
+        setApprovedList: (state, action: PayloadAction<PaginatedList<EnrollmentBase>>) => {
+            state.approvedList = action.payload;
+        },
+        setRejectedList: (state, action: PayloadAction<PaginatedList<EnrollmentBase>>) => {
+            state.rejectedList = action.payload;
         },
         setDetails: (state, action: PayloadAction<EnrollmentDetails>) => {
             state.details = action.payload;

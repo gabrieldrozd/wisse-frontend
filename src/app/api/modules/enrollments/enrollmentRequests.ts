@@ -12,9 +12,14 @@ export const EnrollmentQueries = {
     details: (id: string): Promise<DataEnvelope<EnrollmentDetails>> => {
         return client.details<EnrollmentDetails>(`${enrollmentUrlSegment}`, id);
     },
-
     browse: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse`, pagination);
+    },
+    browseApproved: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<EnrollmentBase>>> => {
+        return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/approved`, pagination);
+    },
+    browseRejected: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<EnrollmentBase>>> => {
+        return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/rejected`, pagination);
     }
 };
 

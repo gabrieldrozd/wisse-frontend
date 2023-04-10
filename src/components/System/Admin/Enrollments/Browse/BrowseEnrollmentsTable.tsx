@@ -4,7 +4,7 @@ import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollment
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {getFullYears, getShortDate} from "@core/utilities/dateUtils";
 import {GenericTable} from "@components/common/DataDisplay/GenericTable";
-import {useBrowseEnrollmentsContext} from "./_context/BrowseEnrollmentsContext";
+import {useEnrollmentsContext} from "@components/System/Admin/Enrollments/_context/EnrollmentsContext";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -80,7 +80,7 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
 ];
 
 export const BrowseEnrollmentsTable = () => {
-    const context = useBrowseEnrollmentsContext();
+    const context = useEnrollmentsContext();
     const {actions, selectors} = useEnrollmentSlice();
 
     return (

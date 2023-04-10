@@ -11,7 +11,7 @@ export interface Props {
 }
 
 const Context = createContext<Props>({} as Props);
-export const useBrowseEnrollmentsContext = () => useContext(Context);
+export const useEnrollmentsContext = () => useContext(Context);
 
 interface ContextProps {
     children: ReactNode;
@@ -19,7 +19,7 @@ interface ContextProps {
 
 // LOCAL STATE - no API calls here
 // only the state of some items that are not stored in the store
-export const BrowseEnrollmentsContext: FunctionComponent<ContextProps> = ({children}) => {
+export const EnrollmentsContext: FunctionComponent<ContextProps> = ({children}) => {
     const [selected, setSelected] = useState<EnrollmentBase>({} as EnrollmentBase);
 
     const handleSelectEnrollment = async (enrollment: EnrollmentBase) => {

@@ -19,6 +19,7 @@ const links: LinkModel[] = [
                     "Change selected enrollment with arrow keys or with mouse",
                     "Unselect enrollment by clicking once again on it",
                     "Scroll horizontally to see more columns with arrow keys or with mouse",
+                    "Use commands to manage selected enrollment",
                 ]
             },
             {

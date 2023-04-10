@@ -1,12 +1,12 @@
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {ActionIcon, Button, Flex, Popover, Space, Text, Title} from "@mantine/core";
 import {IconCheck, IconCircleOff, IconInfoCircle, IconX} from "@tabler/icons-react";
-import {useBrowseEnrollmentsContext} from "@components/System/Admin/Enrollments/Browse/_context/BrowseEnrollmentsContext";
+import {useEnrollmentsContext} from "@components/System/Admin/Enrollments/_context/EnrollmentsContext";
 import classes from "@components/System/Admin/Enrollments/Browse/_styles/BrowseEnrollmentsDetails.module.scss";
 
 export const EnrollmentDetailsCommands = () => {
     const {actions, selectors: {enrollmentDetails}} = useEnrollmentSlice();
-    const context = useBrowseEnrollmentsContext();
+    const context = useEnrollmentsContext();
 
     const handleApprove = async () => {
         const result = await actions.approve(enrollmentDetails()?.externalId ?? "");

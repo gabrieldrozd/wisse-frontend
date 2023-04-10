@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {Flex} from "@mantine/core";
-import {useBrowseEnrollmentsContext} from "./_context/BrowseEnrollmentsContext";
+import {useEnrollmentsContext} from "@components/System/Admin/Enrollments/_context/EnrollmentsContext";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {EnrollmentDetailsPresentation} from "./Details/EnrollmentDetailsPresentation";
 import {EnrollmentDetailsCommands} from "./Details/EnrollmentDetailsCommands";
@@ -8,7 +8,7 @@ import classes from "./_styles/BrowseEnrollmentsDetails.module.scss";
 
 export const BrowseEnrollmentsDetails = () => {
     const {actions, selectors: {enrollmentDetails}} = useEnrollmentSlice();
-    const context = useBrowseEnrollmentsContext();
+    const context = useEnrollmentsContext();
 
     const fetchEnrollment = async () => {
         if (!context.selected?.value?.externalId) return;

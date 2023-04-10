@@ -1,9 +1,10 @@
 import {Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
-import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
+import {ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, SortingState, useReactTable} from "@tanstack/react-table";
 import {PaginatedList} from "@models/api/pagination";
 import {createRef, useEffect, useState} from "react";
 import classes from "./styles/GenericTable.module.scss";
 import {useArrowKeySelect} from "@components/common/DataDisplay/useArrowKeySelect";
+import {Icon2fa, IconSortAscending, IconSortDescending} from "@tabler/icons-react";
 
 export interface Props {
     /**
@@ -42,10 +43,19 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow, 
     const [pageSize, setPageSize] = useState(10);
     const [isAscending, setIsAscending] = useState(true);
     const totalPages = Math.ceil(data.pagination.totalItems / data.pagination.pageSize);
+
+    console.log("data.pagination", data.pagination);
+
+    const [sorting, setSorting] = useState<SortingState>([]);
     const table = useReactTable({
         data: data.list,
         columns: columns,
+        state: {
+            sorting,
+        },
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel()
     });
 
     useArrowKeySelect({tableBodyRef, table, selectedRow, selectRow});
@@ -97,13 +107,28 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow, 
                         <tr key={headerGroup.id} className={classes.tableHeadRow}>
                             {headerGroup.headers.map(header => (
                                 <th key={header.id} className={classes.tableHeadCell}>
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )
-                                    }
+                                    {header.isPlaceholder ? null : (
+                                        <Flex
+                                            align="center"
+                                            justify="center"
+                                            {...{
+                                                className: header.column.getCanSort()
+                                                    ? "cursor-pointer select-none"
+                                                    : "",
+                                                onClick: header.column.getToggleSortingHandler(),
+                                            }}
+                                        >
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                            <Space w={5} />
+                                            {{
+                                                asc: <IconSortAscending size={20}/>,
+                                                desc: <IconSortDescending size={20}/>,
+                                            }[header.column.getIsSorted() as string] ?? null}
+                                        </Flex>
+                                    )}
                                 </th>
                             ))}
                         </tr>

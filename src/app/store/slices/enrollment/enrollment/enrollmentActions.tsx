@@ -35,6 +35,42 @@ export const useEnrollmentActions = () => {
         }
     };
 
+    const browseApprovedEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<EnrollmentBase>> => {
+        isLoading.set(true);
+        try {
+            const pagination: PaginationRequest = {
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                isAscending: isAscending,
+            };
+            const envelope = await enrollmentRequestAgent.query.browseApproved(pagination);
+            if (envelope.isSuccess) {
+                dispatch(actions.setApprovedList(envelope.data));
+            }
+            return envelope.data;
+        } finally {
+            isLoading.set(false);
+        }
+    };
+
+    const browseRejectedEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<EnrollmentBase>> => {
+        isLoading.set(true);
+        try {
+            const pagination: PaginationRequest = {
+                pageIndex: pageIndex,
+                pageSize: pageSize,
+                isAscending: isAscending,
+            };
+            const envelope = await enrollmentRequestAgent.query.browseRejected(pagination);
+            if (envelope.isSuccess) {
+                dispatch(actions.setRejectedList(envelope.data));
+            }
+            return envelope.data;
+        } finally {
+            isLoading.set(false);
+        }
+    };
+
     const reloadEnrollments = async () => {
         await browseEnrollments(1, 10, true);
     };
@@ -97,9 +133,11 @@ export const useEnrollmentActions = () => {
     };
 
     return {
-        enrollmentDetails,
         browseEnrollments,
+        browseApprovedEnrollments,
+        browseRejectedEnrollments,
         reloadEnrollments,
+        enrollmentDetails,
         submit,
         approve,
         reject,
