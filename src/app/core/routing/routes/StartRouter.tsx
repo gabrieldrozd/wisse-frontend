@@ -1,8 +1,8 @@
 import {Route} from "react-router-dom";
 import {UnprotectedRoute} from "@core/routing/components/UnprotectedRoute";
-import {StartStructure} from "@structures/StartStructure";
-import {HomePage} from "@pages/Start/HomePage";
-import {EnrollPage} from "@pages/Start/EnrollPage";
+import {StartStructure} from "@/modules/_start/structure/StartStructure";
+import {HomePage} from "@/modules/_start/pages/home/HomePage";
+import {EnrollPage} from "@/modules/_start/pages/enroll/EnrollPage";
 
 export const StartRouter = (
     <Route

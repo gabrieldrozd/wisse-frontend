@@ -57,12 +57,22 @@
             "@components/*": [
                 "./src/components/*"
             ],
-            "@pages/*": [
-                "./src/pages/*"
+
+            "@modules.common/*" : [
+                "./src/modules/_common/*"
             ],
-            "@structures/*": [
-                "./src/structures/*"
-            ]
+            "@modules.start/*" : [
+                "./src/modules/_start/*"
+            ],
+            "@modules.admin/*" : [
+                "./src/modules/admin/*"
+            ],
+            "@modules.student/*" : [
+                "./src/modules/student/*"
+            ],
+            "@modules.teacher/*" : [
+                "./src/modules/teacher/*"
+            ],
         }
     },
     "include": [
@@ -72,8 +82,11 @@
         "src/app",
         "src/common",
         "src/components",
-        "src/pages",
-        "src/structures"
+        "src/modules/_common",
+        "src/modules/_start",
+        "src/modules/admin",
+        "src/modules/student",
+        "src/modules/teacher",
     ],
     "references": [
         {

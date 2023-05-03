@@ -1,0 +1,111 @@
+@import "../../../_styles/base";
+@import "../../../_styles/colors";
+
+.control {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    font-size: 1rem;
+    color: $gray-900;
+    transition: color 200ms ease, background-color 500ms ease;
+
+    &:hover {
+        color: $gray-900;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: calc(100% - 2rem);
+            height: 70%;
+            background-color: $indigo-300;
+            border-radius: 0 1rem 1rem 0;
+            z-index: -1;
+            transition: background-color 200ms ease;
+        }
+    }
+
+    &.active {
+        position: relative;
+        color: $neutral-50;
+        font-weight: bold;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: calc(100% - 2rem);
+            height: 70%;
+            background-color: $indigo-500;
+            border-radius: 0 1rem 1rem 0;
+            z-index: -1;
+            transition: background-color 200ms ease;
+        }
+    }
+}
+
+.path {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    padding: 0.75rem 1rem 0.75rem 1rem;
+    margin-top: -0.75rem;
+    margin-bottom: 0.75rem;
+    margin-left: 2rem;
+    font-weight: 500;
+    font-size: 1rem;
+    color: $gray-700;
+    border-left: 3px solid $gray-300;
+    cursor: pointer;
+    transition: color 200ms ease, background-color 500ms ease;
+
+    &:hover {
+        color: $gray-900;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: calc(100% - 2rem);
+            height: 70%;
+            background-color: $indigo-300;
+            border-radius: 0 1rem 1rem 0;
+            z-index: -1;
+            transition: background-color 200ms ease;
+        }
+    }
+
+    &.active {
+        position: relative;
+        color: $neutral-50;
+        font-weight: bold;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: calc(100% - 2rem);
+            height: 70%;
+            background-color: $indigo-500;
+            border-radius: 0 1rem 1rem 0;
+            z-index: -1;
+            transition: background-color 2000ms ease;
+        }
+
+        border-left: 3px solid $indigo-500;
+    }
+}
+
+.chevron {
+    transition: transform 200ms ease;
+}

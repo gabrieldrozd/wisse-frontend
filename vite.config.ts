@@ -17,10 +17,15 @@ export default defineConfig({
             "@hooks": path.resolve("src/app/hooks"),
             "@models": path.resolve("src/app/models"),
             "@store": path.resolve("src/app/store"),
+
             "@common": path.resolve("src/common"),
             "@components": path.resolve("src/components"),
-            "@pages": path.resolve("src/pages"),
-            "@structures": path.resolve("src/structures"),
+
+            "@modules.common": path.resolve("src/modules/_common"),
+            "@modules.start": path.resolve("src/modules/_start"),
+            "@modules.admin": path.resolve("src/modules/admin"),
+            "@modules.student": path.resolve("src/modules/student"),
+            "@modules.teacher": path.resolve("src/modules/teacher"),
         }
     }
 });

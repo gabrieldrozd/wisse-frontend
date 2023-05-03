@@ -1,0 +1,77 @@
+@import "../../../_styles/colors";
+
+.tableContainer {
+    overflow-x: auto;
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    max-width: 100%;
+}
+
+.table {
+    padding: 20px;
+    width: 100%;
+    white-space: nowrap;
+    min-height: 75vh !important;
+    max-height: 75vh !important;
+    border-collapse: collapse;
+}
+
+/* TABLE HEAD */
+.tableHead {
+    background-color: $indigo-200;
+}
+
+.tableHeadCell {
+    font-weight: bold;
+    text-align: center !important;
+    border-top: 1px solid $gray-400 !important;
+    border-bottom: 1px solid $gray-400 !important;
+}
+
+/* TABLE BODY */
+.tableBody {
+    background-color: $white;
+    user-select: auto;
+
+    // TODO: user-select is messing around the whole page, don't know why
+    // prompt not only appears in the table but also moves aroung the whole page
+    // needs to be fixed
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.tableBodyRow {
+    &:nth-child(even) {
+        background-color: $indigo-50;
+    }
+
+    &:hover {
+        background-color: $indigo-200;
+    }
+}
+
+.selectedTableBodyRow {
+    background-color: $indigo-600 !important;
+    color: $white !important;
+
+    &:focus::before {
+        border: 1px solid #ccc;
+        box-shadow: 0 0 0 1px #ccc;
+    }
+}
+
+.tableBodyCell {
+    text-align: center !important;
+    border-bottom: 1px solid $gray-300 !important;
+    font-weight: bold;
+}
+
+/* OTHER */
+.actionButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}

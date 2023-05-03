@@ -1,4 +1,4 @@
-import {Center, Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
+import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
 import {RouterProvider} from "react-router-dom";
 import {ApplicationRouter} from "@core/routing/ApplicationRouter";
 import {Notifications} from "@mantine/notifications";

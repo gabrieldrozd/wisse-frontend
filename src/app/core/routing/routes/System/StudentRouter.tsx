@@ -1,7 +1,7 @@
 import {Route} from "react-router-dom";
 import {RoleProtectedRoute} from "@core/routing/components/RoleProtectedRoute";
-import {StudentStructure} from "@structures/StudentStructure";
-import {StudentDashboardPage} from "@pages/System/Student/StudentDashboardPage";
+import {StudentStructure} from "@/modules/student/structure/StudentStructure";
+import {StudentDashboardPage} from "@/modules/student/pages/_dashboard/StudentDashboardPage";
 import {useAuthSlice} from "@store/slices/users/auth/authSlice";
 
 export const StudentRouter = (
