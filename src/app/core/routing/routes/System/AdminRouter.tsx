@@ -5,11 +5,11 @@ import {AdminDashboardPage} from "@/modules/admin/pages/_dashboard/AdminDashboar
 import {BrowseEnrollmentsPage} from "@/modules/admin/pages/enrollments/BrowseEnrollmentsPage";
 import {ApprovedEnrollmentsPage} from "@/modules/admin/pages/enrollments/ApprovedEnrollmentsPage";
 import {RejectedEnrollmentsPage} from "@/modules/admin/pages/enrollments/RejectedEnrollmentsPage";
-import {EnrollmentsContext} from "@components/System/Admin/Enrollments/_context/EnrollmentsContext";
 import {BrowseStudentsPage} from "@/modules/admin/pages/students/BrowseStudentsPage";
 import {BrowseTeachersPage} from "@/modules/admin/pages/teachers/BrowseTeachersPage";
 import {AdminRouterContext} from "@core/routing/routes/System/AdminRouterContext";
 import {StudentDetailsPage} from "@/modules/admin/pages/students/StudentDetailsPage";
+import {TeacherDetailsPage} from "@modules.admin/pages/teachers/TeacherDetailsPage";
 
 export const AdminRouter = (
     <Route
@@ -32,5 +32,9 @@ export const AdminRouter = (
         <Route path="students/:studentId" element={<StudentDetailsPage />} />
 
         <Route path="teachers" element={<BrowseTeachersPage />} />
+        <Route path="teachers/:teacherId" element={<TeacherDetailsPage />} />
+
+        <Route path="test-templates" element={<>Test templates</>} />
+        <Route path="test-templates/create" element={<>Create new test template</>} />
     </Route>
 );

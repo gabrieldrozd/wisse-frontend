@@ -40,6 +40,7 @@ export const BrowseStudentsTable = () => {
     return (
         <GenericTable
             columns={columns}
+            dataName="Students"
             data={selectors.studentsList()}
             fetchData={actions.browseStudents}
             selectedRow={context.selected?.value}

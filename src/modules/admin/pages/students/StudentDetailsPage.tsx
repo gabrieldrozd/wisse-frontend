@@ -1,12 +1,17 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect} from "react";
+import {Notify} from "@core/services/Notify";
 
 export const StudentDetailsPage = () => {
+    const navigate = useNavigate();
     const {studentId} = useParams<{ studentId: string }>();
 
 
     useEffect(() => {
-        console.log(studentId);
+        if (!studentId || studentId === "undefined") {
+            Notify.warning("Not selected", "Student must be selected first");
+            navigate("/admin/students");
+        }
     }, [studentId]);
 
     return (

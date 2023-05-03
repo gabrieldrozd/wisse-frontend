@@ -1,24 +1,33 @@
-import React from "react";
-import {Space, Title} from "@mantine/core";
+import React, {useEffect, useState} from "react";
+import {Col, Grid} from "@mantine/core";
+import {useTeachersContext} from "@modules.admin/components/teachers/_context/TeachersContext";
+import {BrowseTeachersTable} from "@modules.admin/components/teachers/browse/BrowseTeachersTable";
+import {BrowseTeachersDetails} from "@modules.admin/components/teachers/browse/BrowseTeachersDetails";
 
 export const BrowseTeachersPage = () => {
+    const context = useTeachersContext();
+
+    const [tableSpan, setTableSpan] = useState(10);
+    const [actionsSpan, setActionsSpan] = useState(2);
+
+    useEffect(() => {
+        if (context.selected?.value?.externalId) {
+            setTableSpan(7);
+            setActionsSpan(5);
+        } else {
+            setTableSpan(12);
+            setActionsSpan(0);
+        }
+    }, [context.selected?.value?.externalId]);
+
     return (
-        <>
-            <span>Admin Dashboard</span>
-
-            <Title>
-                The first and most important this is to work on "ACTIVE" link in the navbar (NavbarLinksGroup)
-                <Space h="md" />
-                Currently there is not indication or whatsoever that the link is active
-
-                <Space h="xl" />
-                <Space h="xl" />
-                <Space h="xl" />
-                <Space h="xl" />
-                The second thing is to work on the logout button in the navbar (UserNavigationButton).
-                <Space h="md" />
-                There should appear some popup with available actions which can be defined in AdminUserButtonSection and any other user button section
-            </Title>
-        </>
+        <Grid>
+            <Col span={tableSpan}>
+                <BrowseTeachersTable />
+            </Col>
+            <Col span={actionsSpan} hidden={actionsSpan === 0}>
+                <BrowseTeachersDetails />
+            </Col>
+        </Grid>
     );
 };

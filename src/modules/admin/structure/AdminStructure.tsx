@@ -1,12 +1,12 @@
 import {Outlet} from "react-router-dom";
-import {IconBookDownload, IconGauge, IconMoodPlus, IconSchool,} from "@tabler/icons-react";
+import {IconBallpen, IconBookDownload, IconGauge, IconMoodPlus, IconSchool,} from "@tabler/icons-react";
 import {LinkModel} from "@core/routing/models/links";
 import {AdminSystemShell} from "@modules.admin/structure/AdminSystemShell";
 import {useStudentsContext} from "@modules.admin/components/students/_context/StudentsContext";
 
 export const AdminStructure = () => {
     const studentContext = useStudentsContext();
-    const selectedStudent = studentContext.selected?.value;
+    const selectedStudent = studentContext.selected.value.externalId ? studentContext.selected.value.externalId : undefined;
 
     const links: LinkModel[] = [
         {
@@ -59,17 +59,52 @@ export const AdminStructure = () => {
                     ]
                 },
                 {
-                    label: "Details", path: `/admin/students/${selectedStudent?.externalId}`, title: "Specific Student", helpers: [
+                    label: "Details", path: `/admin/students/${selectedStudent}`, title: "Specific Student", helpers: [
                         "No hints for this page YET"
                     ]
                 }
             ]
         },
         {
-            label: "Teachers", path: "/admin/teachers", icon: IconBookDownload, title: "All Teachers", helpers: [
-                "No hints for this page YET"
+            label: "Teachers",
+            icon: IconBookDownload,
+            links: [
+                {
+                    label: "Browse", path: "/admin/teachers", title: "All Teachers", helpers: [
+                        "Select a specific teacher by clicking on it",
+                        "Change selected teacher with arrow keys or with mouse",
+                        "Unselect teacher by clicking once again on it",
+                        "Scroll horizontally to see more columns with arrow keys or with mouse",
+                        "Use commands to manage selected teacher",
+                    ]
+                },
+                {
+                    label: "Details", path: `/admin/teachers/${selectedStudent}`, title: "Specific Teacher", helpers: [
+                        "No hints for this page YET"
+                    ]
+                }
             ]
         },
+        {
+            label: "Tests Templates",
+            icon: IconBallpen,
+            links: [
+                {
+                    label: "Browse", path: "/admin/test-templates", title: "All Test Templates", helpers: [
+                        "Select a specific teacher by clicking on it",
+                        "Change selected teacher with arrow keys or with mouse",
+                        "Unselect teacher by clicking once again on it",
+                        "Scroll horizontally to see more columns with arrow keys or with mouse",
+                        "Use commands to manage selected teacher",
+                    ]
+                },
+                {
+                    label: "Create", path: `/admin/test-templates/create`, title: "Create Test Template", helpers: [
+                        "No hints for this page YET"
+                    ]
+                }
+            ]
+        }
     ];
 
     return (

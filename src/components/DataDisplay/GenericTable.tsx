@@ -1,16 +1,21 @@
-import {Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
+import {Center, Divider, Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
 import {ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, SortingState, useReactTable} from "@tanstack/react-table";
 import {PaginatedList} from "@models/api/pagination";
 import {createRef, useEffect, useState} from "react";
 import classes from "./styles/GenericTable.module.scss";
 import {useArrowKeySelect} from "@components/DataDisplay/useArrowKeySelect";
 import {Icon2fa, IconSortAscending, IconSortDescending} from "@tabler/icons-react";
+import {DataNotFound} from "@components/DataNotFound/DataNotFound";
 
 export interface Props {
     /**
      * Tanstack React Table columns definition
      */
     columns: ColumnDef<any, any>[];
+    /**
+     * Table key for better identification
+     */
+    dataName?: string;
     /**
      * PaginatedList object as a data holder for the table
      */
@@ -37,7 +42,7 @@ export interface Props {
     unselectRow: () => Promise<void>;
 }
 
-export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow, unselectRow}: Props) => {
+export const GenericTable = ({columns, dataName, data, selectedRow, fetchData, selectRow, unselectRow}: Props) => {
     const tableBodyRef = createRef<HTMLTableSectionElement>();
     const [pageIndex, setPageIndex] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -93,6 +98,10 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow, 
         fetchData(pageIndex, pageSize, true).then();
     }, []);
 
+    if (data.list.length === 0) {
+        return <DataNotFound dataName={dataName!} />;
+    }
+
     return (
         <Flex
             className={classes.tableContainer}
@@ -124,8 +133,8 @@ export const GenericTable = ({columns, data, selectedRow, fetchData, selectRow, 
                                             )}
                                             <Space w={5} />
                                             {{
-                                                asc: <IconSortAscending size={20}/>,
-                                                desc: <IconSortDescending size={20}/>,
+                                                asc: <IconSortAscending size={20} />,
+                                                desc: <IconSortDescending size={20} />,
                                             }[header.column.getIsSorted() as string] ?? null}
                                         </Flex>
                                     )}

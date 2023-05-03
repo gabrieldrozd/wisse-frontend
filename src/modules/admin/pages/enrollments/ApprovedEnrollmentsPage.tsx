@@ -67,6 +67,7 @@ export const ApprovedEnrollmentsPage = () => {
     return (
         <GenericTable
             columns={columns}
+            dataName="Approved Enrollments"
             data={selectors.approvedEnrollmentsList()}
             fetchData={actions.browseApprovedEnrollments}
             selectedRow={context.selected?.value}
