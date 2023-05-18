@@ -36,42 +36,54 @@
             "@colors/*": [
                 "./src/_styles/colors.scss"
             ],
-            "@api/*": [
-                "./src/app/api/*"
+
+            "@app.common/*" : [
+                "./src/app/_common/*"
             ],
-            "@core/*": [
-                "./src/app/core/*"
+            "@app.start/*" : [
+                "./src/app/_start/*"
             ],
-            "@hooks/*": [
-                "./src/app/hooks/*"
+            "@app.admin/*" : [
+                "./src/app/admin/*"
             ],
-            "@models/*": [
-                "./src/app/models/*"
+            "@app.student/*" : [
+                "./src/app/student/*"
             ],
-            "@store/*": [
-                "./src/app/store/*"
-            ],
-            "@common/*": [
-                "./src/common/*"
-            ],
-            "@components/*": [
-                "./src/components/*"
+            "@app.teacher/*" : [
+                "./src/app/teacher/*"
             ],
 
-            "@modules.common/*" : [
-                "./src/modules/_common/*"
+            "@api/*": [
+                "./src/core/api/*"
             ],
-            "@modules.start/*" : [
-                "./src/modules/_start/*"
+            "@context/*": [
+                "./src/core/context/*"
             ],
-            "@modules.admin/*" : [
-                "./src/modules/admin/*"
+            "@models/*": [
+                "./src/core/models/*"
             ],
-            "@modules.student/*" : [
-                "./src/modules/student/*"
+            "@routing/*": [
+                "./src/core/routing/*"
             ],
-            "@modules.teacher/*" : [
-                "./src/modules/teacher/*"
+            "@services/*": [
+                "./src/core/services/*"
+            ],
+
+            "@components/*": [
+                "./src/shared/components/*"
+            ],
+            "@const/*": [
+                "./src/shared/constants/*"
+            ],
+            "@hooks/*": [
+                "./src/shared/hooks/*"
+            ],
+            "@utils/*": [
+                "./src/shared/utilities/*"
+            ],
+
+            "@store/*": [
+                "./src/store/*"
             ],
         }
     },
@@ -80,13 +92,23 @@
         "src/_assets",
         "src/_styles",
         "src/app",
-        "src/common",
-        "src/components",
-        "src/modules/_common",
-        "src/modules/_start",
-        "src/modules/admin",
-        "src/modules/student",
-        "src/modules/teacher",
+        "src/app/_common",
+        "src/app/_start",
+        "src/app/admin",
+        "src/app/student",
+        "src/app/teacher",
+        "src/core",
+        "src/core/api",
+        "src/core/context",
+        "src/core/models",
+        "src/core/routing",
+        "src/core/services",
+        "src/shared",
+        "src/shared/components",
+        "src/shared/constants",
+        "src/shared/hooks",
+        "src/shared/utilities",
+        "src/store",
     ],
     "references": [
         {

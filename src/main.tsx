@@ -4,12 +4,114 @@ import ReactDOM from "react-dom/client";
 
 import "@styles/main.scss";
 import {App} from "@/App";
-import {ApplicationContext} from "@core/context/ApplicationContext";
+import {ApplicationContext} from "@context/ApplicationContext";
 import {Provider} from "react-redux";
 import {store} from "@store/store";
-import {breakpoints} from "@common/constants/breakpoints";
+import {breakpoints} from "@/shared/constants/breakpoints";
+import {createTheme, NextUIProvider} from "@nextui-org/react";
+import {colors} from "@const/colors";
 
-const theme: MantineThemeOverride = {
+const nextUITheme = createTheme({
+    type: "light",
+    theme: {
+        breakpoints: {
+            xs: breakpoints.xs,
+            sm: breakpoints.sm,
+            md: breakpoints.md,
+            lg: breakpoints.lg,
+            xl: breakpoints.xl
+        },
+        colors: {
+            // Primary
+            primary: colors.indigo500,
+            primaryLight: colors.indigo200,
+            primaryLightHover: colors.indigo300,
+            primaryLightActive: colors.indigo400,
+            primaryLightContrast: colors.indigo600,
+            primaryBorder: colors.indigo400,
+            primaryBorderHover: colors.indigo600,
+            primarySolidHover: colors.indigo700,
+            primarySolidContrast: colors.white,
+            primaryShadow: colors.indigo300,
+            // Secondary
+            secondary: colors.sky500,
+            secondaryLight: colors.sky200,
+            secondaryLightHover: colors.sky300,
+            secondaryLightActive: colors.sky400,
+            secondaryLightContrast: colors.sky600,
+            secondaryBorder: colors.sky400,
+            secondaryBorderHover: colors.sky600,
+            secondarySolidHover: colors.sky700,
+            secondarySolidContrast: colors.white,
+            secondaryShadow: colors.sky300,
+            // Success
+            success: colors.green600,
+            successLight: colors.green200,
+            successLightHover: colors.green300,
+            successLightActive: colors.green400,
+            successLightContrast: colors.green700,
+            successBorder: colors.green400,
+            successBorderHover: colors.green600,
+            successSolidHover: colors.green700,
+            successSolidContrast: colors.white,
+            successShadow: colors.green200,
+            // Warning
+            warning: colors.amber500,
+            warningLight: colors.amber200,
+            warningLightHover: colors.amber300,
+            warningLightActive: colors.amber400,
+            warningLightContrast: colors.amber700,
+            warningBorder: colors.amber400,
+            warningBorderHover: colors.amber600,
+            warningSolidHover: colors.amber700,
+            warningSolidContrast: colors.white,
+            warningShadow: colors.orange300,
+            // Error
+            error: colors.red600,
+            errorLight: colors.red200,
+            errorLightHover: colors.red300,
+            errorLightActive: colors.red400,
+            errorLightContrast: colors.red700,
+            errorBorder: colors.red400,
+            errorBorderHover: colors.red600,
+            errorSolidHover: colors.red700,
+            errorSolidContrast: colors.white,
+            errorShadow: colors.red300,
+        },
+        shadows: {
+            xs: "0 2px 8px 1px rgb(104 112 118 / 0.07), 0 1px 1px -1px rgb(104 112 118 / 0.04)",
+            sm: "0 2px 8px 2px rgb(104 112 118 / 0.07), 0 2px 4px -1px rgb(104 112 118 / 0.04)",
+            md: "0 12px 20px 6px rgb(104 112 118 / 0.08)",
+            lg: "0 12px 34px 6px rgb(104 112 118 / 0.18)",
+            xl: "0 25px 65px 0px rgb(104 112 118 / 0.35)"
+        },
+        dropShadows: {
+            xs: "drop-shadow(0 2px 4px rgb(104 112 118 / 0.07)) drop-shadow(0 1px 1px rgb(104 112 118 / 0.04))",
+            sm: "drop-shadow(0 2px 8px rgb(104 112 118 / 0.07)) drop-shadow(0 2px 4px rgb(104 112 118 / 0.04))",
+            md: "drop-shadow(0 4px 12px rgb(104 112 118 / 0.08)) drop-shadow(0 20px 8px rgb(104 112 118 / 0.04))",
+            lg: "drop-shadow(0 12px 24px rgb(104 112 118 / 0.15)) drop-shadow(0 12px 14px rgb(104 112 118 / 0.1))",
+            xl: "drop-shadow(0 25px 34px rgb(104 112 118 / 0.35))"
+        },
+        fontSizes: {
+            xs: "0.75rem",
+            sm: "0.875rem",
+            base: "1rem",
+            md: "1rem",
+            lg: "1.125rem",
+            xl: "1.25rem",
+            "2xl": "1.5rem",
+            "3xl": "1.875rem",
+            "4xl": "2.25rem",
+            "5xl": "3rem",
+            "6xl": "3.75rem",
+            "7xl": "4.5rem",
+            "8xl": "6rem",
+            "9xl": "8rem",
+        }
+    },
+});
+
+const mantineTheme: MantineThemeOverride = {
     breakpoints: {
         xs: breakpoints.xs,
         sm: breakpoints.sm,
@@ -60,9 +162,11 @@ root.render(
     // <StrictMode>
     <ApplicationContext>
         <Provider store={store}>
-            <MantineProvider theme={theme}>
-                <App />
-            </MantineProvider>
+            <NextUIProvider theme={nextUITheme}>
+                <MantineProvider theme={mantineTheme}>
+                    <App />
+                </MantineProvider>
+            </NextUIProvider>
         </Provider>
     </ApplicationContext>
     // </StrictMode>,

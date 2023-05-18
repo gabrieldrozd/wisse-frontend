@@ -1,0 +1,81 @@
+@import "@base";
+@import "@colors";
+
+.rootContainer {
+    margin: 0 0;
+    background-color: $indigo-50;
+    border-radius: 4rem;
+
+    --tw-drop-shadow: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
+    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.imageContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4rem;
+
+    .image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+.contentContainer {
+    padding: 2rem 4rem;
+
+    @media (max-width: $break-md-lg) {
+        padding: 2rem 2rem;
+    }
+}
+
+.wisseMarker {
+    padding: 5px 10px;
+    color: #fafafa;
+    background-color: $indigo-500;
+    border-radius: 1.5rem;
+}
+
+.initDescription {
+    margin: 40px 0;
+    color: $neutral-600;
+}
+
+.simpleGrid {
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 1rem;
+
+    @media (max-width: $break-lg-xl) {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(1, 1fr);
+    }
+
+    @media (max-width: $break-xs) {
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+}
+
+.featureCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2rem !important;
+    background-color: $white !important;
+
+    .cardHeader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+}

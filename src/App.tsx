@@ -1,29 +1,44 @@
-import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
+import {useEffect, useState} from "react";
 import {RouterProvider} from "react-router-dom";
-import {ApplicationRouter} from "@core/routing/ApplicationRouter";
 import {Notifications} from "@mantine/notifications";
-import {useGlobalContext} from "@core/context/ApplicationContext";
+import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
+import {ApplicationRouter} from "@routing/ApplicationRouter";
+import {useGlobalContext} from "@context/ApplicationContext";
 
 export const App = () => {
     const {isLoading} = useGlobalContext();
+    const [isUiReady, setIsUiReady] = useState(false);
+
+    useEffect(() => {
+        window.onload = () => {
+            setIsUiReady(true);
+        };
+    }, []);
 
     return (
-        <Flex direction="column">
+        <Flex direction="column" align="flex-start" justify="flex-start">
             <LoadingOverlay
-                visible={isLoading.value}
+                visible={isLoading.value || !isUiReady}
+                overlayBlur={10}
                 loader={
                     <Flex
                         direction="column"
                         align="center"
                         justify="center"
                         bg="indigo.0"
-                        p={20}
+                        px={50}
+                        py={20}
                         style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            position: "fixed",
+                            top: "50%",
+                            left: "calc(50% - 100px)",
                             borderRadius: "1rem",
                         }}
                     >
                         <Title order={2}>Loading</Title>
-                        <Loader mt={10} color="indigo.7" size={60} variant="dots" />
+                        <Loader mt={20} color="indigo.7" size={100} variant="dots" />
                     </Flex>
                 }
             />

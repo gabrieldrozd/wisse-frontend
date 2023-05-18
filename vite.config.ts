@@ -12,20 +12,25 @@ export default defineConfig({
             "@styles": path.resolve("src/_styles"),
             "@base": path.resolve("src/_styles/base.scss"),
             "@colors": path.resolve("src/_styles/colors.scss"),
-            "@api": path.resolve("src/app/api"),
-            "@core": path.resolve("src/app/core"),
-            "@hooks": path.resolve("src/app/hooks"),
-            "@models": path.resolve("src/app/models"),
-            "@store": path.resolve("src/app/store"),
 
-            "@common": path.resolve("src/common"),
-            "@components": path.resolve("src/components"),
+            "@app.common": path.resolve("src/app/_common"),
+            "@app.start": path.resolve("src/app/_start"),
+            "@app.admin": path.resolve("src/app/admin"),
+            "@app.student": path.resolve("src/app/student"),
+            "@app.teacher": path.resolve("src/app/teacher"),
 
-            "@modules.common": path.resolve("src/modules/_common"),
-            "@modules.start": path.resolve("src/modules/_start"),
-            "@modules.admin": path.resolve("src/modules/admin"),
-            "@modules.student": path.resolve("src/modules/student"),
-            "@modules.teacher": path.resolve("src/modules/teacher"),
+            "@api": path.resolve("src/core/api"),
+            "@context": path.resolve("src/core/context"),
+            "@models": path.resolve("src/core/models"),
+            "@routing": path.resolve("src/core/routing"),
+            "@services": path.resolve("src/core/services"),
+
+            "@components": path.resolve("src/shared/components"),
+            "@const": path.resolve("src/shared/constants"),
+            "@hooks": path.resolve("src/shared/hooks"),
+            "@utils": path.resolve("src/shared/utilities"),
+
+            "@store": path.resolve("src/store"),
         }
     }
 });
