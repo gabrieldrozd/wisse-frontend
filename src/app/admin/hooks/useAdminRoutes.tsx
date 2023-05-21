@@ -130,11 +130,7 @@ export const useAdminRoutes = () => {
                     title: "All Test Templates",
                     active: pathname === "/admin/test-templates",
                     hints: [
-                        "Select a specific teacher by clicking on it",
-                        "Change selected teacher with arrow keys or with mouse",
-                        "Unselect teacher by clicking once again on it",
-                        "Scroll horizontally to see more columns with arrow keys or with mouse",
-                        "Use commands to manage selected teacher",
+                        "No hints for this page YET",
                     ]
                 },
                 {
@@ -143,7 +139,11 @@ export const useAdminRoutes = () => {
                     title: "Create Test Template",
                     active: pathname === `/admin/test-templates/create`,
                     hints: [
-                        "No hints for this page YET"
+                        "Provide basic information about test template and select language level",
+                        "Selected language level will be used to get existing questions",
+                        "You can add new questions to test template or select existing ones",
+                        "Existing questions won't be editable (grayed out)",
+                        "You can remove questions from test template",
                     ]
                 }
             ]

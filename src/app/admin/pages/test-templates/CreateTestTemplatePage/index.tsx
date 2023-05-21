@@ -1,282 +1,163 @@
-import {useCallback, useEffect, useState} from "react";
-import {useForm} from "@mantine/form";
-import {useMediaQuery} from "@mantine/hooks";
-import {Group, TextInput, Text, Textarea, Select, Divider, Switch, Grid, Col, Title, Flex, Code} from "@mantine/core";
-import {MdAdd, MdDelete} from "react-icons/all";
+import {FormEvent, useCallback, useEffect, useState} from "react";
+import {motion, Variants} from "framer-motion";
+import {Affix, Col, Divider, Grid, rem, Title} from "@mantine/core";
 import {Button} from "@nextui-org/react";
 import {uuid} from "@utils/uuidUtils";
-import {categories, levels} from "@const/education";
-import {breakpoints} from "@const/breakpoints";
-import {ITestTemplatePost} from "@models/education/test-template/testTemplate";
-import {IQuestion, IQuestionPost, QuestionPost} from "@models/education/test-template/question";
+import {levels} from "@const/education";
+import {IQuestion, IQuestionPostFormModel} from "@models/education/test-template/question";
 import {useQuestionSlice} from "@store/slices/education/question/questionSlice";
+import {TestTemplateFormProvider, useTestTemplateForm} from "@app.admin/context/testTemplateFormContext";
+import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
+import {TestTemplateFormFields} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateFormFields";
+import {TestTemplateActionDivider} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateActionDivider";
+import {ITestTemplatePostFormModel, TestTemplatePost} from "@models/education/test-template/testTemplate";
+import {useTestTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
+import {useForm, isNotEmpty, isEmail, isInRange, hasLength, matches} from "@mantine/form";
 
 export const CreateTestTemplatePage = () => {
-    const {actions} = useQuestionSlice();
+    const {actions: questionActions} = useQuestionSlice();
+    const {actions: testTemplateActions} = useTestTemplateSlice();
 
     const [testLevel, setTestLevel] = useState(levels[0].value);
     const [existingQuestions, setExistingQuestions] = useState<IQuestion[]>([]);
 
-    const mdMediaMatch = useMediaQuery(`(max-width: ${breakpoints.md})`);
-    const lgMediaMatch = useMediaQuery(`(max-width: ${breakpoints.lg})`);
-    const form = useForm<ITestTemplatePost>({
+    /*
+    *    TODO: Migrate MantineForm to react-hook-form
+    *    TODO: Add zod validation to react-hook-form
+    *    Use react-hook-form by passing form (reagiter property) to child components ***???***
+    *
+    *    Get more into react-hook-form CONTEXT (ask chat how to distinguish contexts if the hook is called useFormContext ???)
+    */
+
+    const form = useTestTemplateForm({
         initialValues: {
-            id: uuid(),
+            externalId: uuid(),
             name: "",
             description: "",
             languageLevel: levels[0].value,
-            questionIds: [] as string[],
-            questions: [] as IQuestionPost[],
+            questions: [] as IQuestionPostFormModel[],
         },
+        validate: {
+            name: (value) => isNotEmpty(value) ? null : "Name is required",
+            description: (value) => isNotEmpty(value) ? null : "Description is required",
+            languageLevel: (value) => isNotEmpty(value) ? null : "Language level is required",
+            questions: (value) => {
+                if (value.length < 5) return "At least 5 questions are required";
+                value.forEach((question) => {
+                    if (!isNotEmpty(question.text))
+                        return `Question text is required`;
+                    if (!isNotEmpty(question.languageLevel))
+                        return `Question language level is required`;
+                    if (!isNotEmpty(question.category))
+                        return `Question category is required`;
+                    if (question.answers.length != 4)
+                        return `Question should have 4 answers`;
+                    if (question.answers.filter((answer) => answer.correct).length != 1)
+                        return `Question should have only one correct answer`;
+                    question.answers.forEach((answer) => {
+                        if (!isNotEmpty(answer.text))
+                            return `Answer text is required`;
+                    });
+                });
+            }
+        }
     });
 
-    const fetchExistingQuestions = useCallback(async () => {
-        const questions = await actions.browseQuestionsByLevel(testLevel);
-        setExistingQuestions(questions.list);
-    }, [actions, testLevel]);
+    const iconVariants: Variants = {
+        initial: {
+            scale: 1,
+            opacity: 1
+        },
+        animate: {
+            scale: [1, 1.1, 1],
+            opacity: [1, 0.8, 1]
+        }
+    };
 
     useEffect(() => {
-        console.log("changed from", testLevel);
         setTestLevel(form.values.languageLevel);
-        console.log("to", form.values.languageLevel);
     }, [form.values.languageLevel]);
 
+    const fetchExistingQuestions = useCallback(async () => {
+        const questions = await questionActions.browseQuestionsByLevel(testLevel);
+        return questions.list.filter((question) => !form.values.questions
+            .some((existingQuestion) => existingQuestion.externalId === question.externalId));
+    }, [questionActions, testLevel, form.values.questions]);
+
     useEffect(() => {
-        fetchExistingQuestions().then();
-        console.log("fetched existing questions", existingQuestions);
+        fetchExistingQuestions()
+            .then((questions) => {
+                setExistingQuestions(questions);
+            });
     }, [testLevel]);
 
-    const questionFields = form.values.questions.map((question, index) => (
-        <Grid key={question.id} mx="auto">
-            <Col xs={12}>
-                <Divider
-                    my="xs"
-                    labelPosition="right"
-                    label={
-                        <Flex align="center" justify="space-between">
-                            <Text size="xs">
-                                {question.text.length > 50
-                                    ? question.text.substring(0, 50) + "..."
-                                    : question.text}
-                            </Text>
-                            <Button
-                                auto
-                                shadow
-                                size="sm"
-                                color="secondary"
-                                css={{marginLeft: 10}}
-                                iconRight={<MdAdd size="20px" />}
-                                onPress={() => form.insertListItem("questions", QuestionPost.initialize())}
-                            />
-                            <Button
-                                auto
-                                shadow
-                                size="sm"
-                                color="warning"
-                                css={{marginLeft: 10}}
-                                iconRight={<MdDelete size="20px" />}
-                                onPress={() => form.removeListItem("questions", index)}
-                            />
-                        </Flex>
-                    }
-                />
-            </Col>
+    useEffect(() => {
+        console.log("errors: ", form.errors);
+    }, [form.values]);
 
-            <Col xs={12} lg={7} w="100%">
-                <Textarea
-                    mb={20}
-                    size="md"
-                    minRows={3}
-                    label="Question text"
-                    placeholder="Enter question text"
-                    required
-                    {...form.getInputProps(`questions.${index}.text`)}
-                />
+    const handleFormSubmit = async (
+        values: ReturnType<(values: ITestTemplatePostFormModel) => ITestTemplatePostFormModel>,
+        event: FormEvent<HTMLFormElement>
+    ) => {
+        console.log("values: ", values);
 
-                <Select
-                    mb={20}
-                    size="md"
-                    data={levels}
-                    label="Level"
-                    placeholder="Select question level"
-                    required
-                    {...form.getInputProps(`questions.${index}.level`)}
-                />
+        const testTemplateData = TestTemplatePost.fromFormModel(form.values);
 
-                <Select
-                    mb={20}
-                    size="md"
-                    data={categories}
-                    label="Category"
-                    placeholder="Select question category"
-                    required
-                    {...form.getInputProps(`questions.${index}.category`)}
-                />
-            </Col>
+        console.log("testTemplateData: ", testTemplateData);
 
-            <Col xs={12} lg={5} w="100%">
-                {question && question.answers && Array.from(question.answers).map((answer, answerIndex) => {
-                    const answerProps = form.getInputProps(`questions.${index}.answers.${answerIndex}.correct`);
-                    return (
-                        <Group key={answer.id} align="center" mb={9}>
-                            <TextInput
-                                w={lgMediaMatch ? "75%" : "70%"}
-                                size="md"
-                                label="Answer text"
-                                placeholder="Enter answer text"
-                                required
-                                {...form.getInputProps(`questions.${index}.answers.${answerIndex}.text`)}
-                            />
-
-                            <Switch
-                                mt={20}
-                                w={lgMediaMatch ? "20%" : "25%"}
-                                size="md"
-                                label="Correct"
-                                required
-                                checked={answerProps.value}
-                                onChange={(event) => answerProps.onChange(event.target.checked)}
-                            />
-                        </Group>
-                    );
-                })}
-            </Col>
-
-            <Col xs={12}>
-                <Button
-                    auto
-                    size="md"
-                    color="warning"
-                    css={{width: "100%"}}
-                    iconRight={<MdDelete size="30px" />}
-                    onPress={() => form.removeListItem("questions", index)}
-                >
-                    <Title order={4}>Remove</Title>
-                </Button>
-            </Col>
-        </Grid>
-    ));
-
-    // TODO: Use Mantine.Affix as a submit button
-    // TODO: Use Mantine.Affix as a submit button
-    // TODO: Use Mantine.Affix as a submit button
-    // https://mantine.dev/core/affix/
-
-    // TODO: Use Mantine.Affix as a submit button
-    // TODO: Use Mantine.Affix as a submit button
-    // TODO: Use Mantine.Affix as a submit button
-    // https://mantine.dev/core/affix/
-
-    // TODO: Use Mantine.Affix as a submit button
-    // TODO: Use Mantine.Affix as a submit button
-    // TODO: Use Mantine.Affix as a submit button
-    // https://mantine.dev/core/affix/
-
-    // TODO: Additionally we can use Mantine.Affix not only as a submit button,
-    //  but also as a button to add new question or remove existing one
+        // testTemplateActions.createTestTemplate(testTemplateData).then(result => {
+        //     if (result) {
+        //         form.reset();
+        //     }
+        // });
+    };
 
     return (
-        <Grid mx="auto" grow>
-            <Col xs={12} md={6}>
-                <Flex
-                    direction={{base: "column", md: "row"}}
-                    gap={20}
-                    mb={20}
-                >
-                    <TextInput
-                        w={{base: "100%", md: "80%"}}
-                        size="md"
-                        label="Test template name"
-                        placeholder="Enter test template name"
-                        required
-                        {...form.getInputProps("name")}
+        <TestTemplateFormProvider form={form}>
+            <form onSubmit={form.onSubmit((values, event) => handleFormSubmit(values, event))}>
+                <Grid mx="auto" grow>
+                    <Col xs={12} md={6} children={<TestTemplateFormFields />} />
+                    <Col xs={12}>
+                        <Divider
+                            labelPosition="center"
+                            label={
+                                <Title order={3}>
+                                    Questions ({form.values.questions.length})
+                                </Title>
+                            }
+                        />
+                    </Col>
+                    <Col xs={12} children={<TestTemplateQuestionsGrid />} />
+                    <Col
+                        xs={12}
+                        children={
+                            <TestTemplateActionDivider
+                                existingQuestions={existingQuestions}
+                                setExistingQuestions={setExistingQuestions}
+                            />
+                        }
                     />
-
-                    <Select
-                        w={{base: "100%", md: "20%"}}
-                        size="md"
-                        data={levels}
-                        label="Level"
-                        placeholder="Select your level"
-                        required
-                        {...form.getInputProps("languageLevel")}
-                    />
-                </Flex>
-
-                <Textarea
-                    mb={20}
-                    size="md"
-                    minRows={5}
-                    label="Test template description"
-                    placeholder="Enter test template description"
-                    required
-                    {...form.getInputProps("description")}
-                />
-            </Col>
-
-            <Col xs={12}>
-                <Divider
-                    labelPosition="center"
-                    label={
-                        <Title order={3}>
-                            Questions ({form.values.questions.length})
-                        </Title>
-                    }
-                />
-            </Col>
-
-            <Col xs={12}>
-                {questionFields}
-            </Col>
-
-
-            <Col xs={12}>
-                <Divider
-                    my="xl"
-                    labelPosition="center"
-                    label={
-                        <Flex
-                            direction={{base: "column", md: "row"}}
-                            justify="center"
-                            align="center"
-                            gap="xs"
-                        >
-                            <Button
-                                shadow
-                                color="secondary"
-                                onPress={() => form.removeListItem("questions", form.values.questions.length - 1)}
-                            >
-                                Select existing
-                            </Button>
-                            {mdMediaMatch ? (
-                                <Divider orientation="horizontal" mx="xs" />
-                            ) : (
-                                <Divider orientation="vertical" mx="xs" />
-                            )}
-
-                            <Title order={3}>Questions ({form.values.questions.length})</Title>
-
-                            {mdMediaMatch ? (
-                                <Divider orientation="horizontal" mx="xs" />
-                            ) : (
-                                <Divider orientation="vertical" mx="xs" />
-                            )}
-                            <Button
-                                shadow
-                                color="secondary"
-                                onPress={() => form.insertListItem("questions", QuestionPost.initialize())}
-                            >
-                                Add new
-                            </Button>
-                        </Flex>
-                    }
-                />
-            </Col>
-
-            <Text size="sm" weight={500} mt="md">
-                Form values:
-            </Text>
-            <Code block>{JSON.stringify(form.values, null, 2)}</Code>
-        </Grid>
+                </Grid>
+                <Affix position={{bottom: rem(20), right: rem(20)}}>
+                    <motion.div
+                        variants={iconVariants}
+                        initial="initial"
+                        animate={"animate"}
+                        transition={{
+                            loop: Infinity,
+                            duration: 0.75,
+                            ease: "linear",
+                            times: [0, 0.2, 0.6],
+                            repeatDelay: 2,
+                            repeat: Infinity
+                        }}
+                    >
+                        <Button auto shadow size="lg" type="submit">
+                            Submit test template
+                        </Button>
+                    </motion.div>
+                </Affix>
+            </form>
+        </TestTemplateFormProvider>
     );
 };

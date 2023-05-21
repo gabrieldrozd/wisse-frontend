@@ -8,6 +8,7 @@ import {EnrollmentCommands, EnrollmentQueries} from "@api/modules/enrollments/en
 import {AuthCommands, AuthQueries} from "@api/modules/users/authRequests";
 import {StudentCommands, StudentQueries} from "@api/modules/users/studentRequests";
 import {TeacherCommands, TeacherQueries} from "@api/modules/users/teacherRequests";
+import {TestTemplateCommands, TestTemplateQueries} from "@api/modules/education/testTemplateRequests";
 
 export const requestAgent = {
     education: {
@@ -20,8 +21,8 @@ export const requestAgent = {
             command: null
         },
         testTemplate: {
-            query: null,
-            command: null
+            query: TestTemplateQueries,
+            command: TestTemplateCommands
         }
     },
     enrollment: {

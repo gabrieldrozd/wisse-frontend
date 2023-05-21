@@ -2,6 +2,7 @@ import {AxiosClient} from "@api/AxiosClient";
 import {DataEnvelope} from "@models/api/dataEnvelope";
 import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {IQuestion} from "@models/education/test-template/question";
+import {ITestTemplatePost} from "@models/education/test-template/testTemplate";
 
 const client = AxiosClient.initialize();
 const educationUrlSegment = "/education-module/questions";
@@ -16,10 +17,6 @@ export const QuestionQueries = {
 };
 
 export const QuestionCommands = {
-    // submit: (enrollmentPostModel: EnrollmentPost) => {
-    //     // TODO: remember to always match object name with the API (enrollment:)
-    //     return client.post(enrollmentUrlSegment, {enrollment: enrollmentPostModel});
-    // },
     // approve: (id: string) => {
     //     return client.put(`${enrollmentUrlSegment}/${id}/approve`, {});
     // },

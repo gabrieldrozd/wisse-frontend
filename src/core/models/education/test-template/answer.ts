@@ -1,25 +1,33 @@
 import {uuid} from "@utils/uuidUtils";
 
 export interface IAnswer {
-    id?: string;
+    externalId?: string;
     text: string;
     correct: boolean;
 }
 
 export interface IAnswerPost {
-    id?: string;
+    externalId?: string;
     text: string;
     correct: boolean;
 }
 
 export class AnswerPost implements IAnswerPost {
-    id?: string;
+    externalId?: string;
     text: string;
     correct: boolean;
 
     constructor() {
-        this.id = uuid();
+        this.externalId = uuid();
         this.text = "";
         this.correct = false;
+    }
+
+    public static fromAnswer(answer: IAnswer): IAnswerPost {
+        let answerPost = new AnswerPost();
+        answerPost.externalId = answer.externalId;
+        answerPost.text = answer.text;
+        answerPost.correct = answer.correct;
+        return answerPost;
     }
 }
