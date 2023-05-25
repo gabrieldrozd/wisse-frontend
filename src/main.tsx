@@ -1,5 +1,5 @@
 import {MantineProvider, MantineThemeOverride} from "@mantine/core";
-import React from "react";
+import React, {StrictMode} from "react";
 import ReactDOM from "react-dom/client";
 
 import "@styles/main.scss";
@@ -159,15 +159,15 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    // <StrictMode>
-    <ApplicationContext>
-        <Provider store={store}>
-            <NextUIProvider theme={nextUITheme}>
-                <MantineProvider theme={mantineTheme}>
-                    <App />
-                </MantineProvider>
-            </NextUIProvider>
-        </Provider>
-    </ApplicationContext>
-    // </StrictMode>,
+    //<StrictMode>
+        <ApplicationContext>
+            <Provider store={store}>
+                <NextUIProvider theme={nextUITheme}>
+                    <MantineProvider theme={mantineTheme}>
+                        <App />
+                    </MantineProvider>
+                </NextUIProvider>
+            </Provider>
+        </ApplicationContext>
+    //</StrictMode>,
 );

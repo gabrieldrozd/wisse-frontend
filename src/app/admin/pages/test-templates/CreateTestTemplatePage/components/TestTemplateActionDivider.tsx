@@ -1,18 +1,22 @@
+import {memo} from "react";
 import {Divider, Flex, Title} from "@mantine/core";
 import {Button, Dropdown} from "@nextui-org/react";
-import {IQuestion, QuestionPostFormModel} from "@models/education/test-template/question";
-import {useTestTemplateFormContext} from "@app.admin/context/testTemplateFormContext";
+import {IQuestion, IQuestionPostFormModel, QuestionPostFormModel} from "@models/education/test-template/question";
 import {useMediaQuery} from "@mantine/hooks";
 import {breakpoints} from "@const/breakpoints";
 
 interface Props {
+    setValue: (name: string, value: any) => void;
+    questions: IQuestionPostFormModel[];
+    questionsCount: number;
     existingQuestions: IQuestion[];
     setExistingQuestions: (questions: IQuestion[]) => void;
 }
 
-export const TestTemplateActionDivider = ({existingQuestions, setExistingQuestions}: Props) => {
+export const TestTemplateActionDivider = memo(({setValue, questions, questionsCount, existingQuestions, setExistingQuestions}: Props) => {
     const mdMediaMatch = useMediaQuery(`(max-width: ${breakpoints.md})`);
-    const form = useTestTemplateFormContext();
+
+    console.log(questionsCount);
 
     return (
         <Divider
@@ -37,7 +41,8 @@ export const TestTemplateActionDivider = ({existingQuestions, setExistingQuestio
 
                                 const questionToRemove = existingQuestions.findIndex((question) => question.externalId === externalId);
                                 setExistingQuestions(existingQuestions.filter((question, index) => index !== questionToRemove));
-                                form.insertListItem("questions", QuestionPostFormModel.fromQuestion(question));
+                                questions.push(QuestionPostFormModel.fromQuestion(question));
+                                setValue("questions", questions);
                             }}
                         >
                             {existingQuestions && existingQuestions.map((question) => (
@@ -53,7 +58,7 @@ export const TestTemplateActionDivider = ({existingQuestions, setExistingQuestio
                     ) : (
                         <Divider orientation="vertical" mx="xs" />
                     )}
-                    <Title order={3}>Questions ({form.values.questions.length})</Title>
+                    <Title order={3}>Questions ({questionsCount})</Title>
                     {mdMediaMatch ? (
                         <Divider orientation="horizontal" mx="xs" />
                     ) : (
@@ -63,7 +68,10 @@ export const TestTemplateActionDivider = ({existingQuestions, setExistingQuestio
                         auto
                         shadow
                         color="secondary"
-                        onPress={() => form.insertListItem("questions", QuestionPostFormModel.initialize())}
+                        onPress={() => {
+                            questions.push(QuestionPostFormModel.initialize());
+                            setValue("questions", questions);
+                        }}
                     >
                         Add new question
                     </Button>
@@ -71,4 +79,12 @@ export const TestTemplateActionDivider = ({existingQuestions, setExistingQuestio
             }
         />
     );
-};
+}, (prevProps, nextProps) => {
+    return (
+        prevProps.setValue === nextProps.setValue &&
+        prevProps.questions === nextProps.questions &&
+        prevProps.questionsCount === nextProps.questionsCount &&
+        prevProps.existingQuestions.length === nextProps.existingQuestions.length &&
+        prevProps.setExistingQuestions === nextProps.setExistingQuestions
+    );
+});
