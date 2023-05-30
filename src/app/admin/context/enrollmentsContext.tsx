@@ -1,5 +1,6 @@
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {createContext, FunctionComponent, ReactNode, useContext, useMemo, useState} from "react";
+import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
+import type {FunctionComponent, ReactNode} from "react";
+import {createContext, useContext, useMemo, useState} from "react";
 
 export interface Props {
     selected: {

@@ -1,0 +1,52 @@
+@import "@colors";
+
+.topDivider {
+    margin-bottom: 10px;
+}
+
+.isAnsweredCircle {
+    margin: 0 5px;
+    font-size: 25px;
+    color: $indigo-500;
+}
+
+.currentQuestionCircle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    border: 4px solid $indigo-700;
+    border-radius: 100%;
+    padding: 2px;
+}
+
+.questionTextBox {
+    padding: 10px;
+    width: 100%;
+    background-color: $indigo-500;
+    color: $white;
+    border-radius: 10px;
+}
+
+.answerTextBox {
+    margin: 20px 0;
+    padding: 10px;
+    width: 100%;
+    background-color: $gray-200;
+    color: $neutral-900;
+    border-radius: 10px;
+
+    &:hover {
+        background-color: $gray-300;
+        cursor: pointer;
+    }
+}
+
+.selectedAnswerTextBox {
+    margin: 20px 0;
+    padding: 10px;
+    width: 100%;
+    background-color: $indigo-500;
+    color: $white;
+    border-radius: 10px;
+}

@@ -4,12 +4,12 @@ import {Affix, Col, Divider, Grid, Group, rem, Title, Transition} from "@mantine
 import {Button} from "@nextui-org/react";
 import {uuid} from "@utils/uuidUtils";
 import {levels} from "@const/education";
-import {IQuestion, IQuestionPostFormModel} from "@models/education/test-template/question";
+import {IQuestion, IQuestionPostFormModel} from "@models/education/question";
 import {useQuestionSlice} from "@store/slices/education/question/questionSlice";
 import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
 import {TestTemplateFormFields} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateFormFields";
 import {TestTemplateActionDivider} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateActionDivider";
-import {ITestTemplatePostFormModel, TestTemplatePost} from "@models/education/test-template/testTemplate";
+import {ITestTemplatePostFormModel, TestTemplatePost} from "@models/education/testTemplate";
 import {useTestTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
 import {FormProvider, SubmitHandler, useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";

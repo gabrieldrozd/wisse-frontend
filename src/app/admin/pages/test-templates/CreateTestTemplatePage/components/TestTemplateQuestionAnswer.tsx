@@ -2,9 +2,9 @@ import {memo} from "react";
 import {Flex, Switch} from "@mantine/core";
 import {Control, Controller} from "react-hook-form";
 import {MdCheckCircle, MdHighlightOff} from "react-icons/all";
-import {IAnswerPost} from "@models/education/test-template/answer";
-import {IQuestionPostFormModel} from "@models/education/test-template/question";
-import {ITestTemplatePostFormModel} from "@models/education/test-template/testTemplate";
+import {IAnswerPost} from "@models/education/answer";
+import {IQuestionPostFormModel} from "@models/education/question";
+import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 import {DebouncedInput} from "@components/form/DebouncedInput";
 
 interface Props {

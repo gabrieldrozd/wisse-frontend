@@ -1,24 +1,26 @@
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {Button} from "@components/Button";
+import {Group} from "@mantine/core";
 import {IconChevronLeft, IconChevronRight} from "@tabler/icons-react";
 import {useCallback} from "react";
-import {Group} from "@mantine/core";
 
 interface Props {
     active: number;
-    enrollmentForm: any;
-    isFormValid: boolean;
     handleStepChange: (nextStep: number) => void;
-    handleSubmit: (values: any) => void;
+    onSubmit: () => void;
 }
 
-export const EnrollPageButtons = ({active, enrollmentForm, isFormValid, handleStepChange, handleSubmit}: Props) => {
+export const EnrollPageButtons = ({active, handleStepChange, onSubmit}: Props) => {
+    const {isEnrollFormValid: {value: isFormValid}} = useEnrollPageContext();
+
     const backButton = useCallback(() => {
         return (
             <Button
                 onClick={() => handleStepChange(active - 1)}
                 icon={<IconChevronLeft />}
-                children={"Back"}
-            />
+            >
+                Back
+            </Button>
         );
     }, [handleStepChange, active]);
 
@@ -27,8 +29,9 @@ export const EnrollPageButtons = ({active, enrollmentForm, isFormValid, handleSt
             <Button
                 onClick={() => handleStepChange(active + 1)}
                 iconRight={<IconChevronRight />}
-                children={"Begin"}
-            />
+            >
+                Begin
+            </Button>
         );
     }, [handleStepChange, active]);
 
@@ -37,9 +40,10 @@ export const EnrollPageButtons = ({active, enrollmentForm, isFormValid, handleSt
             <Button
                 onClick={() => handleStepChange(active + 1)}
                 iconRight={<IconChevronRight />}
-                disabled={!isFormValid}
-                children={active === 2 ? "Skip" : "Next"}
-            />
+                disabled={active === 1 && !isFormValid}
+            >
+                {active === 2 ? "Skip" : "Next"}
+            </Button>
         );
     }, [handleStepChange, active, isFormValid]);
 
@@ -56,7 +60,7 @@ export const EnrollPageButtons = ({active, enrollmentForm, isFormValid, handleSt
             {showSubmitButton && (
                 <Button
                     iconRight={<IconChevronRight />}
-                    onClick={() => handleSubmit(enrollmentForm.values)}
+                    onClick={() => onSubmit()}
                 >
                     Submit
                 </Button>

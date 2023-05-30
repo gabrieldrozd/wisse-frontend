@@ -4,7 +4,7 @@ import {ActionDispatch} from "@store/store";
 import {requestAgent} from "@api/requestAgent";
 import {useGlobalContext} from "@context/ApplicationContext";
 import {Notify} from "@services/Notify";
-import {ITestTemplatePost} from "@models/education/test-template/testTemplate";
+import {ITestTemplatePost} from "@models/education/testTemplate";
 import {testTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
 
 export const useTestTemplateActions = () => {

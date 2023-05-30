@@ -1,7 +1,8 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import type {AccessToken} from "@models/auth/accessToken";
+import type {PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {useAuthActions} from "@store/slices/users/auth/authActions";
 import {AuthSelectors} from "@store/slices/users/auth/authSelectors";
-import {AccessToken} from "@models/auth/accessToken";
 
 export interface AuthSliceState {
     accessToken: AccessToken;

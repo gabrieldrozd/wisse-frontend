@@ -1,4 +1,4 @@
-import {Popover, UnstyledButton, TextInput, PasswordInput, Title, Text} from "@mantine/core";
+import {Popover, UnstyledButton, Title, Text} from "@mantine/core";
 import classes from "./styles/LoginForm.module.scss";
 import {useForm} from "@mantine/form";
 import {useAuthSlice} from "@store/slices/users/auth/authSlice";

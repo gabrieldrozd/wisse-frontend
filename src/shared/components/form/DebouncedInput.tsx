@@ -2,7 +2,7 @@ import React, {useState, useEffect, ChangeEvent, useRef} from "react";
 import {Textarea, TextInput} from "@mantine/core";
 import {useController, Control} from "react-hook-form";
 import {debounce} from "lodash";
-import {ITestTemplatePostFormModel} from "@models/education/test-template/testTemplate";
+import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 
 interface Props {
     textarea?: false | true;

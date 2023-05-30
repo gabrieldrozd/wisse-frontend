@@ -1,7 +1,7 @@
 import {memo} from "react";
 import {Text} from "@mantine/core";
 import {FieldError, FieldErrorsImpl, Merge} from "react-hook-form";
-import {IQuestionPostFormModel} from "@models/education/test-template/question";
+import {IQuestionPostFormModel} from "@models/education/question";
 
 interface Props {
     questionErrors: Merge<FieldError, (Merge<FieldError, FieldErrorsImpl<IQuestionPostFormModel>> | undefined)[]> | undefined;

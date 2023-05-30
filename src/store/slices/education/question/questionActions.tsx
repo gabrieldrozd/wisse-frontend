@@ -7,11 +7,11 @@ import {PaginatedList, PaginationRequest} from "@models/api/pagination";
 import {studentSlice} from "@store/slices/users/student/studentSlice";
 import {StudentBase} from "@models/users/student/studentBrowse";
 import {StudentDetails} from "@models/users/student/studentDetails";
-import {IQuestion} from "@models/education/test-template/question";
+import {IQuestion} from "@models/education/question";
 import {questionSlice} from "@store/slices/education/question/questionSlice";
 import {EnrollmentPost} from "@models/enrollment/enrollmentPost";
 import {Notify} from "@services/Notify";
-import {ITestTemplatePost} from "@models/education/test-template/testTemplate";
+import {ITestTemplatePost} from "@models/education/testTemplate";
 
 export const useQuestionActions = () => {
     const questionRequestAgent = requestAgent.education.question;

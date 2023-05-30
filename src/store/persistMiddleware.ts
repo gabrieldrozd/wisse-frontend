@@ -1,6 +1,6 @@
-import {AnyAction, Dispatch, MiddlewareAPI} from "@reduxjs/toolkit";
+import type {AnyAction, Dispatch, MiddlewareAPI} from "@reduxjs/toolkit";
 import {persistActions} from "@store/persistActions";
-import {RootState} from "@store/store";
+import type {RootState} from "@store/store";
 
 const localStorageKey = "appState";
 const saveStateToLocalStorage = (state: RootState): void => {

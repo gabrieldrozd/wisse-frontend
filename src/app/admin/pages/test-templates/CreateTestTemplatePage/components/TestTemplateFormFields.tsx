@@ -5,7 +5,7 @@ import {Control, Controller, FieldErrors} from "react-hook-form";
 import {Dropdown, Input, Textarea} from "@nextui-org/react";
 import {Label} from "@components/Label";
 import {ErrorText} from "@components/ErrorText";
-import {ITestTemplatePostFormModel} from "@models/education/test-template/testTemplate";
+import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 
 interface Props {
     formControl: Control<ITestTemplatePostFormModel>;

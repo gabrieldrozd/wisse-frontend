@@ -1,5 +1,5 @@
 import {uuid} from "@utils/uuidUtils";
-import {IQuestionPost, IQuestionPostFormModel, QuestionPost} from "@models/education/test-template/question";
+import {IQuestionPost, IQuestionPostFormModel, QuestionPost} from "@models/education/question";
 
 /**
  * [FORM] ITestTemplateFormModel interface
@@ -46,7 +46,7 @@ export class TestTemplatePost implements ITestTemplatePost {
 
     public static fromFormModel(formModel: ITestTemplatePostFormModel): ITestTemplatePost {
 
-        let testTemplatePost = new TestTemplatePost();
+        const testTemplatePost = new TestTemplatePost();
         testTemplatePost.externalId = formModel.externalId;
         testTemplatePost.name = formModel.name;
         testTemplatePost.description = formModel.description;

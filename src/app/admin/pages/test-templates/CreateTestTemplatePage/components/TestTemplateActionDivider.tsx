@@ -1,7 +1,7 @@
 import {memo} from "react";
 import {Divider, Flex, Title} from "@mantine/core";
 import {Button, Dropdown} from "@nextui-org/react";
-import {IQuestion, IQuestionPostFormModel, QuestionPostFormModel} from "@models/education/test-template/question";
+import {IQuestion, IQuestionPostFormModel, QuestionPostFormModel} from "@models/education/question";
 import {useMediaQuery} from "@mantine/hooks";
 import {breakpoints} from "@const/breakpoints";
 

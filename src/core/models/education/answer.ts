@@ -6,6 +6,11 @@ export interface IAnswer {
     correct: boolean;
 }
 
+export interface ITestAnswer {
+    externalId: string;
+    text: string;
+}
+
 export interface IAnswerPost {
     externalId?: string;
     text: string;
@@ -24,7 +29,7 @@ export class AnswerPost implements IAnswerPost {
     }
 
     public static fromAnswer(answer: IAnswer): IAnswerPost {
-        let answerPost = new AnswerPost();
+        const answerPost = new AnswerPost();
         answerPost.externalId = answer.externalId;
         answerPost.text = answer.text;
         answerPost.correct = answer.correct;

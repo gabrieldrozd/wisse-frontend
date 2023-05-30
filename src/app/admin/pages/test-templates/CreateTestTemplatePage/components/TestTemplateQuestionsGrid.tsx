@@ -1,7 +1,7 @@
 import {Group, Text} from "@mantine/core";
-import {IQuestionPostFormModel, QuestionPostFormModel} from "@models/education/test-template/question";
+import {IQuestionPostFormModel, QuestionPostFormModel} from "@models/education/question";
 import {useFieldArray, Control, Merge, FieldError, FieldErrorsImpl} from "react-hook-form";
-import {ITestTemplatePostFormModel} from "@models/education/test-template/testTemplate";
+import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 import {TestTemplateQuestion} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateQuestion";
 import {memo, useCallback} from "react";
 

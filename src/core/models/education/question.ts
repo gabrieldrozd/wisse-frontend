@@ -1,5 +1,6 @@
+import type {IAnswer, IAnswerPost, ITestAnswer} from "@models/education/answer";
+import {AnswerPost} from "@models/education/answer";
 import {uuid} from "@utils/uuidUtils";
-import {AnswerPost, IAnswer, IAnswerPost} from "@models/education/test-template/answer";
 
 /**
  * [QUERY] IQuestion interface
@@ -10,6 +11,17 @@ export interface IQuestion {
     languageLevel: string;
     category: string;
     answers: IAnswer[];
+}
+
+/**
+ * [COMMAND] ITestQuestion interface
+ */
+export interface ITestQuestion {
+    externalId: string;
+    text: string;
+    languageLevel: string;
+    category: string;
+    answers: ITestAnswer[];
 }
 
 /**
@@ -42,7 +54,7 @@ export class QuestionPostFormModel implements IQuestionPostFormModel {
     }
 
     public static initialize(): IQuestionPostFormModel {
-        let questionFormModel = new QuestionPostFormModel();
+        const questionFormModel = new QuestionPostFormModel();
         for (let i = 0; i < 4; i++) {
             questionFormModel.answers.push(new AnswerPost());
         }
@@ -52,7 +64,7 @@ export class QuestionPostFormModel implements IQuestionPostFormModel {
     }
 
     public static fromQuestion(question: IQuestion): IQuestionPostFormModel {
-        let questionFormModel = new QuestionPostFormModel();
+        const questionFormModel = new QuestionPostFormModel();
         questionFormModel.externalId = question.externalId;
         questionFormModel.text = question.text;
         questionFormModel.languageLevel = question.languageLevel;
@@ -93,7 +105,7 @@ export class QuestionPost implements IQuestionPost {
     }
 
     public static fromFormModel(formModel: IQuestionPostFormModel): IQuestionPost {
-        let question = new QuestionPost();
+        const question = new QuestionPost();
         question.externalId = formModel.externalId;
         question.text = formModel.text;
         question.languageLevel = formModel.languageLevel;

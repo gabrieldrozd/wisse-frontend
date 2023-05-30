@@ -1,19 +1,23 @@
+import {EnrollPageContext} from "@app.start/context/enrollPageContext";
+import {EnrollPageButtons} from "@app.start/pages/EnrollPage/components/EnrollPageButtons";
+import {StepApplicantDetails} from "@app.start/pages/EnrollPage/StepApplicantDetails";
+import {StepEnrollmentSummary} from "@app.start/pages/EnrollPage/StepEnrollmentSummary";
+import {StepIntroduction} from "@app.start/pages/EnrollPage/StepIntroduction";
+import {StepLevelAssessment} from "@app.start/pages/EnrollPage/StepLevelAssessment";
+import classes from "@app.start/pages/EnrollPage/styles/EnrollPage.module.scss";
+import {breakpoints} from "@const/breakpoints";
+import {schools} from "@const/education";
+import {zodResolver} from "@hookform/resolvers/zod";
 import {Box, Container, Group, Stepper} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
-import {breakpoints} from "@const/breakpoints";
-import classes from "@app.start/pages/EnrollPage/components/styles/EnrollStepper.module.scss";
-import {EnrollmentFormProvider, useEnrollmentForm} from "@app.start/context/enrollFormContext";
-import {StepIntroduction} from "@app.start/pages/EnrollPage/components/StepIntroduction";
-import {StepApplicantDetails} from "@app.start/pages/EnrollPage/components/StepApplicantDetails";
-import {StepEnrollmentSummary} from "@app.start/pages/EnrollPage/components/StepEnrollmentSummary";
+import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
+import {useCallback, useState} from "react";
+import type {SubmitHandler} from "react-hook-form";
+import {FormProvider, useForm} from "react-hook-form";
+import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
-import {schools} from "@const/education";
-import {EnrollmentPost} from "@models/enrollment/enrollmentPost";
-import {EnrollPageButtons} from "@app.start/pages/EnrollPage/components/EnrollPageButtons";
 import {z} from "zod";
-import {StepLevelAssessment} from "@app.start/pages/EnrollPage/components/StepLevelAssessment";
 
 const formSchema = z.object({
     applicant: z.object({
@@ -44,12 +48,18 @@ export const EnrollPage = () => {
     const {actions: enrollActions} = useEnrollmentSlice();
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
-    const enrollmentForm = useEnrollmentForm({
-        initialValues: {
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 1);
+
+    const enrollmentForm = useForm<EnrollmentPost>({
+        mode: "onChange",
+        reValidateMode: "onChange",
+        defaultValues: {
             applicant: {
                 firstName: "",
                 lastName: "",
-                birthDate: new Date(),
+                birthDate: maxDate,
                 school: schools[0].value,
                 grade: schools[0].grades[0],
                 levelKey: "",
@@ -65,24 +75,10 @@ export const EnrollPage = () => {
                 houseNumber: "",
             }
         },
-        validate: (values: EnrollmentPost) => {
-            const errors: Record<string, string> = {};
-            if (!values.applicant.firstName) errors["applicant.firstName"] = "First name is required";
-            if (!values.applicant.lastName) errors["applicant.lastName"] = "Last name is required";
-            if (!values.applicant.birthDate) errors["applicant.birthDate"] = "Birth date is required";
-            if (!values.applicant.school) errors["applicant.school"] = "School is required";
-            if (!values.applicant.grade) errors["applicant.grade"] = "Grade is required";
-            if (!values.applicant.levelKey) errors["applicant.levelKey"] = "Level is required";
-            if (!values.contact.email) errors["contact.email"] = "Email is required";
-            if (!values.contact.phoneNumber) errors["contact.phoneNumber"] = "Phone number is required";
-            if (!values.contact.zipCode) errors["contact.zipCode"] = "Zip code is required";
-            if (!values.contact.zipCodeCity) errors["contact.zipCodeCity"] = "Zip code city is required";
-            if (!values.contact.state) errors["contact.state"] = "State is required";
-            if (!values.contact.city) errors["contact.city"] = "City is required";
-            if (!values.contact.houseNumber) errors["contact.houseNumber"] = "House number is required";
-            return errors;
-        }
+        resolver: zodResolver(formSchema)
     });
+
+    const formControl = useCallback(() => enrollmentForm.control, [enrollmentForm.control]);
 
     const handleStepChange = (nextStep: number) => {
         const isOutOfBounds = nextStep > 3 || nextStep < 0;
@@ -90,23 +86,27 @@ export const EnrollPage = () => {
         setActive(nextStep);
     };
 
-    const isFormValid = enrollmentForm.isValid("applicant") && enrollmentForm.isValid("contact");
-
-    const handleSubmit = (values: EnrollmentPost) => {
-        enrollActions.submit(values).then(result => {
+    const onValidSubmit: SubmitHandler<EnrollmentPost> = (data) => {
+        console.log("[VALID SUBMIT] enrollmentForm: ", data);
+        enrollActions.submit(data).then(result => {
             if (result) {
                 enrollmentForm.reset();
                 navigate("/");
             }
         });
     };
+    const onInvalidSubmit: SubmitErrorHandler<EnrollmentPost> = (data) => {
+        console.log("[INVALID SUBMIT] enrollmentForm: ", data);
+    };
+
+    const onSubmit = enrollmentForm.handleSubmit(onValidSubmit, (errors) => onInvalidSubmit(errors));
 
     return (
-        <Container size="xl" w={mobileWidth}>
-            <Box mt={40}>
-                <Container size="xl" className={classes.rootContainer}>
-                    <EnrollmentFormProvider form={enrollmentForm}>
-                        <form>
+        <EnrollPageContext>
+            <Container size="xl" w={mobileWidth}>
+                <Box mt={40}>
+                    <Container size="xl" className={classes.rootContainer}>
+                        <FormProvider {...enrollmentForm}>
                             <Stepper
                                 pt={20}
                                 size="lg"
@@ -129,7 +129,7 @@ export const EnrollPage = () => {
                                     description="Applicant details"
                                     allowStepSelect={false}
                                 >
-                                    <StepApplicantDetails />
+                                    <StepApplicantDetails formControl={formControl()} />
                                 </Stepper.Step>
 
                                 <Stepper.Step
@@ -137,7 +137,7 @@ export const EnrollPage = () => {
                                     description="Level Assessment"
                                     allowStepSelect={true}
                                 >
-                                    <StepLevelAssessment />
+                                    <StepLevelAssessment/>
                                 </Stepper.Step>
 
                                 <Stepper.Step
@@ -146,23 +146,21 @@ export const EnrollPage = () => {
                                     description="Enrollment summary"
                                     allowStepSelect={false}
                                 >
-                                    <StepEnrollmentSummary />
+                                    <StepEnrollmentSummary formControl={formControl()} />
                                 </Stepper.Step>
                             </Stepper>
-                        </form>
-                    </EnrollmentFormProvider>
+                        </FormProvider>
 
-                    <Group position="center" p={20}>
-                        <EnrollPageButtons
-                            active={active}
-                            enrollmentForm={enrollmentForm}
-                            isFormValid={isFormValid}
-                            handleStepChange={handleStepChange}
-                            handleSubmit={handleSubmit}
-                        />
-                    </Group>
-                </Container>
-            </Box>
-        </Container>
+                        <Group position="center" p={20}>
+                            <EnrollPageButtons
+                                active={active}
+                                handleStepChange={handleStepChange}
+                                onSubmit={onSubmit}
+                            />
+                        </Group>
+                    </Container>
+                </Box>
+            </Container>
+        </EnrollPageContext>
     );
 };

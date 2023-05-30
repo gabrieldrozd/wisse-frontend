@@ -4,7 +4,7 @@ import {
     IconClockHour4,
     IconFileCheck,
     IconFileText,
-    IconKeyboard,
+    IconKeyboard, IconQuestionMark,
     IconSearch
 } from "@tabler/icons-react";
 
@@ -18,9 +18,10 @@ export const StepIntroduction = () => {
                             About the Enrollment Process
                         </Text>
                         <Text size={14}>
-                            Our enrollment process is designed to be simple and efficient, ensuring a smooth experience for you.
-                            We encourage you to read the details provided below to better understand the process and the language levels we offer.
-                            If you have any questions or concerns, please feel free to contact us.
+                            Our enrollment process is designed to be simple and efficient, ensuring a smooth experience
+                            for you. We encourage you to read the details provided below to better understand the
+                            process and the language levels we offer. If you have any questions or concerns, please
+                            feel free to contact us.
                         </Text>
                     </Col>
 
@@ -43,7 +44,8 @@ export const StepIntroduction = () => {
                         </Text>
                         <Text size={14} mb={10}>
                             <Mark color="indigo.2" fw={500} p={2}>B1 - Intermediate</Mark>
-                            : Can handle most situations likely to arise while traveling in an area where the language is spoken
+                            : Can handle most situations likely to arise while traveling
+                            in an area where the language is spoken
                         </Text>
                         <Text size={14} mb={10}>
                             <Mark color="indigo.2" fw={500} p={2}>B2 - Upper Intermediate</Mark>
@@ -71,7 +73,8 @@ export const StepIntroduction = () => {
 
                             <Text size={14}>
                                 <Mark color="indigo.2" fw={500} p={2}>Group Courses</Mark>
-                                : Interactive classes with other students, providing a collaborative learning environment
+                                : Interactive classes with other students,
+                                providing a collaborative learning environment
                                 <Text size={12} color="dimmed" fs="italic">
                                     *Group courses have a maximum of 8 students per class.
                                 </Text>
@@ -84,8 +87,9 @@ export const StepIntroduction = () => {
                             </Text>
                             <Text size={14}>
                                 Our classes incorporate a diverse range of activities, such as listening exercises,
-                                reading comprehension tasks, engaging discussions, role-playing scenarios, and interactive games.
-                                This ensures a dynamic, immersive learning experience that caters to various learning styles and preferences.
+                                reading comprehension tasks, engaging discussions, role-playing scenarios, and
+                                interactive games. This ensures a dynamic, immersive learning experience that
+                                caters to various learning styles and preferences.
                             </Text>
                         </Flex>
                     </Col>
@@ -121,23 +125,23 @@ export const StepIntroduction = () => {
 
                     <Timeline.Item
                         pb={5}
+                        title="Take level assessment test"
+                        bullet={<IconQuestionMark size={25} />}
+                        bulletSize={40}
+                    >
+                        <Text size={14}>
+                            Take level assessment test
+                        </Text>
+                    </Timeline.Item>
+
+                    <Timeline.Item
+                        pb={5}
                         title="Check correctness of the data"
                         bullet={<IconSearch size={25} />}
                         bulletSize={40}
                     >
                         <Text size={14}>
                             Check correctness of the data
-                        </Text>
-                    </Timeline.Item>
-
-                    <Timeline.Item
-                        pb={5}
-                        title="Wait for our verification contact"
-                        bullet={<IconClockHour4 size={25} />}
-                        bulletSize={40}
-                    >
-                        <Text size={14}>
-                            Wait for our verification contact
                         </Text>
                     </Timeline.Item>
 

@@ -1,10 +1,25 @@
-import {Col, Grid, Image, Text} from "@mantine/core";
 import applicantImage from "@assets/start/applicant_study.svg";
-import {useEnrollmentFormContext} from "@app.start/context/enrollFormContext";
-import classes from "./styles/StepEnrollmentSummary.module.scss";
+import {Col, Grid, Image, Text} from "@mantine/core";
+import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
+import type {Control} from "react-hook-form";
+import {useWatch} from "react-hook-form";
 
-export const StepEnrollmentSummary = () => {
-    const form = useEnrollmentFormContext();
+import classes from "./StepEnrollmentSummary.module.scss";
+
+interface Props {
+    formControl: Control<EnrollmentPost>;
+}
+
+export const StepEnrollmentSummary = ({formControl}: Props) => {
+    const applicant = useWatch({
+        control: formControl,
+        name: "applicant",
+    } as const);
+
+    const contact = useWatch({
+        control: formControl,
+        name: "contact",
+    } as const);
 
     return (
         <Grid>
@@ -13,84 +28,84 @@ export const StepEnrollmentSummary = () => {
                     <Col xs={12} md={6} p={20}>
                         <Text weight={500}>First Name: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.applicant.firstName}
+                            {applicant.firstName}
                         </Text>
 
                         <Text mt={20} weight={500}>Last Name: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.applicant.lastName}
+                            {applicant.lastName}
                         </Text>
 
                         <Text mt={20} weight={500}>Birth Date: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.applicant.birthDate.getDate()}
+                            {applicant.birthDate.getDate()}
                         </Text>
 
                         <Text mt={20} weight={500}>School: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.applicant.school}
+                            {applicant.school}
                         </Text>
 
                         <Text mt={20} weight={500}>Grade: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.applicant.grade}
+                            {applicant.grade}
                         </Text>
 
                         <Text mt={20} weight={500}>Level: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.applicant.levelKey}
+                            {applicant.levelKey}
                         </Text>
                     </Col>
 
                     <Col xs={12} md={6} p={20}>
                         <Text weight={500}>Email: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.contact.email}
+                            {contact.email}
                         </Text>
 
                         <Text mt={20} weight={500}>Phone Number: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.contact.phoneNumber}
+                            {contact.phoneNumber}
                         </Text>
 
                         <Grid>
                             <Col xs={12} md={6}>
                                 <Text mt={20} weight={500}>Zip Code: </Text>
                                 <Text className={classes.formFieldValue}>
-                                    {form.values.contact.zipCode}
+                                    {contact.zipCode}
                                 </Text>
                             </Col>
 
                             <Col xs={12} md={6}>
                                 <Text mt={20} weight={500}>Zip Code City: </Text>
                                 <Text className={classes.formFieldValue}>
-                                    {form.values.contact.zipCodeCity}
+                                    {contact.zipCodeCity}
                                 </Text>
                             </Col>
                         </Grid>
 
                         <Text mt={20} weight={500}>State: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.contact.state}
+                            {contact.state}
                         </Text>
 
                         <Text mt={20} weight={500}>City: </Text>
                         <Text className={classes.formFieldValue}>
-                            {form.values.contact.city}
+                            {contact.city}
                         </Text>
 
                         <Grid>
                             <Col xs={12} md={6}>
                                 <Text mt={20} weight={500}>Street: </Text>
                                 <Text className={classes.formFieldValue}>
-                                    {form.values.contact.street}
+                                    {contact.street}
                                 </Text>
                             </Col>
 
                             <Col xs={12} md={6}>
                                 <Text mt={20} weight={500}>House No.: </Text>
                                 <Text className={classes.formFieldValue}>
-                                    {form.values.contact.houseNumber}
+                                    {contact.houseNumber}
                                 </Text>
                             </Col>
                         </Grid>
@@ -114,11 +129,14 @@ export const StepEnrollmentSummary = () => {
                         </Text>
                     </Col>
 
-                    <Col xs={12} style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}>
+                    <Col
+                        xs={12}
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
                         <Image src={applicantImage} maw={310} />
                     </Col>
                 </Grid>

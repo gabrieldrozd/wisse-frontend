@@ -74,7 +74,7 @@ export class AxiosClient {
     }
 
     async get<T>(url: string) {
-        return axiosClient.get<DataEnvelope<T>>(`${url}`).then(getDataEnvelope);
+        return await axiosClient.get<DataEnvelope<T>>(`${url}`).then(getDataEnvelope);
     }
 
     async details<T>(url: string, id: string) {
@@ -86,11 +86,12 @@ export class AxiosClient {
     }
 
     async post<T>(url: string, body: {}) {
-        console.log("post", url, body);
-        return axiosClient.post<DataEnvelope<T>>(url, body).then(getDataEnvelope);
+        console.log(`post ${url}`, url, body);
+        return await axiosClient.post<DataEnvelope<T>>(url, body).then(getDataEnvelope);
     }
 
     async put<T>(url: string, body: {}) {
+        console.log(`put ${url}`, url, body);
         return await axiosClient.put<DataEnvelope<T>>(url, body).then(getDataEnvelope);
     }
 }
