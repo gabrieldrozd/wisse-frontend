@@ -1,4 +1,5 @@
-import {Box, Text, Title, Paper, Grid, Col} from "@mantine/core";
+import testImg from "@assets/start/online_test.gif";
+import {Box, Text, Title, Paper, Grid, Col, Flex, Badge} from "@mantine/core";
 import {useTestSlice} from "@store/slices/education/test/testSlice";
 
 export const LevelAssessmentTestResult = () => {
@@ -9,44 +10,83 @@ export const LevelAssessmentTestResult = () => {
         return <Text>Test is not available.</Text>;
     }
 
-    // TODO: Impove UI for result presentation
-    // TODO: Impove UI for result presentation
-    // TODO: Impove UI for result presentation
+    const levelColor = (level: string) => {
+        switch (level) {
+            case "A1":
+                return "red.6";
+            case "A2":
+                return "orange.6";
+            case "B1":
+                return "yellow.6";
+            case "B2":
+                return "green.6";
+            case "C1":
+                return "cyan.6";
+            case "C2":
+                return "blue.6";
+            default:
+                return "gray.6";
+        }
+    };
 
-    // TODO: On the left side there could be an animation like on startPage
-    // TODO: and on the right side there could be a result presentation
+    const roundedPercentage = Math.round(testResult.percentage * 100);
 
     return (
-        <Box p="md">
-            <Title order={2}>Test Results</Title>
-            <Paper p="md" shadow="xs">
-                <Grid gutter="md">
-                    <Col span={6}>
-                        <Text size="lg">Test ID:</Text>
-                        <Text>{testResult.testExternalId}</Text>
-                    </Col>
-                    <Col span={6}>
-                        <Text size="lg">Calculated Level:</Text>
-                        <Text>{testResult.calculatedLevel}</Text>
-                    </Col>
-                    <Col span={6}>
-                        <Text size="lg">Correct Answers:</Text>
-                        <Text>{testResult.correctAnswers}</Text>
-                    </Col>
-                    <Col span={6}>
-                        <Text size="lg">Incorrect Answers:</Text>
-                        <Text>{testResult.incorrectAnswers}</Text>
-                    </Col>
-                    <Col span={6}>
-                        <Text size="lg">Total Answers:</Text>
-                        <Text>{testResult.totalAnswers}</Text>
-                    </Col>
-                    <Col span={6}>
-                        <Text size="lg">Percentage:</Text>
-                        <Text>{testResult.percentage}%</Text>
-                    </Col>
-                </Grid>
-            </Paper>
-        </Box>
+        <Grid gutter="md">
+            <Col md={12} lg={8}>
+                <Flex justify="center" align="center">
+                    <img src={testImg} alt="Your description" style={{width: "80%", height: "80%"}} />
+                </Flex>
+            </Col>
+            <Col md={12} lg={4}>
+                <Box p="md">
+                    <Title order={2} mb={20}>Level Test Results</Title>
+                    <Paper p="md" shadow="xs">
+                        <Grid gutter="md">
+                            <Col span={12}>
+                                <Text size="xl" fw={500}>Total Answers:</Text>
+                                <Badge py={20} my={5} w={100}>
+                                    <Text size="xl" my={5}>
+                                        {testResult.totalAnswers}
+                                    </Text>
+                                </Badge>
+                            </Col>
+                            <Col span={12}>
+                                <Text size="xl" fw={500}>Correct Answers:</Text>
+                                <Badge py={20} my={5} w={100} color="green.6">
+                                    <Text size="xl" my={5}>
+                                        {testResult.correctAnswers}
+                                    </Text>
+                                </Badge>
+                            </Col>
+                            <Col span={12}>
+                                <Text size="xl" fw={500}>Incorrect Answers:</Text>
+                                <Badge py={20} my={5} w={100} color="red.6">
+                                    <Text size="xl" my={5}>
+                                        {testResult.incorrectAnswers}
+                                    </Text>
+                                </Badge>
+                            </Col>
+                            <Col span={12}>
+                                <Text size="xl" fw={500}>Percentage:</Text>
+                                <Badge py={20} my={5} w={100} color={levelColor(testResult.calculatedLevel)}>
+                                    <Text size="xl" my={5}>
+                                        {roundedPercentage}%
+                                    </Text>
+                                </Badge>
+                            </Col>
+                            <Col span={12}>
+                                <Text size="xl" fw={500}>Calculated Level:</Text>
+                                <Badge py={20} my={5} w={100} color={levelColor(testResult.calculatedLevel)}>
+                                    <Text size="xl">
+                                        {testResult.calculatedLevel}
+                                    </Text>
+                                </Badge>
+                            </Col>
+                        </Grid>
+                    </Paper>
+                </Box>
+            </Col>
+        </Grid>
     );
 };

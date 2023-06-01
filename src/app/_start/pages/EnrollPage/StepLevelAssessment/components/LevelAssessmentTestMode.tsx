@@ -1,4 +1,3 @@
-import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {TestModel} from "@app.start/models/testModel";
 import {Text, Col, Grid, Title, Center, Flex, Divider, Paper, Badge, Box} from "@mantine/core";
 import type {ITest} from "@models/education/test";
@@ -9,6 +8,7 @@ import {useEffect, useState} from "react";
 import {MdCircle, MdOutlineCircle} from "react-icons/md";
 
 import classes from "./LevelAssessmentTestMode.module.scss";
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 
 interface Props {
     setCompleteTest: (testId: string) => void;
@@ -23,9 +23,9 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
             completeTest
         }
     } = useTestSlice();
-    const [test] = useState<TestModel>(TestModel.fromTest(currentTestSelector() as ITest));
+    const [test] = useState<TestModel>(TestModel.fromTest(currentTestSelector() ?? {} as ITest));
+    const allQuestionsVisited = test?.testQuestions?.every(question => question.visited);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const allQuestionsVisited = test.testQuestions.every(question => question.visited);
 
     if (!test?.externalId) {
         return <Text>Test is not available.</Text>;
@@ -34,6 +34,12 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
     useEffect(() => {
         test.testQuestions[currentQuestionIndex].visited = true;
     }, [currentQuestionIndex]);
+
+    const handleCircleClick = (index: number) => {
+        if (test.testQuestions[index]) {
+            setCurrentQuestionIndex(index);
+        }
+    };
 
     const handleNavigation = (direction: "next" | "prev") => {
         if (direction === "next" && currentQuestionIndex < test.testQuestions.length - 1) {
@@ -55,7 +61,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                 question.isAnswered = true;
                 setTimeout(() => {
                     handleNavigation("next");
-                }, 200); // TODO: Change back to 1000
+                }, 200);
             }
         } else {
             const previouslySelectedAnswer = question.answers.find(answer => answer.isSelected);
@@ -94,11 +100,11 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                 </Col>
 
                 <Col xs={12}>
-                    <Center>
+                    <Flex wrap="wrap" justify="center">
                         {test.testQuestions.map((question, index) => {
                             const isCurrentQuestion = index === currentQuestionIndex;
                             return (
-                                <Box key={question.externalId}>
+                                <Box key={question.externalId} onClick={() => handleCircleClick(index)}>
                                     {question.isAnswered ? (
                                         <MdCircle
                                             className={clsx(
@@ -117,7 +123,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                                 </Box>
                             );
                         })}
-                    </Center>
+                    </Flex>
                 </Col>
 
                 <Col xs={12} my={-10}>
@@ -128,7 +134,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                 </Col>
 
                 <Col xs={12}>
-                    <Flex>
+                    <Flex justify="center">
                         <Grid w={"100%"}>
                             <Col xs={12}>
                                 <Flex gap={20}>
@@ -172,6 +178,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                             <Col xs={12}>
                                 <Flex
                                     my={20}
+                                    wrap="wrap"
                                     align="center"
                                     justify="space-evenly"
                                 >
@@ -184,13 +191,6 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                                     </Button>
 
                                     <Button
-                                        disabled={!allQuestionsVisited}
-                                        onPress={handleCompleteTest}
-                                    >
-                                        <Text>Complete</Text>
-                                    </Button>
-
-                                    <Button
                                         shadow
                                         disabled={currentQuestionIndex === test.testQuestions.length - 1}
                                         onPress={() => handleNavigation("next")}
@@ -199,10 +199,46 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                                     </Button>
                                 </Flex>
                             </Col>
+
+                            <Col xs={12}>
+                                <Divider
+                                    label="Finish the test"
+                                    labelPosition="center"
+                                    mb={20}
+                                />
+                                <Flex justify="center">
+                                    <Button
+                                        disabled={!allQuestionsVisited}
+                                        onPress={handleCompleteTest}
+                                        style={{width: "50%"}}
+                                    >
+                                        <Text>Complete</Text>
+                                    </Button>
+                                </Flex>
+                            </Col>
                         </Grid>
                     </Flex>
                 </Col>
             </Grid>
+
+            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
+            {/* Currently the "Skip" button remains the same, even if Test was completed */}
+
+            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
+            {/* Currently the "Skip" button remains the same, even if Test was completed */}
+
+            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
+            {/* Currently the "Skip" button remains the same, even if Test was completed */}
+
+            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
+            {/* Currently the "Skip" button remains the same, even if Test was completed */}
+
+            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
+            {/* Currently the "Skip" button remains the same, even if Test was completed */}
+
+            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
+            {/* Currently the "Skip" button remains the same, even if Test was completed */}
+
         </>
     );
 };

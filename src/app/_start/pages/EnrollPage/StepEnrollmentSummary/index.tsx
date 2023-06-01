@@ -1,16 +1,21 @@
 import applicantImage from "@assets/start/applicant_study.svg";
-import {Col, Grid, Image, Text} from "@mantine/core";
+import {Code, Col, Divider, Grid, Image, Mark, Space, Text} from "@mantine/core";
 import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
 import type {Control} from "react-hook-form";
 import {useWatch} from "react-hook-form";
 
 import classes from "./StepEnrollmentSummary.module.scss";
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
+import {useTestSlice} from "@store/slices/education/test/testSlice";
+import {Spacer} from "@nextui-org/react";
 
 interface Props {
     formControl: Control<EnrollmentPost>;
 }
 
 export const StepEnrollmentSummary = ({formControl}: Props) => {
+    const {isTestCompleted} = useEnrollPageContext();
+    const {selectors: {currentTestResult}} = useTestSlice();
     const applicant = useWatch({
         control: formControl,
         name: "applicant",
@@ -20,6 +25,8 @@ export const StepEnrollmentSummary = ({formControl}: Props) => {
         control: formControl,
         name: "contact",
     } as const);
+
+    const testResult = currentTestResult() ?? null;
 
     return (
         <Grid>
@@ -121,13 +128,37 @@ export const StepEnrollmentSummary = ({formControl}: Props) => {
                         </Text>
 
                         <Text mt={10} weight={500}>
-                            If you want to change something, please click on the back button.
+                            If you want to change something,
+                            click on the <Code fz={20}>Back</Code> button,
+                            to navigate to step 1.
                         </Text>
 
                         <Text mt={10} weight={500}>
-                            If you want to confirm your enrollment, please click on the next button.
+                            If you are sure, that you want to confirm your enrollment,
+                            click on the <Code fz={20}>Submit</Code> button.
                         </Text>
                     </Col>
+
+                    {isTestCompleted.value && (
+                        <Col>
+                            <Divider
+                                mt={20}
+                                labelPosition="center"
+                                label={
+                                    <Text size="xl" weight={700}>
+                                        Your calculated level is<Spacer inline x={0.3} />
+                                        <Mark
+                                            p={5}
+                                            color="blue"
+                                            style={{borderRadius: "10px"}}
+                                        >
+                                            {testResult?.calculatedLevel}
+                                        </Mark>.
+                                    </Text>
+                                }
+                            />
+                        </Col>
+                    )}
 
                     <Col
                         xs={12}
@@ -137,7 +168,7 @@ export const StepEnrollmentSummary = ({formControl}: Props) => {
                             alignItems: "center"
                         }}
                     >
-                        <Image src={applicantImage} maw={310} />
+                        <Image src={applicantImage} maw={220} />
                     </Col>
                 </Grid>
             </Col>

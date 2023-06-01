@@ -36,9 +36,13 @@ export class TestModel {
             test.endTime,
         );
 
-        testModel.testQuestions = test.testQuestions.map(
-            (testQuestion: ITestQuestion) => TestQuestionModel.fromTestQuestion(testQuestion)
-        );
+        if (test.testQuestions) {
+            testModel.testQuestions = test.testQuestions.map(
+                (testQuestion: ITestQuestion) => TestQuestionModel.fromTestQuestion(testQuestion)
+            );
+        } else {
+            testModel.testQuestions = [];
+        }
 
         return testModel;
     }

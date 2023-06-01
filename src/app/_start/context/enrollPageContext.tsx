@@ -1,15 +1,20 @@
 import type {ReactNode} from "react";
 import {createContext, useContext, useMemo, useState} from "react";
-import {TestModel} from "@app.start/models/testModel";
+
+type TestMode = "info" | "test" | "result";
 
 interface Props {
-    testMode: {
-        value: boolean;
-        set: (testMode: boolean) => Promise<void>;
-    };
     isEnrollFormValid: {
         value: boolean;
         set: (isFormValid: boolean) => Promise<void>;
+    };
+    testMode: {
+        value: TestMode;
+        set: (testMode: TestMode) => Promise<void>;
+    };
+    isTestCompleted: {
+        value: boolean;
+        set: (isTestCompleted: boolean) => Promise<void>;
     };
 }
 
@@ -21,16 +26,20 @@ interface ContextProps {
 }
 
 export const EnrollPageContext = ({children}: ContextProps) => {
-    const [testMode, setTestMode] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
-
-    const handleSetTestMode = async (testMode: boolean) => {
-        setTestMode(testMode);
-    };
+    const [testMode, setTestMode] = useState<TestMode>("info");
+    const [isTestCompleted, setIsTestCompleted] = useState(false);
 
     const handleSetIsFormValid = async (isFormValid: boolean) => {
         setIsFormValid(isFormValid);
-        console.log(isFormValid);
+    };
+
+    const handleSetTestMode = async (testMode: TestMode) => {
+        setTestMode(testMode);
+    };
+
+    const handleSetIsTestCompleted = async (isTestCompleted: boolean) => {
+        setIsTestCompleted(isTestCompleted);
     };
 
     const contextObject = useMemo(() => ({
@@ -41,6 +50,10 @@ export const EnrollPageContext = ({children}: ContextProps) => {
         isEnrollFormValid: {
             value: isFormValid,
             set: handleSetIsFormValid,
+        },
+        isTestCompleted: {
+            value: isTestCompleted,
+            set: handleSetIsTestCompleted,
         }
     }), [testMode, isFormValid]);
 

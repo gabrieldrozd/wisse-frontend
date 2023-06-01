@@ -1,4 +1,4 @@
-import {EnrollPageContext} from "@app.start/context/enrollPageContext";
+import {EnrollPageContext, useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {EnrollPageButtons} from "@app.start/pages/EnrollPage/components/EnrollPageButtons";
 import {StepApplicantDetails} from "@app.start/pages/EnrollPage/StepApplicantDetails";
 import {StepEnrollmentSummary} from "@app.start/pages/EnrollPage/StepEnrollmentSummary";
@@ -18,6 +18,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
+import {useTestSlice} from "@store/slices/education/test/testSlice";
 
 const formSchema = z.object({
     applicant: z.object({
@@ -45,7 +46,9 @@ export const EnrollPage = () => {
     const mobileWidth = mediaMatch ? "100%" : "80rem";
     const marginValue = mediaMatch ? 0 : 50;
 
+    const {isTestCompleted} = useEnrollPageContext();
     const {actions: enrollActions} = useEnrollmentSlice();
+    const {selectors: {currentTestResult}} = useTestSlice();
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
 
@@ -88,6 +91,14 @@ export const EnrollPage = () => {
 
     const onValidSubmit: SubmitHandler<EnrollmentPost> = (data) => {
         console.log("[VALID SUBMIT] enrollmentForm: ", data);
+
+        if (isTestCompleted) {
+            const testResult = currentTestResult();
+            if (testResult) {
+                data.testResult = testResult;
+            }
+        }
+
         enrollActions.submit(data).then(result => {
             if (result) {
                 enrollmentForm.reset();
@@ -102,65 +113,63 @@ export const EnrollPage = () => {
     const onSubmit = enrollmentForm.handleSubmit(onValidSubmit, (errors) => onInvalidSubmit(errors));
 
     return (
-        <EnrollPageContext>
-            <Container size="xl" w={mobileWidth}>
-                <Box mt={40}>
-                    <Container size="xl" className={classes.rootContainer}>
-                        <FormProvider {...enrollmentForm}>
-                            <Stepper
-                                pt={20}
-                                size="lg"
-                                color="indigo.5"
-                                active={active}
-                                onStepClick={setActive}
-                                orientation={mediaMatch ? "vertical" : "horizontal"}
+        <Container size="xl" w={mobileWidth}>
+            <Box mt={40}>
+                <Container size="xl" className={classes.rootContainer}>
+                    <FormProvider {...enrollmentForm}>
+                        <Stepper
+                            pt={20}
+                            size="lg"
+                            color="indigo.5"
+                            active={active}
+                            onStepClick={setActive}
+                            orientation={mediaMatch ? "vertical" : "horizontal"}
+                        >
+                            <Stepper.Step
+                                ml={marginValue}
+                                label="Introduction"
+                                description="Before you start"
+                                allowStepSelect={false}
                             >
-                                <Stepper.Step
-                                    ml={marginValue}
-                                    label="Introduction"
-                                    description="Before you start"
-                                    allowStepSelect={false}
-                                >
-                                    <StepIntroduction />
-                                </Stepper.Step>
+                                <StepIntroduction />
+                            </Stepper.Step>
 
-                                <Stepper.Step
-                                    label="Step 1"
-                                    description="Applicant details"
-                                    allowStepSelect={false}
-                                >
-                                    <StepApplicantDetails formControl={formControl()} />
-                                </Stepper.Step>
+                            <Stepper.Step
+                                label="Step 1"
+                                description="Applicant details"
+                                allowStepSelect={false}
+                            >
+                                <StepApplicantDetails formControl={formControl()} />
+                            </Stepper.Step>
 
-                                <Stepper.Step
-                                    label="Step 2"
-                                    description="Level Assessment"
-                                    allowStepSelect={true}
-                                >
-                                    <StepLevelAssessment/>
-                                </Stepper.Step>
+                            <Stepper.Step
+                                label="Step 2"
+                                description="Level Assessment"
+                                allowStepSelect={false}
+                            >
+                                <StepLevelAssessment />
+                            </Stepper.Step>
 
-                                <Stepper.Step
-                                    mr={marginValue}
-                                    label="Step 3"
-                                    description="Enrollment summary"
-                                    allowStepSelect={false}
-                                >
-                                    <StepEnrollmentSummary formControl={formControl()} />
-                                </Stepper.Step>
-                            </Stepper>
-                        </FormProvider>
+                            <Stepper.Step
+                                mr={marginValue}
+                                label="Step 3"
+                                description="Enrollment summary"
+                                allowStepSelect={false}
+                            >
+                                <StepEnrollmentSummary formControl={formControl()} />
+                            </Stepper.Step>
+                        </Stepper>
+                    </FormProvider>
 
-                        <Group position="center" p={20}>
-                            <EnrollPageButtons
-                                active={active}
-                                handleStepChange={handleStepChange}
-                                onSubmit={onSubmit}
-                            />
-                        </Group>
-                    </Container>
-                </Box>
-            </Container>
-        </EnrollPageContext>
+                    <Group position="center" p={20}>
+                        <EnrollPageButtons
+                            active={active}
+                            handleStepChange={handleStepChange}
+                            onSubmit={onSubmit}
+                        />
+                    </Group>
+                </Container>
+            </Box>
+        </Container>
     );
 };

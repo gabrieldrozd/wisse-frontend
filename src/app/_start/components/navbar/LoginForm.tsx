@@ -70,13 +70,6 @@ export const LoginForm = ({isDropdown, setActive}: LoginFormProps) => {
                 {...form.getInputProps("password")}
             />
 
-
-            {/* TODO: Adjust styling in places where it can be done (Mantine basic components --> NextUI components */}
-            {/* TODO: Adjust styling in places where it can be done (Mantine basic components --> NextUI components */}
-            {/* TODO: Adjust styling in places where it can be done (Mantine basic components --> NextUI components */}
-            {/* TODO: Adjust styling in places where it can be done (Mantine basic components --> NextUI components */}
-
-
             <Text mt="md" size="sm" color="gray">
                 If you are not a student yet, you can enroll by clicking
                 <Text

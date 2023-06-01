@@ -11,7 +11,11 @@ interface Props {
 }
 
 export const EnrollPageButtons = ({active, handleStepChange, onSubmit}: Props) => {
-    const {isEnrollFormValid: {value: isFormValid}} = useEnrollPageContext();
+    const {
+        isEnrollFormValid: {value: isFormValid},
+        testMode,
+        isTestCompleted
+    } = useEnrollPageContext();
 
     const backButton = useCallback(() => {
         return (
@@ -36,13 +40,37 @@ export const EnrollPageButtons = ({active, handleStepChange, onSubmit}: Props) =
     }, [handleStepChange, active]);
 
     const nextButton = useCallback(() => {
+        if (active === 2) {
+            if ((testMode.value === "info" || testMode.value === "test") && !isTestCompleted.value) {
+                return (
+                    <Button
+                        onClick={() => handleStepChange(active + 1)}
+                        iconRight={<IconChevronRight />}
+                    >
+                        Skip
+                    </Button>
+                );
+            }
+
+            if (testMode.value === "test" && isTestCompleted.value) {
+                return (
+                    <Button
+                        onClick={() => handleStepChange(active + 1)}
+                        iconRight={<IconChevronRight />}
+                    >
+                        Next
+                    </Button>
+                );
+            }
+        }
+
         return (
             <Button
                 onClick={() => handleStepChange(active + 1)}
                 iconRight={<IconChevronRight />}
                 disabled={active === 1 && !isFormValid}
             >
-                {active === 2 ? "Skip" : "Next"}
+                Next
             </Button>
         );
     }, [handleStepChange, active, isFormValid]);

@@ -26,7 +26,13 @@ export const EnrollmentQueries = {
 export const EnrollmentCommands = {
     submit: (enrollmentPostModel: EnrollmentPost) => {
         // TODO: remember to always match object name with the API (enrollment:)
-        return client.post(enrollmentUrlSegment, {enrollment: enrollmentPostModel});
+        return client.post(enrollmentUrlSegment, {
+            enrollment: {
+                applicant: enrollmentPostModel.applicant,
+                contact: enrollmentPostModel.contact,
+                levelTestResult: enrollmentPostModel.testResult,
+            }
+        });
     },
     approve: (id: string) => {
         return client.put(`${enrollmentUrlSegment}/${id}/approve`, {});

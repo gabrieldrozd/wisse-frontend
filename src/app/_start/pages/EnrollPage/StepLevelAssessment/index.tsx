@@ -1,35 +1,36 @@
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {useTestSlice} from "@store/slices/education/test/testSlice";
 import type {ReactNode} from "react";
-import {useState} from "react";
 
 import {LevelAssessmentInformation} from "./components/LevelAssessmentInformation";
 import {LevelAssessmentTestMode} from "./components/LevelAssessmentTestMode";
-import {
-    LevelAssessmentTestResult
-} from "@app.start/pages/EnrollPage/StepLevelAssessment/components/LevelAssessmentTestResult";
-
-type TestMode = "info" | "test" | "result";
+import {LevelAssessmentTestResult} from "./components/LevelAssessmentTestResult";
 
 export const StepLevelAssessment = () => {
     const {actions: {prepareLevelAssessmentTest, clearTest, calculateTestResult}} = useTestSlice();
-    const [testMode, setTestMode] = useState<TestMode>("info");
+    const {testMode, isTestCompleted} = useEnrollPageContext();
 
     const handleSetTestMode = () => {
         prepareLevelAssessmentTest().then(
-            () => setTestMode("test")
+            () => testMode.set("test")
         );
     };
 
     const handleCompleteTest = (testId: string) => {
         calculateTestResult(testId).then(
-            () => setTestMode("result"),
+            () => {
+                testMode.set("result").then();
+                isTestCompleted.set(true).then();
+            },
         ).then(
             () => clearTest(testId)
         );
     };
 
+    console.log(testMode.value);
+
     let content: ReactNode;
-    switch (testMode) {
+    switch (testMode.value) {
         case "info":
             content = <LevelAssessmentInformation setTestMode={handleSetTestMode} />;
             break;

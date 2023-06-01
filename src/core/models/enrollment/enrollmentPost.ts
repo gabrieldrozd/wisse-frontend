@@ -1,6 +1,7 @@
 export interface EnrollmentPost {
     applicant: ApplicantPost;
     contact: ContactPost;
+    testResult?: TestResultPost;
 }
 
 export interface ApplicantPost {
@@ -21,4 +22,12 @@ export interface ContactPost {
     city: string;
     street: string;
     houseNumber: string;
+}
+
+export interface TestResultPost {
+    calculatedLevel: string;
+    correctAnswers: number;
+    incorrectAnswers: number;
+    totalAnswers: number;
+    percentage: number;
 }
