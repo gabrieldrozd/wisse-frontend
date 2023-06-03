@@ -1,17 +1,19 @@
-import {PaginatedList} from "@models/api/pagination";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {TeacherBase} from "@models/users/teacher/teacherBrowse";
-import {TeacherDetails} from "@models/users/teacher/teacherDetails";
-import {TeacherSelectors} from "@store/slices/users/teacher/teacherSelectors";
+import type { IPaginatedList} from "@models/api/pagination";
+import {defaultPaginatedList} from "@models/api/pagination";
+import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
+import type {TeacherDetails} from "@models/users/teacher/teacherDetails";
+import type { PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {useTeacherActions} from "@store/slices/users/teacher/teacherActions";
+import {TeacherSelectors} from "@store/slices/users/teacher/teacherSelectors";
 
 export interface TeacherSliceState {
-    list: PaginatedList<TeacherBase>;
+    list: IPaginatedList<TeacherBase>;
     details: TeacherDetails;
 }
 
 const initialState: TeacherSliceState = {
-    list: PaginatedList.default<TeacherBase>(),
+    list: defaultPaginatedList(),
     details: {} as TeacherDetails
 };
 
@@ -19,7 +21,7 @@ export const teacherSlice = createSlice({
     name: "teacher",
     initialState,
     reducers: {
-        setList: (state, action: PayloadAction<PaginatedList<TeacherBase>>) => {
+        setList: (state, action: PayloadAction<IPaginatedList<TeacherBase>>) => {
             state.list = action.payload;
         },
         setDetails: (state, action: PayloadAction<TeacherDetails>) => {

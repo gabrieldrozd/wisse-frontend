@@ -1,14 +1,14 @@
-import {memo} from "react";
 import {Text} from "@mantine/core";
-import {FieldError, FieldErrorsImpl, Merge} from "react-hook-form";
-import {IQuestionPostFormModel} from "@models/education/question";
+import type {IQuestionPostFormModel} from "@models/education/question";
+import {memo} from "react";
+import type {FieldError, FieldErrorsImpl, Merge} from "react-hook-form";
 
 interface Props {
     questionErrors: Merge<FieldError, (Merge<FieldError, FieldErrorsImpl<IQuestionPostFormModel>> | undefined)[]> | undefined;
     index: number;
 }
 
-export const TestTemplateQuestionErrors = memo(({questionErrors, index}: Props) => {
+export const TestTemplateQuestionErrors = memo(function TestTemplateQuestionErrors({questionErrors, index}: Props) {
     if (!questionErrors) {
         return null;
     }

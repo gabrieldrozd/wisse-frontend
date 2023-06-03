@@ -1,6 +1,6 @@
 import {AxiosClient} from "@api/AxiosClient";
 import {DataEnvelope} from "@models/api/dataEnvelope";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
+import {IPaginatedList, PaginationRequest} from "@models/api/pagination";
 import {StudentBase} from "@models/users/student/studentBrowse";
 import {StudentDetails} from "@models/users/student/studentDetails";
 
@@ -11,7 +11,7 @@ export const StudentQueries = {
     details: (id: string): Promise<DataEnvelope<StudentDetails>> => {
         return client.details<StudentDetails>(`${usersUrlSegment}`, id);
     },
-    browse: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<StudentBase>>> => {
+    browse: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<StudentBase>>> => {
         return client.browse<StudentBase>(`${usersUrlSegment}/browse`, pagination);
     },
 };

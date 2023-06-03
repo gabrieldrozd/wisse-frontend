@@ -1,6 +1,6 @@
-import {Permission, Role} from "@const/securityTypes";
+import type {Permission, Role} from "@const/securityTypes";
 
-export interface AccessToken {
+export interface IAccessToken {
     token: string;
     expires: number;
     userId: string;

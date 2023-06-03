@@ -1,11 +1,12 @@
-import {memo} from "react";
+import {SpellCheckDebouncedInput} from "@components/form/SpellCheckDebouncedInput";
 import {Flex, Switch} from "@mantine/core";
-import {Control, Controller} from "react-hook-form";
+import type {IAnswerPost} from "@models/education/answer";
+import type {IQuestionPostFormModel} from "@models/education/question";
+import type {ITestTemplatePostFormModel} from "@models/education/testTemplate";
+import {memo} from "react";
+import type {Control} from "react-hook-form";
+import { Controller} from "react-hook-form";
 import {MdCheckCircle, MdHighlightOff} from "react-icons/all";
-import {IAnswerPost} from "@models/education/answer";
-import {IQuestionPostFormModel} from "@models/education/question";
-import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
-import {DebouncedInput} from "@components/form/DebouncedInput";
 
 interface Props {
     formControl: Control<ITestTemplatePostFormModel>;
@@ -15,12 +16,12 @@ interface Props {
     answer: IAnswerPost;
 }
 
-export const TestTemplateQuestionAnswer = memo((
+export const TestTemplateQuestionAnswer = memo(function TestTemplateQuestionAnswer(
     {formControl, questionIndex, question, answerIndex, answer}: Props
-) => {
+) {
     return (
         <Flex direction="row" align="center" justify="center" mb={9} gap={10}>
-            <DebouncedInput
+            <SpellCheckDebouncedInput
                 required
                 formControl={formControl}
                 name={`questions.${questionIndex}.answers.${answerIndex}.text`}
@@ -29,7 +30,7 @@ export const TestTemplateQuestionAnswer = memo((
                 size="md"
                 radius="lg"
                 variant="filled"
-                label={`(${answerIndex+1}) Answer text`}
+                label={`(${answerIndex + 1}) Answer text`}
                 placeholder="Enter answer text"
                 disabled={question.existing}
             />
@@ -63,4 +64,4 @@ export const TestTemplateQuestionAnswer = memo((
         prevProps.question === nextProps.question &&
         prevProps.answer === nextProps.answer
     );
-});
+},);

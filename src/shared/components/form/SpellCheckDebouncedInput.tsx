@@ -1,9 +1,10 @@
+import {Grammarly, GrammarlyEditorPlugin} from "@grammarly/editor-sdk-react";
 import {Textarea, TextInput} from "@mantine/core";
 import type {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 import {debounce} from "lodash";
-import type { ChangeEvent} from "react";
+import type {ChangeEvent} from "react";
 import React, {useState, useEffect, useRef} from "react";
-import type { Control} from "react-hook-form";
+import type {Control} from "react-hook-form";
 import {useController} from "react-hook-form";
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
     [key: string]: any;
 }
 
-export const DebouncedInput = ({textarea = false, formControl, name, defaultValue, ...props}: Props) => {
+export const SpellCheckDebouncedInput = ({textarea = false, formControl, name, defaultValue, ...props}: Props) => {
     const {field} = useController({control: formControl, name: name as any, defaultValue});
     const [localValue, setLocalValue] = useState(field.value);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -47,9 +48,19 @@ export const DebouncedInput = ({textarea = false, formControl, name, defaultValu
     };
 
     return (
-        textarea
-            ? <Textarea {...inputProps} ref={textareaRef} />
-            : <TextInput {...inputProps} ref={textinputRef} />
+        <Grammarly clientId="client_Vf2UN3kkmcqEebvfRA2qKX">
+            {textarea
+                ? (
+                    <GrammarlyEditorPlugin style={{width: "100%"}}>
+                        <Textarea {...inputProps} ref={textareaRef} />
+                    </GrammarlyEditorPlugin>
+                )
+                : (
+                    <GrammarlyEditorPlugin style={{width: "100%"}}>
+                        <TextInput {...inputProps} ref={textinputRef} />
+                    </GrammarlyEditorPlugin>
+                )}
+        </Grammarly>
     );
 };
 

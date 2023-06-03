@@ -62,6 +62,7 @@ export const StepApplicantDetails = ({formControl}: Props) => {
 
         if (isValid) {
             setIsFormSaved(true);
+            localStorage.setItem("enrollForm", JSON.stringify(form.getValues()));
         }
     };
 

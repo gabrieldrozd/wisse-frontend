@@ -1,21 +1,21 @@
-import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {ActionDispatch} from "@store/store";
 import {requestAgent} from "@api/requestAgent";
 import {useGlobalContext} from "@context/ApplicationContext";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {StudentBase} from "@models/users/student/studentBrowse";
+import type {StudentDetails} from "@models/users/student/studentDetails";
 import {studentSlice} from "@store/slices/users/student/studentSlice";
-import {StudentBase} from "@models/users/student/studentBrowse";
-import {StudentDetails} from "@models/users/student/studentDetails";
+import type {ActionDispatch} from "@store/store";
+import {useDispatch} from "react-redux";
 
 export const useStudentActions = () => {
     const studentRequestAgent = requestAgent.users.student;
-    const navigate = useNavigate();
     const {isLoading} = useGlobalContext();
     const dispatch = useDispatch<ActionDispatch>();
     const actions = studentSlice.actions;
 
-    const browseStudents = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<StudentBase>> => {
+    const browseStudents = async (
+        pageIndex: number, pageSize: number, isAscending: boolean
+    ): Promise<IPaginatedList<StudentBase>> => {
         isLoading.set(true);
         try {
             const pagination: PaginationRequest = {

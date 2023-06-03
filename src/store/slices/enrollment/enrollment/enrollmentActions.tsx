@@ -1,23 +1,23 @@
-import {useGlobalContext} from "@context/ApplicationContext";
-import {useDispatch} from "react-redux";
-import {ActionDispatch} from "@store/store";
 import {requestAgent} from "@api/requestAgent";
+import {useGlobalContext} from "@context/ApplicationContext";
+import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
+import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
 import {Notify} from "@services/Notify";
 import {enrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
-import {EnrollmentPost} from "@models/enrollment/enrollmentPost";
-import {useNavigate} from "react-router-dom";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {ActionDispatch} from "@store/store";
+import {useDispatch} from "react-redux";
 
 export const useEnrollmentActions = () => {
     const enrollmentRequestAgent = requestAgent.enrollment.enrollment;
-    const navigate = useNavigate();
     const {isLoading} = useGlobalContext();
     const dispatch = useDispatch<ActionDispatch>();
     const actions = enrollmentSlice.actions;
 
-    const browseEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<EnrollmentBase>> => {
+    const browseEnrollments = async (
+        pageIndex: number, pageSize: number, isAscending: boolean
+    ): Promise<IPaginatedList<EnrollmentBase>> => {
         isLoading.set(true);
         try {
             const pagination: PaginationRequest = {
@@ -35,7 +35,9 @@ export const useEnrollmentActions = () => {
         }
     };
 
-    const browseApprovedEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<EnrollmentBase>> => {
+    const browseApprovedEnrollments = async (
+        pageIndex: number, pageSize: number, isAscending: boolean
+    ): Promise<IPaginatedList<EnrollmentBase>> => {
         isLoading.set(true);
         try {
             const pagination: PaginationRequest = {
@@ -53,7 +55,9 @@ export const useEnrollmentActions = () => {
         }
     };
 
-    const browseRejectedEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<EnrollmentBase>> => {
+    const browseRejectedEnrollments = async (
+        pageIndex: number, pageSize: number, isAscending: boolean
+    ): Promise<IPaginatedList<EnrollmentBase>> => {
         isLoading.set(true);
         try {
             const pagination: PaginationRequest = {

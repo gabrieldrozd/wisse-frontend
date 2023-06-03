@@ -1,9 +1,9 @@
-import axios, {AxiosError, AxiosResponse} from "axios";
-import {Notify} from "@services/Notify";
+import type {DataEnvelope, Envelope} from "@models/api/dataEnvelope";
+import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
 import {ApplicationRouter} from "@routing/ApplicationRouter";
-
-import {DataEnvelope, Envelope} from "@models/api/dataEnvelope";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
+import {Notify} from "@services/Notify";
+import type {AxiosError, AxiosResponse} from "axios";
+import axios from "axios";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -82,7 +82,7 @@ export class AxiosClient {
     }
 
     async browse<T>(url: string, pagination: PaginationRequest) {
-        return await axiosClient.put<DataEnvelope<PaginatedList<T>>>(url, pagination).then(getDataEnvelope);
+        return await axiosClient.put<DataEnvelope<IPaginatedList<T>>>(url, pagination).then(getDataEnvelope);
     }
 
     async post<T>(url: string, body: {}) {

@@ -220,25 +220,6 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                     </Flex>
                 </Col>
             </Grid>
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
         </>
     );
 };
