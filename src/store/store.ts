@@ -8,6 +8,7 @@ import {enrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSli
 import {authSlice} from "@store/slices/users/auth/authSlice";
 import {studentSlice} from "@store/slices/users/student/studentSlice";
 import {teacherSlice} from "@store/slices/users/teacher/teacherSlice";
+import {initializeAction} from "@store/persistActions";
 
 export interface RootState {
     question: ReturnType<typeof questionSlice.reducer>;
@@ -52,3 +53,5 @@ export const store: EnhancedStore<RootState, AnyAction, Middleware[]> = configur
 });
 
 export declare type ActionDispatch = typeof store.dispatch;
+
+store.dispatch(initializeAction);

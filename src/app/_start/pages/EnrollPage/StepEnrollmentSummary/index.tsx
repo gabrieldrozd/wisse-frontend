@@ -1,16 +1,16 @@
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import applicantImage from "@assets/start/applicant_study.svg";
-import {Code, Col, Divider, Grid, Image, Mark, Space, Text} from "@mantine/core";
-import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
+import {Code, Col, Divider, Grid, Image, Mark, Text} from "@mantine/core";
+import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import {Spacer} from "@nextui-org/react";
+import {useTestSlice} from "@store/slices/education/test/testSlice";
 import type {Control} from "react-hook-form";
 import {useWatch} from "react-hook-form";
 
 import classes from "./StepEnrollmentSummary.module.scss";
-import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
-import {Spacer} from "@nextui-org/react";
 
 interface Props {
-    formControl: Control<EnrollmentPost>;
+    formControl: Control<IEnrollmentPostFormModel>;
 }
 
 export const StepEnrollmentSummary = ({formControl}: Props) => {

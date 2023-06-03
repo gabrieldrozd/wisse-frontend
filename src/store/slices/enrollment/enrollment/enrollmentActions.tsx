@@ -3,7 +3,7 @@ import {useGlobalContext} from "@context/ApplicationContext";
 import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
-import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
+import type {IEnrollmentPost, IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
 import {Notify} from "@services/Notify";
 import {enrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import type {ActionDispatch} from "@store/store";
@@ -14,6 +14,10 @@ export const useEnrollmentActions = () => {
     const {isLoading} = useGlobalContext();
     const dispatch = useDispatch<ActionDispatch>();
     const actions = enrollmentSlice.actions;
+
+    const persistEnrollmentForm = (enrollmentForm: IEnrollmentPostFormModel) => {
+        dispatch(actions.persistForm(enrollmentForm));
+    };
 
     const browseEnrollments = async (
         pageIndex: number, pageSize: number, isAscending: boolean
@@ -93,7 +97,7 @@ export const useEnrollmentActions = () => {
         }
     };
 
-    const submit = async (enrollmentPostModel: EnrollmentPost) => {
+    const submit = async (enrollmentPostModel: IEnrollmentPost) => {
         isLoading.set(true);
         try {
             const envelope = await enrollmentRequestAgent.command.submit(enrollmentPostModel);
@@ -137,6 +141,7 @@ export const useEnrollmentActions = () => {
     };
 
     return {
+        persistEnrollmentForm,
         browseEnrollments,
         browseApprovedEnrollments,
         browseRejectedEnrollments,

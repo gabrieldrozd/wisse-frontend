@@ -18,7 +18,7 @@ export const App = () => {
     return (
         <Flex direction="column" align="flex-start" justify="flex-start">
             <LoadingOverlay
-                visible={isLoading.value || !isUiReady}
+                visible={isLoading.value}
                 overlayBlur={10}
                 loader={
                     <Flex

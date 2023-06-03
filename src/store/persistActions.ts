@@ -6,7 +6,10 @@ import {_authPersistActions} from "@store/slices/users/auth/_authPersistActions"
 import {_studentPersistActions} from "@store/slices/users/student/_studentPersistActions";
 import {_teacherPersistActions} from "@store/slices/users/teacher/_teacherPersistActions";
 
+export const initializeAction = {type: "initialize"};
+
 export const persistActions = [
+    initializeAction,
     ..._questionPersistActions,
     ..._testPersistActions,
     ..._testTemplatePersistActions,
