@@ -1,4 +1,4 @@
-import {EnrollPageContext, useEnrollPageContext} from "@app.start/context/enrollPageContext";
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {EnrollPageButtons} from "@app.start/pages/EnrollPage/components/EnrollPageButtons";
 import {StepApplicantDetails} from "@app.start/pages/EnrollPage/StepApplicantDetails";
 import {StepEnrollmentSummary} from "@app.start/pages/EnrollPage/StepEnrollmentSummary";
@@ -10,7 +10,8 @@ import {schools} from "@const/education";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Box, Container, Group, Stepper} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
-import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
+import type {IEnrollmentPost, IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import {useTestSlice} from "@store/slices/education/test/testSlice";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {useCallback, useState} from "react";
 import type {SubmitHandler} from "react-hook-form";
@@ -18,13 +19,13 @@ import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
+import {Notify} from "@services/Notify";
 
 const formSchema = z.object({
     applicant: z.object({
         firstName: z.string().nonempty("First name is required"),
         lastName: z.string().nonempty("Last name is required"),
-        birthDate: z.date().max(new Date(), "Birth date cannot be in the future"),
+        birthDate: z.string().nonempty("Birth date is required"),
         school: z.string().nonempty("School is required"),
         grade: z.string().nonempty("Grade is required"),
         levelKey: z.string().nonempty("Level is required"),
@@ -47,35 +48,37 @@ export const EnrollPage = () => {
     const marginValue = mediaMatch ? 0 : 50;
 
     const {isTestCompleted} = useEnrollPageContext();
-    const {actions: enrollActions} = useEnrollmentSlice();
+    const {actions: enrollActions, selectors} = useEnrollmentSlice();
     const {selectors: {currentTestResult}} = useTestSlice();
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
 
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 1);
+    const maxDateStr = maxDate.toString().split("T")[0];
 
-    const enrollmentForm = useForm<EnrollmentPost>({
+    const persistedForm = selectors.enrollmentForm();
+    const enrollmentForm = useForm<IEnrollmentPostFormModel>({
         mode: "onChange",
         reValidateMode: "onChange",
         defaultValues: {
             applicant: {
-                firstName: "",
-                lastName: "",
-                birthDate: maxDate,
-                school: schools[0].value,
-                grade: schools[0].grades[0],
-                levelKey: "",
+                firstName: persistedForm?.applicant?.firstName || "",
+                lastName: persistedForm?.applicant?.lastName || "",
+                birthDate: persistedForm?.applicant?.birthDate || maxDateStr,
+                school: persistedForm?.applicant?.school || schools[0].value,
+                grade: persistedForm?.applicant?.grade || schools[0].grades[0],
+                levelKey: persistedForm?.applicant?.levelKey || "",
             },
             contact: {
-                email: "",
-                phoneNumber: "",
-                zipCode: "",
-                zipCodeCity: "",
-                state: "",
-                city: "",
-                street: "",
-                houseNumber: "",
+                email: persistedForm?.contact?.email || "",
+                phoneNumber: persistedForm?.contact?.phoneNumber || "",
+                zipCode: persistedForm?.contact?.zipCode || "",
+                zipCodeCity: persistedForm?.contact?.zipCodeCity || "",
+                state: persistedForm?.contact?.state || "",
+                city: persistedForm?.contact?.city || "",
+                street: persistedForm?.contact?.street || "",
+                houseNumber: persistedForm?.contact?.houseNumber || "",
             }
         },
         resolver: zodResolver(formSchema)
@@ -89,25 +92,44 @@ export const EnrollPage = () => {
         setActive(nextStep);
     };
 
-    const onValidSubmit: SubmitHandler<EnrollmentPost> = (data) => {
+    const onValidSubmit: SubmitHandler<IEnrollmentPostFormModel> = (data) => {
         console.log("[VALID SUBMIT] enrollmentForm: ", data);
 
-        if (isTestCompleted) {
-            const testResult = currentTestResult();
-            if (testResult) {
-                data.testResult = testResult;
+        const model: IEnrollmentPost = {
+            applicant: {
+                firstName: data.applicant.firstName,
+                lastName: data.applicant.lastName,
+                birthDate: new Date(data.applicant.birthDate),
+                school: data.applicant.school,
+                grade: data.applicant.grade,
+                levelKey: data.applicant.levelKey,
+            },
+            contact: {
+                email: data.contact.email,
+                phoneNumber: data.contact.phoneNumber,
+                zipCode: data.contact.zipCode,
+                zipCodeCity: data.contact.zipCodeCity,
+                state: data.contact.state,
+                city: data.contact.city,
+                street: data.contact.street,
+                houseNumber: data.contact.houseNumber,
             }
+        };
+
+        if (isTestCompleted && currentTestResult()) {
+            data.testResult = currentTestResult()!;
         }
 
-        enrollActions.submit(data).then(result => {
+        enrollActions.submit(model).then(result => {
             if (result) {
                 enrollmentForm.reset();
                 navigate("/");
             }
         });
     };
-    const onInvalidSubmit: SubmitErrorHandler<EnrollmentPost> = (data) => {
+    const onInvalidSubmit: SubmitErrorHandler<IEnrollmentPostFormModel> = (data) => {
         console.log("[INVALID SUBMIT] enrollmentForm: ", data);
+        Notify.info("Please fill in all required fields");
     };
 
     const onSubmit = enrollmentForm.handleSubmit(onValidSubmit, (errors) => onInvalidSubmit(errors));
