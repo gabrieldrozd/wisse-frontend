@@ -1,11 +1,12 @@
-import {memo} from "react";
-import {Flex, Stack} from "@mantine/core";
-import {levels} from "@const/education";
-import {Control, Controller, FieldErrors} from "react-hook-form";
-import {Dropdown, Input, Textarea} from "@nextui-org/react";
-import {Label} from "@components/Label";
 import {ErrorText} from "@components/ErrorText";
-import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
+import {Label} from "@components/Label";
+import {levels} from "@const/education";
+import {Flex, Stack} from "@mantine/core";
+import type {ITestTemplatePostFormModel} from "@models/education/testTemplate";
+import {Dropdown, Input, Textarea} from "@nextui-org/react";
+import {memo} from "react";
+import type {Control, FieldErrors} from "react-hook-form";
+import {Controller} from "react-hook-form";
 
 interface Props {
     formControl: Control<ITestTemplatePostFormModel>;
@@ -14,7 +15,9 @@ interface Props {
     languageLevel: string;
 }
 
-export const TestTemplateFormFields = memo(({formControl, testTemplateErrors, setValue, languageLevel}: Props) => {
+export const TestTemplateFormFields = memo(function TestTemplateFormFields({
+    formControl, testTemplateErrors, setValue, languageLevel
+}: Props) {
     return (
         <>
             <Flex direction={{base: "column", md: "row"}} gap={20} mb={20}>

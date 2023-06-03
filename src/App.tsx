@@ -1,9 +1,9 @@
+import {useGlobalContext} from "@context/ApplicationContext";
+import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
+import {Notifications} from "@mantine/notifications";
+import {ApplicationRouter} from "@routing/ApplicationRouter";
 import {useEffect, useState} from "react";
 import {RouterProvider} from "react-router-dom";
-import {Notifications} from "@mantine/notifications";
-import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
-import {ApplicationRouter} from "@routing/ApplicationRouter";
-import {useGlobalContext} from "@context/ApplicationContext";
 
 export const App = () => {
     const {isLoading} = useGlobalContext();

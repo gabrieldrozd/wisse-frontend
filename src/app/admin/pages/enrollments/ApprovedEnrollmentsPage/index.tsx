@@ -5,6 +5,7 @@ import {GenericTable} from "@components/DataDisplay/GenericTable";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
+import {useCallback} from "react";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns = [
@@ -64,12 +65,18 @@ export const ApprovedEnrollmentsPage = () => {
     const context = useEnrollmentsContext();
     const {actions, selectors} = useEnrollmentSlice();
 
+    const approvedEnrollments = selectors.approvedEnrollmentsList();
+
+    const browseApprovedEnrollments = useCallback(async (pageIndex: number, pageSize: number, isAscending: boolean) => {
+        await actions.browseApprovedEnrollments(pageIndex, pageSize, isAscending);
+    }, [actions]);
+
     return (
         <GenericTable
             columns={columns}
             dataName="Approved Enrollments"
-            data={selectors.approvedEnrollmentsList()}
-            fetchData={actions.browseApprovedEnrollments}
+            data={approvedEnrollments}
+            fetchData={browseApprovedEnrollments}
             selectedRow={context.selected?.value}
             selectRow={context.selected?.set}
             unselectRow={context.selected?.unset}

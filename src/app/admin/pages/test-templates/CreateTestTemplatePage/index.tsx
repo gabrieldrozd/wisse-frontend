@@ -1,22 +1,27 @@
-import {useCallback, useEffect, useState} from "react";
-import {motion, Variants} from "framer-motion";
-import {Affix, Col, Divider, Grid, Group, rem, Title, Transition} from "@mantine/core";
-import {Button} from "@nextui-org/react";
-import {uuid} from "@utils/uuidUtils";
+import {TestTemplateActionDivider} from "./components/TestTemplateActionDivider";
+import {TestTemplateFormFields} from "./components/TestTemplateFormFields";
 import {levels} from "@const/education";
-import {IQuestion, IQuestionPostFormModel} from "@models/education/question";
-import {useQuestionSlice} from "@store/slices/education/question/questionSlice";
-import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
-import {TestTemplateFormFields} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateFormFields";
-import {TestTemplateActionDivider} from "@app.admin/pages/test-templates/CreateTestTemplatePage/components/TestTemplateActionDivider";
-import {ITestTemplatePostFormModel, TestTemplatePost} from "@models/education/testTemplate";
-import {useTestTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
-import {FormProvider, SubmitHandler, useForm, useWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {z} from "zod";
-import {SubmitErrorHandler} from "react-hook-form/dist/types/form";
+import {Affix, Col, Divider, Grid, Group, rem, Title, Transition} from "@mantine/core";
 import {useWindowScroll} from "@mantine/hooks";
+import type {IQuestion, IQuestionPostFormModel} from "@models/education/question";
+import {TestTemplatePost} from "@models/education/testTemplate";
+import type {ITestTemplatePostFormModel} from "@models/education/testTemplate";
+import {Button} from "@nextui-org/react";
+import {useQuestionSlice} from "@store/slices/education/question/questionSlice";
+import {useTestTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
 import {IconArrowUp} from "@tabler/icons-react";
+import {uuid} from "@utils/uuidUtils";
+import {motion} from "framer-motion";
+import type {Variants} from "framer-motion";
+import {useCallback, useEffect, useState} from "react";
+import {FormProvider, useForm, useWatch} from "react-hook-form";
+import type {SubmitHandler} from "react-hook-form";
+import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
+import {z} from "zod";
+
+import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
+import {Notify} from "@services/Notify";
 
 const formSchema = z.object({
     name: z.string().nonempty("Name is required"),
@@ -63,8 +68,12 @@ export const CreateTestTemplatePage = () => {
     });
 
     const formControl = useCallback(() => testTemplateForm.control, [testTemplateForm.control]);
-    const setValue = useCallback((name: string, value: any) => testTemplateForm.setValue(name as any, value), [testTemplateForm]);
-    const testTemplateErrors = useCallback(() => testTemplateForm.formState.errors, [testTemplateForm.formState.errors]);
+    const setValue = useCallback((name: string, value: any) =>
+        testTemplateForm.setValue(name as any, value), [testTemplateForm]
+    );
+    const testTemplateErrors = useCallback(() =>
+        testTemplateForm.formState.errors, [testTemplateForm.formState.errors]
+    );
 
     const questionsWatch = useWatch({control: formControl(), name: "questions"});
     const languageLevelWatch = useWatch({control: formControl(), name: "languageLevel"});
@@ -89,7 +98,6 @@ export const CreateTestTemplatePage = () => {
     }, [testLevel]);
 
     const onValidSubmit: SubmitHandler<ITestTemplatePostFormModel> = (data) => {
-        console.log("[VALID SUBMIT] testTemplateModel: ", data);
         const testTemplateModel = TestTemplatePost.fromFormModel(data);
 
         testTemplateActions.createTestTemplate(testTemplateModel).then(() => {
@@ -97,7 +105,7 @@ export const CreateTestTemplatePage = () => {
         });
     };
     const onInvalidSubmit: SubmitErrorHandler<ITestTemplatePostFormModel> = (data) => {
-        console.log("[INVALID SUBMIT] testTemplateModel: ", data);
+        Notify.warning("Please fill in all required fields");
     };
 
     const onSubmit = testTemplateForm.handleSubmit(onValidSubmit, (errors) => onInvalidSubmit(errors));
@@ -106,18 +114,14 @@ export const CreateTestTemplatePage = () => {
         <>
             <FormProvider {...testTemplateForm}>
                 <Grid mx="auto" grow>
-                    <Col
-                        xs={12}
-                        md={6}
-                        children={
-                            <TestTemplateFormFields
-                                formControl={formControl()}
-                                testTemplateErrors={testTemplateErrors()}
-                                setValue={setValue}
-                                languageLevel={testLevel}
-                            />
-                        }
-                    />
+                    <Col xs={12} md={6}>
+                        <TestTemplateFormFields
+                            formControl={formControl()}
+                            testTemplateErrors={testTemplateErrors()}
+                            setValue={setValue}
+                            languageLevel={testLevel}
+                        />
+                    </Col>
                     <Col xs={12}>
                         <Divider
                             labelPosition="center"
@@ -128,29 +132,23 @@ export const CreateTestTemplatePage = () => {
                             }
                         />
                     </Col>
-                    <Col
-                        xs={12}
-                        children={
-                            <TestTemplateQuestionsGrid
-                                formControl={formControl()}
-                                questionErrors={testTemplateErrors().questions}
-                            />
-                        }
-                    />
-                    <Col
-                        xs={12}
-                        children={
-                            <TestTemplateActionDivider
-                                setValue={setValue}
-                                questions={questionsWatch}
-                                questionsCount={questionsWatch.length}
-                                existingQuestions={existingQuestions}
-                                setExistingQuestions={setExistingQuestions}
-                            />
-                        }
-                    />
+                    <Col xs={12}>
+                        <TestTemplateQuestionsGrid
+                            formControl={formControl()}
+                            questionErrors={testTemplateErrors().questions}
+                        />
+                    </Col>
+                    <Col xs={12}>
+                        <TestTemplateActionDivider
+                            setValue={setValue}
+                            questions={questionsWatch}
+                            questionsCount={questionsWatch.length}
+                            existingQuestions={existingQuestions}
+                            setExistingQuestions={setExistingQuestions}
+                        />
+                    </Col>
                 </Grid>
-                <Affix position={{bottom: rem(20), right: rem(20)}}>
+                <Affix position={{bottom: rem(20), right: rem(60)}}>
                     <Group>
                         <Transition transition="scale" mounted>
                             {(transitionStyles) => (

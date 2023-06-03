@@ -7,7 +7,7 @@ import {
 } from "@mantine/core";
 import {IconChevronRight} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
-import {AccessToken} from "@models/auth/accessToken";
+import {IAccessToken} from "@models/auth/IAccessToken";
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -23,7 +23,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export interface UserNavigationButtonProps {
-    accessToken: AccessToken;
+    accessToken: IAccessToken;
 }
 
 export function UserNavigationButton({accessToken}: UserNavigationButtonProps) {

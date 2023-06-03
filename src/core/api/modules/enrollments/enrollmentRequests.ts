@@ -1,9 +1,9 @@
 import {AxiosClient} from "@api/AxiosClient";
-import {DataEnvelope} from "@models/api/dataEnvelope";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
-import {EnrollmentPost} from "@models/enrollment/enrollmentPost";
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {DataEnvelope} from "@models/api/dataEnvelope";
+import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
+import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
 
 const client = AxiosClient.initialize();
 const enrollmentUrlSegment = "/enrollments-module";
@@ -12,13 +12,13 @@ export const EnrollmentQueries = {
     details: (id: string): Promise<DataEnvelope<EnrollmentDetails>> => {
         return client.details<EnrollmentDetails>(`${enrollmentUrlSegment}`, id);
     },
-    browse: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<EnrollmentBase>>> => {
+    browse: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse`, pagination);
     },
-    browseApproved: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<EnrollmentBase>>> => {
+    browseApproved: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/approved`, pagination);
     },
-    browseRejected: (pagination: PaginationRequest): Promise<DataEnvelope<PaginatedList<EnrollmentBase>>> => {
+    browseRejected: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/rejected`, pagination);
     }
 };

@@ -1,6 +1,7 @@
-import {PaginatedList} from "@models/api/pagination";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {IPaginatedList} from "@models/api/pagination";
 import {IQuestion} from "@models/education/question";
+import type {PayloadAction} from "@reduxjs/toolkit"
+import {createSlice} from "@reduxjs/toolkit";
 import {useQuestionActions} from "@store/slices/education/question/questionActions";
 import {QuestionSelectors} from "@store/slices/education/question/questionSelectors";
 import {useTestTemplateActions} from "@store/slices/education/test-template/testTemplateActions";

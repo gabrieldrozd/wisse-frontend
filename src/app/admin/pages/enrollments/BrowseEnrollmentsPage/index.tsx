@@ -11,8 +11,6 @@ export const BrowseEnrollmentsPage = () => {
     const [actionsSpan, setActionsSpan] = useState(2);
 
     useEffect(() => {
-        console.log(context.selected?.value?.applicant?.firstName ?? "No enrollment selected");
-
         if (context.selected?.value?.externalId) {
             setTableSpan(7);
             setActionsSpan(5);

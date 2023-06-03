@@ -1,9 +1,11 @@
-import {memo} from "react";
-import {Divider, Flex, Title} from "@mantine/core";
-import {Button, Dropdown} from "@nextui-org/react";
-import {IQuestion, IQuestionPostFormModel, QuestionPostFormModel} from "@models/education/question";
-import {useMediaQuery} from "@mantine/hooks";
 import {breakpoints} from "@const/breakpoints";
+import {GrammarlyButton} from "@grammarly/editor-sdk-react";
+import {Box, Divider, Flex, Title} from "@mantine/core";
+import {useMediaQuery} from "@mantine/hooks";
+import {QuestionPostFormModel} from "@models/education/question";
+import type {IQuestion, IQuestionPostFormModel} from "@models/education/question";
+import {Button, Dropdown} from "@nextui-org/react";
+import {memo} from "react";
 
 interface Props {
     setValue: (name: string, value: any) => void;
@@ -13,10 +15,14 @@ interface Props {
     setExistingQuestions: (questions: IQuestion[]) => void;
 }
 
-export const TestTemplateActionDivider = memo(({setValue, questions, questionsCount, existingQuestions, setExistingQuestions}: Props) => {
+export const TestTemplateActionDivider = memo(function TestTemplateActionDivider({
+    setValue,
+    questions,
+    questionsCount,
+    existingQuestions,
+    setExistingQuestions
+}: Props) {
     const mdMediaMatch = useMediaQuery(`(max-width: ${breakpoints.md})`);
-
-    console.log(questionsCount);
 
     return (
         <Divider
@@ -36,11 +42,14 @@ export const TestTemplateActionDivider = memo(({setValue, questions, questionsCo
                             selectionMode="single"
                             items={existingQuestions}
                             onAction={(externalId) => {
-                                const question = existingQuestions.find((question) => question.externalId === externalId);
+                                const question = existingQuestions
+                                    .find((question) => question.externalId === externalId);
                                 if (!question) return;
 
-                                const questionToRemove = existingQuestions.findIndex((question) => question.externalId === externalId);
-                                setExistingQuestions(existingQuestions.filter((question, index) => index !== questionToRemove));
+                                const questionToRemove = existingQuestions.findIndex(
+                                    (question) => question.externalId === externalId);
+                                setExistingQuestions(existingQuestions.filter(
+                                    (question, index) => index !== questionToRemove));
                                 questions.push(QuestionPostFormModel.fromQuestion(question));
                                 setValue("questions", questions);
                             }}
@@ -75,6 +84,9 @@ export const TestTemplateActionDivider = memo(({setValue, questions, questionsCo
                     >
                         Add new question
                     </Button>
+                    <Box mx={5}>
+                        <GrammarlyButton />
+                    </Box>
                 </Flex>
             }
         />

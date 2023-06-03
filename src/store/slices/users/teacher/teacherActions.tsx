@@ -1,21 +1,21 @@
-import {useGlobalContext} from "@context/ApplicationContext";
-import {useDispatch} from "react-redux";
-import {ActionDispatch} from "@store/store";
 import {requestAgent} from "@api/requestAgent";
-import {useNavigate} from "react-router-dom";
-import {PaginatedList, PaginationRequest} from "@models/api/pagination";
+import {useGlobalContext} from "@context/ApplicationContext";
+import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
+import type {TeacherDetails} from "@models/users/teacher/teacherDetails";
 import {teacherSlice} from "@store/slices/users/teacher/teacherSlice";
-import {TeacherBase} from "@models/users/teacher/teacherBrowse";
-import {TeacherDetails} from "@models/users/teacher/teacherDetails";
+import type {ActionDispatch} from "@store/store";
+import {useDispatch} from "react-redux";
 
 export const useTeacherActions = () => {
     const teacherRequestAgent = requestAgent.users.teacher;
-    const navigate = useNavigate();
     const {isLoading} = useGlobalContext();
     const dispatch = useDispatch<ActionDispatch>();
     const actions = teacherSlice.actions;
 
-    const browseTeachers = async (pageIndex: number, pageSize: number, isAscending: boolean): Promise<PaginatedList<TeacherBase>> => {
+    const browseTeachers = async (
+        pageIndex: number, pageSize: number, isAscending: boolean
+    ): Promise<IPaginatedList<TeacherBase>> => {
         isLoading.set(true);
         try {
             const pagination: PaginationRequest = {

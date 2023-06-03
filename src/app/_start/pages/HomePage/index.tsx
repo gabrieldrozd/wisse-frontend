@@ -14,7 +14,6 @@ export const HomePage = () => {
                 <FeaturesPreview />
             </Box>
 
-            {/* TODO: Uncomment for colors adjustments (NextUI) */}
             {/*<Group m={0}>*/}
             {/*    <NextButton bordered size="sm" color="primary">primary</NextButton>*/}
             {/*    <NextButton shadow bordered size="sm" color="primary">primary</NextButton>*/}

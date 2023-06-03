@@ -1,7 +1,8 @@
-import {ReactNode, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import {useAuthSlice} from "@store/slices/users/auth/authSlice";
 import {Notify} from "@services/Notify";
+import {useAuthSlice} from "@store/slices/users/auth/authSlice";
+import type {ReactNode} from "react";
+import { useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 export interface AuthorizedRouteProps {
     children: Element | ReactNode;
