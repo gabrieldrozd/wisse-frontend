@@ -15,8 +15,34 @@ export const useEnrollmentActions = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = enrollmentSlice.actions;
 
-    const persistEnrollmentForm = (enrollmentForm: IEnrollmentPostFormModel) => {
-        dispatch(actions.persistForm(enrollmentForm));
+    const persistEnrollmentForm = (enrollmentForm: IEnrollmentPost) => {
+
+        if (enrollmentForm.applicant === undefined || enrollmentForm.contact === undefined) {
+            return dispatch(actions.persistForm({} as IEnrollmentPostFormModel));
+        }
+
+        const formModel: IEnrollmentPostFormModel = {
+            applicant: {
+                firstName: enrollmentForm.applicant.firstName,
+                lastName: enrollmentForm.applicant.lastName,
+                birthDate: enrollmentForm.applicant.birthDate.toString(),
+                school: enrollmentForm.applicant.school,
+                grade: enrollmentForm.applicant.grade,
+                levelKey: enrollmentForm.applicant.levelKey,
+            },
+            contact: {
+                email: enrollmentForm.contact.email,
+                phoneNumber: enrollmentForm.contact.phoneNumber,
+                zipCode: enrollmentForm.contact.zipCode,
+                zipCodeCity: enrollmentForm.contact.zipCodeCity,
+                state: enrollmentForm.contact.state,
+                city: enrollmentForm.contact.city,
+                street: enrollmentForm.contact.street,
+                houseNumber: enrollmentForm.contact.houseNumber,
+            }
+        };
+
+        dispatch(actions.persistForm(formModel));
     };
 
     const browseEnrollments = async (

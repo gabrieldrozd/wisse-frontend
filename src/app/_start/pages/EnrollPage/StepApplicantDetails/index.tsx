@@ -3,14 +3,14 @@ import {colors} from "@const/colors";
 import {levels, schools} from "@const/education";
 import {Center, Col, Flex, Grid, Select, TextInput} from "@mantine/core";
 import {DatePickerInput} from "@mantine/dates";
-import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Button} from "@nextui-org/react";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {IconCalendar} from "@tabler/icons-react";
+import {deepCopy} from "@utils/objectUtils";
 import {useEffect, useState} from "react";
 import type {Control} from "react-hook-form";
 import {Controller, useFormContext, useWatch} from "react-hook-form";
-import {deepCopy} from "@utils/objectUtils";
 
 const textInputStyles = {
     input: {
@@ -41,7 +41,7 @@ const selectStyles = {
 };
 
 interface Props {
-    formControl: Control<IEnrollmentPostFormModel>;
+    formControl: Control<IEnrollmentPost>;
 }
 
 export const StepApplicantDetails = ({formControl}: Props) => {
@@ -49,14 +49,10 @@ export const StepApplicantDetails = ({formControl}: Props) => {
     const [hasValuesChanged, setHasValuesChanged] = useState(false);
     const localContext = useEnrollPageContext();
     const {actions: {persistEnrollmentForm}} = useEnrollmentSlice();
-    const form = useFormContext<IEnrollmentPostFormModel>();
+    const form = useFormContext<IEnrollmentPost>();
     const school = useWatch({
         control: formControl,
         name: "applicant.school",
-    });
-    const grade = useWatch({
-        control: formControl,
-        name: "applicant.grade",
     });
 
     useEffect(() => {
@@ -71,7 +67,8 @@ export const StepApplicantDetails = ({formControl}: Props) => {
         if (isValid) {
             setIsFormSaved(true);
             const formValues = form.getValues();
-            const formValuesCopy = deepCopy<IEnrollmentPostFormModel>(formValues);
+            const formValuesCopy = deepCopy<IEnrollmentPost>(formValues);
+
             persistEnrollmentForm(formValuesCopy);
         }
     };
@@ -150,7 +147,7 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                             placeholder="Pick you birth date"
                             required
                             {...field}
-                            value={new Date(field.value)}
+                            value={field.value}
                             onChange={(date) => {
                                 field.onChange(date);
                                 setHasValuesChanged(true);

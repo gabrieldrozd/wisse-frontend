@@ -1,16 +1,17 @@
 import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import applicantImage from "@assets/start/applicant_study.svg";
 import {Code, Col, Divider, Grid, Image, Mark, Text} from "@mantine/core";
-import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Spacer} from "@nextui-org/react";
 import {useTestSlice} from "@store/slices/education/test/testSlice";
+import {getShortDate} from "@utils/dateUtils";
 import type {Control} from "react-hook-form";
 import {useWatch} from "react-hook-form";
 
 import classes from "./StepEnrollmentSummary.module.scss";
 
 interface Props {
-    formControl: Control<IEnrollmentPostFormModel>;
+    formControl: Control<IEnrollmentPost>;
 }
 
 export const StepEnrollmentSummary = ({formControl}: Props) => {
@@ -45,7 +46,7 @@ export const StepEnrollmentSummary = ({formControl}: Props) => {
 
                         <Text mt={20} weight={500}>Birth Date: </Text>
                         <Text className={classes.formFieldValue}>
-                            {applicant.birthDate.getDate()}
+                            {getShortDate(applicant.birthDate)}
                         </Text>
 
                         <Text mt={20} weight={500}>School: </Text>
