@@ -2,7 +2,7 @@ import type {IPaginatedList} from "@models/api/pagination";
 import {defaultPaginatedList} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
-import type {IEnrollmentPost, IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import {useEnrollmentActions} from "@store/slices/enrollment/enrollment/enrollmentActions";
@@ -17,7 +17,7 @@ export interface IEnrollmentSliceState {
 }
 
 const initialState: IEnrollmentSliceState = {
-    enrollmentForm: {} as IEnrollmentPost,
+    enrollmentForm: {} as IEnrollmentPostFormModel,
     list: defaultPaginatedList(),
     approvedList: defaultPaginatedList(),
     rejectedList: defaultPaginatedList(),

@@ -10,7 +10,8 @@ import {schools} from "@const/education";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Box, Container, Group, Stepper} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
-import type {IEnrollmentPost, IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
+import {Notify} from "@services/Notify";
 import {useTestSlice} from "@store/slices/education/test/testSlice";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {useCallback, useState} from "react";
@@ -19,13 +20,17 @@ import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
-import {Notify} from "@services/Notify";
+
+const maxBirthDate = new Date();
+maxBirthDate.setFullYear(new Date().getFullYear() - 1);
+const minBirthDate = new Date();
+minBirthDate.setFullYear(new Date().getFullYear() - 100);
 
 const formSchema = z.object({
     applicant: z.object({
         firstName: z.string().nonempty("First name is required"),
         lastName: z.string().nonempty("Last name is required"),
-        birthDate: z.string().nonempty("Birth date is required"),
+        birthDate: z.date().max(maxBirthDate, "Invalid birth date").min(minBirthDate, "Invalid birth date"),
         school: z.string().nonempty("School is required"),
         grade: z.string().nonempty("Grade is required"),
         levelKey: z.string().nonempty("Level is required"),
@@ -55,17 +60,18 @@ export const EnrollPage = () => {
 
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 1);
-    const maxDateStr = maxDate.toString().split("T")[0];
 
     const persistedForm = selectors.enrollmentForm();
-    const enrollmentForm = useForm<IEnrollmentPostFormModel>({
+    const persistedBirthDate = Date.parse(persistedForm?.applicant?.birthDate);
+
+    const enrollmentForm = useForm<IEnrollmentPost>({
         mode: "onChange",
         reValidateMode: "onChange",
         defaultValues: {
             applicant: {
                 firstName: persistedForm?.applicant?.firstName || "",
                 lastName: persistedForm?.applicant?.lastName || "",
-                birthDate: persistedForm?.applicant?.birthDate || maxDateStr,
+                birthDate: persistedBirthDate ? new Date(persistedBirthDate) : maxDate,
                 school: persistedForm?.applicant?.school || schools[0].value,
                 grade: persistedForm?.applicant?.grade || schools[0].grades[0],
                 levelKey: persistedForm?.applicant?.levelKey || "",
@@ -92,42 +98,23 @@ export const EnrollPage = () => {
         setActive(nextStep);
     };
 
-    const onValidSubmit: SubmitHandler<IEnrollmentPostFormModel> = (data) => {
+    const onValidSubmit: SubmitHandler<IEnrollmentPost> = (data) => {
         console.log("[VALID SUBMIT] enrollmentForm: ", data);
-
-        const model: IEnrollmentPost = {
-            applicant: {
-                firstName: data.applicant.firstName,
-                lastName: data.applicant.lastName,
-                birthDate: new Date(data.applicant.birthDate),
-                school: data.applicant.school,
-                grade: data.applicant.grade,
-                levelKey: data.applicant.levelKey,
-            },
-            contact: {
-                email: data.contact.email,
-                phoneNumber: data.contact.phoneNumber,
-                zipCode: data.contact.zipCode,
-                zipCodeCity: data.contact.zipCodeCity,
-                state: data.contact.state,
-                city: data.contact.city,
-                street: data.contact.street,
-                houseNumber: data.contact.houseNumber,
-            }
-        };
 
         if (isTestCompleted && currentTestResult()) {
             data.testResult = currentTestResult()!;
         }
 
-        enrollActions.submit(model).then(result => {
+        enrollActions.submit(data).then(result => {
             if (result) {
                 enrollmentForm.reset();
                 navigate("/");
             }
+        }).then(() => {
+            enrollActions.persistEnrollmentForm({} as IEnrollmentPost);
         });
     };
-    const onInvalidSubmit: SubmitErrorHandler<IEnrollmentPostFormModel> = (data) => {
+    const onInvalidSubmit: SubmitErrorHandler<IEnrollmentPost> = (data) => {
         console.log("[INVALID SUBMIT] enrollmentForm: ", data);
         Notify.info("Please fill in all required fields");
     };

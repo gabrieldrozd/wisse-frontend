@@ -1,4 +1,4 @@
-export const getShortDate = (longDate: Date): string => {
+export const getShortDate = (longDate: Date | string): string => {
     const date = new Date(longDate);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 };
