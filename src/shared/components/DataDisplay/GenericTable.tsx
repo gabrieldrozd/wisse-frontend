@@ -1,10 +1,13 @@
 import {Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
-import {ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, SortingState, useReactTable} from "@tanstack/react-table";
-import {PaginatedList} from "@models/api/pagination";
-import {createRef, useEffect, useState} from "react";
-import classes from "./styles/GenericTable.module.scss";
-import {useArrowKeySelect} from "@/shared/components/DataDisplay/useArrowKeySelect";
+import type {IPaginatedList} from "@models/api/pagination";
 import {IconSortAscending, IconSortDescending} from "@tabler/icons-react";
+import type {ColumnDef, SortingState} from "@tanstack/react-table";
+import {flexRender, getCoreRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
+import {createRef, useCallback, useEffect, useState} from "react";
+
+import classes from "./styles/GenericTable.module.scss";
+
+import {useArrowKeySelect} from "@/shared/components/DataDisplay/useArrowKeySelect";
 import {DataNotFound} from "@/shared/components/DataNotFound/DataNotFound";
 
 export interface Props {
@@ -19,7 +22,7 @@ export interface Props {
     /**
      * PaginatedList object as a data holder for the table
      */
-    data: PaginatedList<any>;
+    data: IPaginatedList<any>;
     /**
      * Function for fetching data
      * @param pageIndex - page index | default: 1
@@ -49,8 +52,6 @@ export const GenericTable = ({columns, dataName, data, selectedRow, fetchData, s
     const [isAscending, setIsAscending] = useState(true);
     const totalPages = Math.ceil(data.pagination.totalItems / data.pagination.pageSize);
 
-    console.log("data.pagination", data.pagination);
-
     const [sorting, setSorting] = useState<SortingState>([]);
     const table = useReactTable({
         data: data.list,
@@ -62,6 +63,14 @@ export const GenericTable = ({columns, dataName, data, selectedRow, fetchData, s
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel()
     });
+
+    const fetch = useCallback(async () => {
+        await fetchData(pageIndex, pageSize, isAscending);
+    }, [pageIndex, pageSize, isAscending]);
+
+    useEffect(() => {
+        fetch().then();
+    }, []);
 
     useArrowKeySelect({tableBodyRef, table, selectedRow, selectRow});
 
@@ -93,10 +102,6 @@ export const GenericTable = ({columns, dataName, data, selectedRow, fetchData, s
             await fetchData(newPageIndex, pageSize, isAscending);
         }
     };
-
-    useEffect(() => {
-        fetchData(pageIndex, pageSize, true).then();
-    }, []);
 
     if (data.list.length === 0) {
         return <DataNotFound dataName={dataName!} />;

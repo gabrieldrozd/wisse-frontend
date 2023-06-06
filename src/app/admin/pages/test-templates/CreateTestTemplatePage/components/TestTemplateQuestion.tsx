@@ -9,7 +9,7 @@ import {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 import {IQuestionPostFormModel} from "@models/education/question";
 import {TestTemplateQuestionErrors} from "./TestTemplateQuestionErrors";
 import {TestTemplateQuestionAnswer} from "./TestTemplateQuestionAnswer";
-import {DebouncedInput} from "@components/form/DebouncedInput";
+import {SpellCheckDebouncedInput} from "@components/form/SpellCheckDebouncedInput";
 
 interface Props {
     formControl: Control<ITestTemplatePostFormModel>;
@@ -67,7 +67,7 @@ export const TestTemplateQuestion = memo((
             </Col>
 
             <Col xs={12} lg={7} w="100%">
-                <DebouncedInput
+                <SpellCheckDebouncedInput
                     required
                     textarea={true}
                     formControl={formControl}

@@ -1,21 +1,24 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {useEnrollmentActions} from "@store/slices/enrollment/enrollment/enrollmentActions";
-import {EnrollmentSelectors} from "@store/slices/enrollment/enrollment/enrollmentSelectors";
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {PaginatedList} from "@models/api/pagination";
-import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {IPaginatedList} from "@models/api/pagination";
+import {defaultPaginatedList} from "@models/api/pagination";
+import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
+import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
+import type {PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
-export interface EnrollmentSliceState {
-    list: PaginatedList<EnrollmentBase>;
-    approvedList: PaginatedList<EnrollmentBase>;
-    rejectedList: PaginatedList<EnrollmentBase>;
+export interface IEnrollmentSliceState {
+    enrollmentForm: IEnrollmentPostFormModel;
+    list: IPaginatedList<EnrollmentBase>;
+    approvedList: IPaginatedList<EnrollmentBase>;
+    rejectedList: IPaginatedList<EnrollmentBase>;
     details: EnrollmentDetails;
 }
 
-const initialState: EnrollmentSliceState = {
-    list: PaginatedList.default<EnrollmentBase>(),
-    approvedList: PaginatedList.default<EnrollmentBase>(),
-    rejectedList: PaginatedList.default<EnrollmentBase>(),
+const initialState: IEnrollmentSliceState = {
+    enrollmentForm: {} as IEnrollmentPostFormModel,
+    list: defaultPaginatedList(),
+    approvedList: defaultPaginatedList(),
+    rejectedList: defaultPaginatedList(),
     details: {} as EnrollmentDetails
 };
 
@@ -23,13 +26,16 @@ export const enrollmentSlice = createSlice({
     name: "enrollment",
     initialState,
     reducers: {
-        setList: (state, action: PayloadAction<PaginatedList<EnrollmentBase>>) => {
+        persistForm: (state, action: PayloadAction<IEnrollmentPostFormModel>) => {
+            state.enrollmentForm = action.payload;
+        },
+        setList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
             state.list = action.payload;
         },
-        setApprovedList: (state, action: PayloadAction<PaginatedList<EnrollmentBase>>) => {
+        setApprovedList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
             state.approvedList = action.payload;
         },
-        setRejectedList: (state, action: PayloadAction<PaginatedList<EnrollmentBase>>) => {
+        setRejectedList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
             state.rejectedList = action.payload;
         },
         setDetails: (state, action: PayloadAction<EnrollmentDetails>) => {
@@ -51,10 +57,3 @@ export const enrollmentSlice = createSlice({
         }
     }
 });
-
-export const useEnrollmentSlice = () => {
-    return {
-        actions: useEnrollmentActions(),
-        selectors: new EnrollmentSelectors()
-    };
-};

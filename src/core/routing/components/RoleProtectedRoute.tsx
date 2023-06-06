@@ -1,7 +1,8 @@
-import {ReactNode, useEffect} from "react";
+import type {Role} from "@const/securityTypes";
+import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
+import type {ReactNode} from "react";
+import {useEffect} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {useAuthSlice} from "@store/slices/users/auth/authSlice";
-import {Role} from "@const/securityTypes";
 
 export interface ProtectedRouteProps {
     role: Role;

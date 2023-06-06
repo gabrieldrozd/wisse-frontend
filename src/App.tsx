@@ -1,12 +1,12 @@
+import {useAppContext} from "@context/ApplicationContext";
+import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
+import {Notifications} from "@mantine/notifications";
+import {ApplicationRouter} from "@routing/ApplicationRouter";
 import {useEffect, useState} from "react";
 import {RouterProvider} from "react-router-dom";
-import {Notifications} from "@mantine/notifications";
-import {Flex, Loader, LoadingOverlay, Title} from "@mantine/core";
-import {ApplicationRouter} from "@routing/ApplicationRouter";
-import {useGlobalContext} from "@context/ApplicationContext";
 
 export const App = () => {
-    const {isLoading} = useGlobalContext();
+    const {isLoading} = useAppContext();
     const [isUiReady, setIsUiReady] = useState(false);
 
     useEffect(() => {
@@ -18,7 +18,7 @@ export const App = () => {
     return (
         <Flex direction="column" align="flex-start" justify="flex-start">
             <LoadingOverlay
-                visible={isLoading.value || !isUiReady}
+                visible={isLoading.value}
                 overlayBlur={10}
                 loader={
                     <Flex

@@ -1,4 +1,4 @@
-import {EnrollPageContext, useEnrollPageContext} from "@app.start/context/enrollPageContext";
+import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {EnrollPageButtons} from "@app.start/pages/EnrollPage/components/EnrollPageButtons";
 import {StepApplicantDetails} from "@app.start/pages/EnrollPage/StepApplicantDetails";
 import {StepEnrollmentSummary} from "@app.start/pages/EnrollPage/StepEnrollmentSummary";
@@ -10,21 +10,27 @@ import {schools} from "@const/education";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Box, Container, Group, Stepper} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
-import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
+import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
+import {Notify} from "@services/Notify";
+import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {useCallback, useState} from "react";
 import type {SubmitHandler} from "react-hook-form";
 import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
+
+const maxBirthDate = new Date();
+maxBirthDate.setFullYear(new Date().getFullYear() - 1);
+const minBirthDate = new Date();
+minBirthDate.setFullYear(new Date().getFullYear() - 100);
 
 const formSchema = z.object({
     applicant: z.object({
         firstName: z.string().nonempty("First name is required"),
         lastName: z.string().nonempty("Last name is required"),
-        birthDate: z.date().max(new Date(), "Birth date cannot be in the future"),
+        birthDate: z.date().max(maxBirthDate, "Invalid birth date").min(minBirthDate, "Invalid birth date"),
         school: z.string().nonempty("School is required"),
         grade: z.string().nonempty("Grade is required"),
         levelKey: z.string().nonempty("Level is required"),
@@ -47,35 +53,38 @@ export const EnrollPage = () => {
     const marginValue = mediaMatch ? 0 : 50;
 
     const {isTestCompleted} = useEnrollPageContext();
-    const {actions: enrollActions} = useEnrollmentSlice();
-    const {selectors: {currentTestResult}} = useTestSlice();
+    const {actions: enrollActions, selectors} = useEnrollmentSlice();
+    const {selectors: {currentTestResult}} = useTestResultSlice();
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
 
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 1);
 
-    const enrollmentForm = useForm<EnrollmentPost>({
+    const persistedForm = selectors.enrollmentForm();
+    const persistedBirthDate = Date.parse(persistedForm?.applicant?.birthDate);
+
+    const enrollmentForm = useForm<IEnrollmentPost>({
         mode: "onChange",
         reValidateMode: "onChange",
         defaultValues: {
             applicant: {
-                firstName: "",
-                lastName: "",
-                birthDate: maxDate,
-                school: schools[0].value,
-                grade: schools[0].grades[0],
-                levelKey: "",
+                firstName: persistedForm?.applicant?.firstName || "",
+                lastName: persistedForm?.applicant?.lastName || "",
+                birthDate: persistedBirthDate ? new Date(persistedBirthDate) : maxDate,
+                school: persistedForm?.applicant?.school || schools[0].value,
+                grade: persistedForm?.applicant?.grade || schools[0].grades[0],
+                levelKey: persistedForm?.applicant?.levelKey || "",
             },
             contact: {
-                email: "",
-                phoneNumber: "",
-                zipCode: "",
-                zipCodeCity: "",
-                state: "",
-                city: "",
-                street: "",
-                houseNumber: "",
+                email: persistedForm?.contact?.email || "",
+                phoneNumber: persistedForm?.contact?.phoneNumber || "",
+                zipCode: persistedForm?.contact?.zipCode || "",
+                zipCodeCity: persistedForm?.contact?.zipCodeCity || "",
+                state: persistedForm?.contact?.state || "",
+                city: persistedForm?.contact?.city || "",
+                street: persistedForm?.contact?.street || "",
+                houseNumber: persistedForm?.contact?.houseNumber || "",
             }
         },
         resolver: zodResolver(formSchema)
@@ -89,14 +98,11 @@ export const EnrollPage = () => {
         setActive(nextStep);
     };
 
-    const onValidSubmit: SubmitHandler<EnrollmentPost> = (data) => {
+    const onValidSubmit: SubmitHandler<IEnrollmentPost> = (data) => {
         console.log("[VALID SUBMIT] enrollmentForm: ", data);
 
-        if (isTestCompleted) {
-            const testResult = currentTestResult();
-            if (testResult) {
-                data.testResult = testResult;
-            }
+        if (isTestCompleted && currentTestResult()) {
+            data.testResult = currentTestResult()!;
         }
 
         enrollActions.submit(data).then(result => {
@@ -104,10 +110,13 @@ export const EnrollPage = () => {
                 enrollmentForm.reset();
                 navigate("/");
             }
+        }).then(() => {
+            enrollActions.persistEnrollmentForm({} as IEnrollmentPost);
         });
     };
-    const onInvalidSubmit: SubmitErrorHandler<EnrollmentPost> = (data) => {
+    const onInvalidSubmit: SubmitErrorHandler<IEnrollmentPost> = (data) => {
         console.log("[INVALID SUBMIT] enrollmentForm: ", data);
+        Notify.info("Please fill in all required fields");
     };
 
     const onSubmit = enrollmentForm.handleSubmit(onValidSubmit, (errors) => onInvalidSubmit(errors));

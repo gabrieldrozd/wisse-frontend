@@ -3,16 +3,18 @@ import {colors} from "@const/colors";
 import {levels, schools} from "@const/education";
 import {Center, Col, Flex, Grid, Select, TextInput} from "@mantine/core";
 import {DatePickerInput} from "@mantine/dates";
-import type {EnrollmentPost} from "@models/enrollment/enrollmentPost";
+import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Button} from "@nextui-org/react";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {IconCalendar} from "@tabler/icons-react";
+import {deepCopy} from "@utils/objectUtils";
 import {useEffect, useState} from "react";
 import type {Control} from "react-hook-form";
 import {Controller, useFormContext, useWatch} from "react-hook-form";
 
 const textInputStyles = {
     input: {
-        backgroundColor: colors.indigo50,
+        backgroundColor: colors.indigo100,
         "&:focus": {
             borderColor: colors.indigo500,
             borderWidth: 2,
@@ -22,7 +24,7 @@ const textInputStyles = {
 
 const selectStyles = {
     input: {
-        backgroundColor: colors.indigo50,
+        backgroundColor: colors.indigo100,
         "&:focus": {
             borderColor: colors.indigo500,
             borderWidth: 2,
@@ -39,21 +41,23 @@ const selectStyles = {
 };
 
 interface Props {
-    formControl: Control<EnrollmentPost>;
+    formControl: Control<IEnrollmentPost>;
 }
 
 export const StepApplicantDetails = ({formControl}: Props) => {
     const [isFormSaved, setIsFormSaved] = useState(false);
     const [hasValuesChanged, setHasValuesChanged] = useState(false);
     const localContext = useEnrollPageContext();
-    const form = useFormContext<EnrollmentPost>();
+    const {actions: {persistEnrollmentForm}} = useEnrollmentSlice();
+    const form = useFormContext<IEnrollmentPost>();
     const school = useWatch({
         control: formControl,
         name: "applicant.school",
     });
 
     useEffect(() => {
-        form.setValue("applicant.grade", "");
+        const updatedApplicant = {...form.getValues().applicant, grade: ""};
+        form.setValue("applicant", updatedApplicant);
     }, [school]);
 
     const handleSave = async () => {
@@ -62,6 +66,10 @@ export const StepApplicantDetails = ({formControl}: Props) => {
 
         if (isValid) {
             setIsFormSaved(true);
+            const formValues = form.getValues();
+            const formValuesCopy = deepCopy<IEnrollmentPost>(formValues);
+
+            persistEnrollmentForm(formValuesCopy);
         }
     };
 
@@ -83,7 +91,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="applicant.firstName"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <TextInput
                             size="md"
@@ -106,7 +113,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="applicant.lastName"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <TextInput
                             mt={20}
@@ -130,7 +136,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="applicant.birthDate"
                     control={formControl}
-                    defaultValue={new Date()}
                     render={({field}) => (
                         <DatePickerInput
                             mt={20}
@@ -142,8 +147,9 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                             placeholder="Pick you birth date"
                             required
                             {...field}
-                            onChange={(event) => {
-                                field.onChange(event);
+                            value={field.value}
+                            onChange={(date) => {
+                                field.onChange(date);
                                 setHasValuesChanged(true);
                             }}
                             error={form.formState.errors.applicant?.birthDate?.message}
@@ -155,7 +161,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="applicant.school"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <Select
                             mt={20}
@@ -180,7 +185,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="applicant.grade"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <Select
                             mt={20}
@@ -205,7 +209,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="applicant.levelKey"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <Select
                             mt={20}
@@ -232,7 +235,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="contact.email"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <TextInput
                             size="md"
@@ -255,7 +257,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="contact.phoneNumber"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <TextInput
                             mt={20}
@@ -280,7 +281,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                     <Controller
                         name="contact.zipCode"
                         control={formControl}
-                        defaultValue=""
                         render={({field}) => (
                             <TextInput
                                 w="35%"
@@ -304,7 +304,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                     <Controller
                         name="contact.zipCodeCity"
                         control={formControl}
-                        defaultValue=""
                         render={({field}) => (
                             <TextInput
                                 w="60%"
@@ -329,7 +328,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="contact.state"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <TextInput
                             mt={20}
@@ -353,7 +351,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                 <Controller
                     name="contact.city"
                     control={formControl}
-                    defaultValue=""
                     render={({field}) => (
                         <TextInput
                             mt={20}
@@ -378,7 +375,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                     <Controller
                         name="contact.street"
                         control={formControl}
-                        defaultValue=""
                         render={({field}) => (
                             <TextInput
                                 w="60%"
@@ -402,7 +398,6 @@ export const StepApplicantDetails = ({formControl}: Props) => {
                     <Controller
                         name="contact.houseNumber"
                         control={formControl}
-                        defaultValue=""
                         render={({field}) => (
                             <TextInput
                                 w="35%"

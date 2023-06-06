@@ -2,13 +2,12 @@ import {TestModel} from "@app.start/models/testModel";
 import {Text, Col, Grid, Title, Center, Flex, Divider, Paper, Badge, Box} from "@mantine/core";
 import type {ITest} from "@models/education/test";
 import {Button} from "@nextui-org/react";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
+import {useTestSlice} from "@store/slices/education/test/useTestSlice";
 import clsx from "clsx";
 import {useEffect, useState} from "react";
 import {MdCircle, MdOutlineCircle} from "react-icons/md";
 
 import classes from "./LevelAssessmentTestMode.module.scss";
-import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 
 interface Props {
     setCompleteTest: (testId: string) => void;
@@ -220,25 +219,6 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                     </Flex>
                 </Col>
             </Grid>
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
-            {/* TODO: After completing the test, "Skip" button should change to "Next" */}
-            {/* Currently the "Skip" button remains the same, even if Test was completed */}
-
         </>
     );
 };

@@ -1,20 +1,21 @@
-import {createContext, ReactNode, useContext, useMemo, useState} from "react";
+import type {ReactNode} from "react";
+import {createContext, useContext, useMemo, useState} from "react";
 
-export declare interface GlobalContextProps {
+export declare interface AppContextProps {
     isLoading: {
         value: boolean;
         set: (loading: boolean) => void;
     };
 }
 
-const GlobalContext = createContext<GlobalContextProps>({} as GlobalContextProps);
-export const useGlobalContext = () => useContext(GlobalContext);
+const AppContext = createContext<AppContextProps>({} as AppContextProps);
+export const useAppContext = () => useContext(AppContext);
 
-export declare interface ApplicationContextProps {
+export declare interface Props {
     children: ReactNode;
 }
 
-export const ApplicationContext = ({children}: ApplicationContextProps) => {
+export const ApplicationContext = ({children}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const contextObject = useMemo(() => ({
@@ -25,8 +26,8 @@ export const ApplicationContext = ({children}: ApplicationContextProps) => {
     }), [isLoading]);
 
     return (
-        <GlobalContext.Provider value={contextObject}>
+        <AppContext.Provider value={contextObject}>
             {children}
-        </GlobalContext.Provider>
+        </AppContext.Provider>
     );
 };

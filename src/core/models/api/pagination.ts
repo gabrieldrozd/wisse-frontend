@@ -4,26 +4,21 @@ export interface PaginationRequest {
     isAscending: boolean;
 }
 
-export interface PaginatedList<T> {
-    pagination: PaginationInfo;
+export interface IPaginatedList<T> {
+    pagination: IPaginationInfo;
     list: T[];
 }
 
-export class PaginatedList<T> implements PaginatedList<T> {
-    pagination: PaginationInfo;
-    list: T[];
+export const createPaginatedList = <T>(
+    pagination: IPaginationInfo, list: T[]
+): IPaginatedList<T> => {
+    return {
+        pagination: pagination,
+        list: list
+    };
+};
 
-    constructor(pagination: PaginationInfo, list: T[]) {
-        this.pagination = pagination;
-        this.list = list;
-    }
-
-    static default<T>(): PaginatedList<T> {
-        return new PaginatedList<T>(PaginationInfo.default(), []);
-    }
-}
-
-export interface PaginationInfo {
+export interface IPaginationInfo {
     pageIndex: number;
     pageSize: number;
     totalItems: number;
@@ -32,24 +27,28 @@ export interface PaginationInfo {
     hasNextPage: boolean;
 }
 
-export class PaginationInfo implements PaginationInfo {
-    pageIndex: number;
-    pageSize: number;
-    totalItems: number;
-    count: number;
-    hasPreviousPage: boolean;
-    hasNextPage: boolean;
+export const createPaginationInfo = (
+    pageIndex: number,
+    pageSize: number,
+    totalItems: number,
+    count: number,
+    hasPreviousPage: boolean,
+    hasNextPage: boolean
+): IPaginationInfo => {
+    return {
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+        totalItems: totalItems,
+        count: count,
+        hasPreviousPage: hasPreviousPage,
+        hasNextPage: hasNextPage
+    };
+};
 
-    constructor(pageIndex: number, pageSize: number, totalItems: number, count: number, hasPreviousPage: boolean, hasNextPage: boolean) {
-        this.pageIndex = pageIndex;
-        this.pageSize = pageSize;
-        this.totalItems = totalItems;
-        this.count = count;
-        this.hasPreviousPage = hasPreviousPage;
-        this.hasNextPage = hasNextPage;
-    }
+export const defaultPaginatedList = <T>(): IPaginatedList<T> => {
+    return createPaginatedList(defaultPaginationInfo(), []);
+};
 
-    static default(): PaginationInfo {
-        return new PaginationInfo(1, 10, 0, 0, false, false);
-    }
-}
+export const defaultPaginationInfo = (): IPaginationInfo => {
+    return createPaginationInfo(1, 10, 0, 0, false, false);
+};

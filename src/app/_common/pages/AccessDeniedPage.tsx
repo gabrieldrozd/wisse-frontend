@@ -1,7 +1,7 @@
 import {Button, Container, createStyles, Group, Mark, rem, Space, Text, Title} from "@mantine/core";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IconChevronLeft} from "@tabler/icons-react";
-import {useAuthSlice} from "@store/slices/users/auth/authSlice";
+import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
 
 const useStyles = createStyles((theme) => ({
     root: {
