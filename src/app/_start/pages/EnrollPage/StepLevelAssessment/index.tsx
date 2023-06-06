@@ -1,6 +1,6 @@
 import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
-import {useTestResultSlice} from "@store/slices/education/test-result/testResultSlice";
+import {useTestSlice} from "@store/slices/education/test/useTestSlice";
+import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
 import type {ReactNode} from "react";
 
 import {LevelAssessmentInformation} from "./components/LevelAssessmentInformation";

@@ -1,7 +1,7 @@
 import {Popover, UnstyledButton, Title, Text} from "@mantine/core";
 import classes from "./styles/LoginForm.module.scss";
 import {useForm} from "@mantine/form";
-import {useAuthSlice} from "@store/slices/users/auth/authSlice";
+import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
 import {NavLink} from "react-router-dom";
 import {Input} from "@nextui-org/react";
 import {Button} from "@components/Button";

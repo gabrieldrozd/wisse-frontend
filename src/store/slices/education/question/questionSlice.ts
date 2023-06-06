@@ -3,8 +3,6 @@ import {defaultPaginatedList} from "@models/api/pagination";
 import type {IQuestion} from "@models/education/question";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
-import {useQuestionActions} from "@store/slices/education/question/questionActions";
-import {QuestionSelectors} from "@store/slices/education/question/questionSelectors";
 
 export interface QuestionSliceState {
     list: IPaginatedList<IQuestion>;
@@ -23,10 +21,3 @@ export const questionSlice = createSlice({
         },
     }
 });
-
-export const useQuestionSlice = () => {
-    return {
-        actions: useQuestionActions(),
-        selectors: new QuestionSelectors()
-    };
-};

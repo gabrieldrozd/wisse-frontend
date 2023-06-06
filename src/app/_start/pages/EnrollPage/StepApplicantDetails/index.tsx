@@ -5,7 +5,7 @@ import {Center, Col, Flex, Grid, Select, TextInput} from "@mantine/core";
 import {DatePickerInput} from "@mantine/dates";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Button} from "@nextui-org/react";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {IconCalendar} from "@tabler/icons-react";
 import {deepCopy} from "@utils/objectUtils";
 import {useEffect, useState} from "react";

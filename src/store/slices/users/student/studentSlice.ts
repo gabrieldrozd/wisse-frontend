@@ -4,8 +4,6 @@ import type {StudentBase} from "@models/users/student/studentBrowse";
 import type {StudentDetails} from "@models/users/student/studentDetails";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
-import {useStudentActions} from "@store/slices/users/student/studentActions";
-import {StudentSelectors} from "@store/slices/users/student/studentSelectors";
 
 export interface StudentSliceState {
     list: IPaginatedList<StudentBase>;
@@ -29,10 +27,3 @@ export const studentSlice = createSlice({
         },
     }
 });
-
-export const useStudentSlice = () => {
-    return {
-        actions: useStudentActions(),
-        selectors: new StudentSelectors()
-    };
-};

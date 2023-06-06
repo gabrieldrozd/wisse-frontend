@@ -1,6 +1,6 @@
 import {Navbar} from "@mantine/core";
 import {UserNavigationButton} from "@/shared/components/SystemShell/UserNavigationButton";
-import {useAuthSlice} from "@store/slices/users/auth/authSlice";
+import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
 import classes from "../styles/StudentSystemShell.module.scss";
 
 export interface UserButtonSectionProps {

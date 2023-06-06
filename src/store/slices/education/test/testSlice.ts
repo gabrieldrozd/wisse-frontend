@@ -1,8 +1,6 @@
 import type {ITest} from "@models/education/test";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
-import {useTestActions} from "@store/slices/education/test/testActions";
-import {TestSelectors} from "@store/slices/education/test/testSelectors";
 
 export interface TestSliceState {
     currentTest: ITest | null;
@@ -26,10 +24,3 @@ export const testSlice = createSlice({
         }
     }
 });
-
-export const useTestSlice = () => {
-    return {
-        actions: useTestActions(),
-        selectors: new TestSelectors()
-    };
-};

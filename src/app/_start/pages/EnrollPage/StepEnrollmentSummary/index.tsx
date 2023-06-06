@@ -3,13 +3,13 @@ import applicantImage from "@assets/start/applicant_study.svg";
 import {Code, Col, Divider, Grid, Image, Mark, Text} from "@mantine/core";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Spacer} from "@nextui-org/react";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
+import {useTestSlice} from "@store/slices/education/test/useTestSlice";
+import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
 import {getShortDate} from "@utils/dateUtils";
 import type {Control} from "react-hook-form";
 import {useWatch} from "react-hook-form";
 
 import classes from "./StepEnrollmentSummary.module.scss";
-import {useTestResultSlice} from "@store/slices/education/test-result/testResultSlice";
 
 interface Props {
     formControl: Control<IEnrollmentPost>;
