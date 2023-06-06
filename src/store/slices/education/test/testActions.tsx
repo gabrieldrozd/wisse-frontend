@@ -68,26 +68,11 @@ export const useTestActions = () => {
         await dispatch(actions.clearTest({testId}));
     };
 
-    const calculateTestResult = async (testId: string) => {
-        isLoading.set(true);
-        try {
-            const envelope = await testRequestAgent.command.calculateResult(testId);
-            if (envelope.isSuccess) {
-                Notify.success("Result", "Test result has been received");
-                await dispatch(actions.setResult(envelope.data));
-                return true;
-            }
-        } finally {
-            isLoading.set(false);
-        }
-    };
-
     return {
         prepareLevelAssessmentTest,
         answerQuestion,
         updateQuestionAnswer,
         completeTest,
-        clearTest,
-        calculateTestResult
+        clearTest
     };
 };

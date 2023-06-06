@@ -7,8 +7,4 @@ export class TestSelectors {
     public currentTest = () => {
         return this.testState.currentTest;
     };
-
-    public currentTestResult = () => {
-        return this.testState.currentTestResult;
-    }
 }

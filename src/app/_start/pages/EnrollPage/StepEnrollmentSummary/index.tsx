@@ -9,6 +9,7 @@ import type {Control} from "react-hook-form";
 import {useWatch} from "react-hook-form";
 
 import classes from "./StepEnrollmentSummary.module.scss";
+import {useTestResultSlice} from "@store/slices/education/test-result/testResultSlice";
 
 interface Props {
     formControl: Control<IEnrollmentPost>;
@@ -16,7 +17,7 @@ interface Props {
 
 export const StepEnrollmentSummary = ({formControl}: Props) => {
     const {isTestCompleted} = useEnrollPageContext();
-    const {selectors: {currentTestResult}} = useTestSlice();
+    const {selectors: {currentTestResult}} = useTestResultSlice();
     const applicant = useWatch({
         control: formControl,
         name: "applicant",
