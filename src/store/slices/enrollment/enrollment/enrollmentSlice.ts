@@ -5,8 +5,6 @@ import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
 import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
-import {useEnrollmentActions} from "@store/slices/enrollment/enrollment/enrollmentActions";
-import {EnrollmentSelectors} from "@store/slices/enrollment/enrollment/enrollmentSelectors";
 
 export interface IEnrollmentSliceState {
     enrollmentForm: IEnrollmentPostFormModel;
@@ -59,10 +57,3 @@ export const enrollmentSlice = createSlice({
         }
     }
 });
-
-export const useEnrollmentSlice = () => {
-    return {
-        actions: useEnrollmentActions(),
-        selectors: new EnrollmentSelectors()
-    };
-};

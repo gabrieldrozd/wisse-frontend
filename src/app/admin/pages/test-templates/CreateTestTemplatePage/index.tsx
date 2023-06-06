@@ -1,5 +1,3 @@
-import {TestTemplateActionDivider} from "./components/TestTemplateActionDivider";
-import {TestTemplateFormFields} from "./components/TestTemplateFormFields";
 import {levels} from "@const/education";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Affix, Col, Divider, Grid, Group, rem, Title, Transition} from "@mantine/core";
@@ -8,8 +6,9 @@ import type {IQuestion, IQuestionPostFormModel} from "@models/education/question
 import {TestTemplatePost} from "@models/education/testTemplate";
 import type {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 import {Button} from "@nextui-org/react";
-import {useQuestionSlice} from "@store/slices/education/question/questionSlice";
-import {useTestTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
+import {Notify} from "@services/Notify";
+import {useQuestionSlice} from "@store/slices/education/question/useQuestionSlice";
+import {useTestTemplateSlice} from "@store/slices/education/test-template/useTestTemplateSlice";
 import {IconArrowUp} from "@tabler/icons-react";
 import {uuid} from "@utils/uuidUtils";
 import {motion} from "framer-motion";
@@ -20,8 +19,9 @@ import type {SubmitHandler} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {z} from "zod";
 
+import {TestTemplateActionDivider} from "./components/TestTemplateActionDivider";
+import {TestTemplateFormFields} from "./components/TestTemplateFormFields";
 import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
-import {Notify} from "@services/Notify";
 
 const formSchema = z.object({
     name: z.string().nonempty("Name is required"),

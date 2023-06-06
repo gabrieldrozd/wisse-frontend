@@ -12,15 +12,14 @@ import {Box, Container, Group, Stepper} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Notify} from "@services/Notify";
-import {useTestSlice} from "@store/slices/education/test/testSlice";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
+import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {useCallback, useState} from "react";
 import type {SubmitHandler} from "react-hook-form";
 import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
-import {useTestResultSlice} from "@store/slices/education/test-result/testResultSlice";
 
 const maxBirthDate = new Date();
 maxBirthDate.setFullYear(new Date().getFullYear() - 1);

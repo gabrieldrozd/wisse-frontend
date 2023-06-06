@@ -1,5 +1,5 @@
 import {Notify} from "@services/Notify";
-import {useAuthSlice} from "@store/slices/users/auth/authSlice";
+import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
 import type {ReactNode} from "react";
 import { useEffect} from "react";
 import {useNavigate} from "react-router-dom";

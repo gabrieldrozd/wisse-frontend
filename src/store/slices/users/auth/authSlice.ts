@@ -1,8 +1,6 @@
 import type {IAccessToken} from "@models/auth/IAccessToken";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
-import {useAuthActions} from "@store/slices/users/auth/authActions";
-import {AuthSelectors} from "@store/slices/users/auth/authSelectors";
 
 const SLICE_NAME = "auth";
 
@@ -40,10 +38,3 @@ export const authSlice = createSlice({
         }
     }
 });
-
-export const useAuthSlice = () => {
-    return {
-        actions: useAuthActions(),
-        selectors: new AuthSelectors()
-    };
-};

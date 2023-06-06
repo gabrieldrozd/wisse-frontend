@@ -1,11 +1,13 @@
-import {Badge, Text} from "@mantine/core";
-import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
-import {getFullYears, getShortDate} from "@utils/dateUtils";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
+import {Badge, Text} from "@mantine/core";
+import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
+import type {ColumnDef} from "@tanstack/react-table";
+import { createColumnHelper} from "@tanstack/react-table";
+import {getFullYears, getShortDate} from "@utils/dateUtils";
 import {useCallback} from "react";
+
+import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [

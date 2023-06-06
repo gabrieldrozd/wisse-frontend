@@ -3,7 +3,7 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
 import {GenericTable} from "@components/DataDisplay/GenericTable";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {useCallback} from "react";
 

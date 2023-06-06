@@ -1,6 +1,6 @@
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {Flex} from "@mantine/core";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {useEffect} from "react";
 
 import classes from "./_styles/BrowseEnrollmentsDetails.module.scss";

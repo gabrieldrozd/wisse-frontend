@@ -1,9 +1,11 @@
-import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
 import {useStudentsContext} from "@app.admin/context/studentsContext";
-import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
+import type {StudentBase} from "@models/users/student/studentBrowse";
+import {useStudentSlice} from "@store/slices/users/student/useStudentSlice";
+import type {ColumnDef} from "@tanstack/react-table";
+import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
-import {StudentBase} from "@models/users/student/studentBrowse";
-import {useStudentSlice} from "@store/slices/users/student/studentSlice";
+
+import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
 
 const columnsHelper = createColumnHelper<StudentBase>();
 const columns: ColumnDef<StudentBase, any>[] = [

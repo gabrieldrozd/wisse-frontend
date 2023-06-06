@@ -1,13 +1,7 @@
-import {IPaginatedList} from "@models/api/pagination";
-import {IQuestion} from "@models/education/question";
-import type {PayloadAction} from "@reduxjs/toolkit"
 import {createSlice} from "@reduxjs/toolkit";
-import {useQuestionActions} from "@store/slices/education/question/questionActions";
-import {QuestionSelectors} from "@store/slices/education/question/questionSelectors";
-import {useTestTemplateActions} from "@store/slices/education/test-template/testTemplateActions";
-import {TestTemplateSelectors} from "@store/slices/education/test-template/testTemplateSelectors";
 
 export interface TestTemplateSliceState {
+    // TODO: store TestTemplate form
 }
 
 const initialState: TestTemplateSliceState = {
@@ -22,10 +16,3 @@ export const testTemplateSlice = createSlice({
         // },
     }
 });
-
-export const useTestTemplateSlice = () => {
-    return {
-        actions: useTestTemplateActions(),
-        selectors: new TestTemplateSelectors()
-    };
-};

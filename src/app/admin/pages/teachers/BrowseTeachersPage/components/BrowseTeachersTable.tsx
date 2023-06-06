@@ -1,8 +1,9 @@
-import {GenericTable} from "@components/DataDisplay/GenericTable";
-import {ColumnDef, createColumnHelper} from "@tanstack/react-table";
 import {useTeachersContext} from "@app.admin/context/teachersContext";
-import {useTeacherSlice} from "@store/slices/users/teacher/teacherSlice";
-import {TeacherBase} from "@models/users/teacher/teacherBrowse";
+import {GenericTable} from "@components/DataDisplay/GenericTable";
+import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
+import {useTeacherSlice} from "@store/slices/users/teacher/useTeacherSlice";
+import type {ColumnDef} from "@tanstack/react-table";
+import { createColumnHelper} from "@tanstack/react-table";
 
 const columnsHelper = createColumnHelper<TeacherBase>();
 const columns: ColumnDef<TeacherBase, any>[] = [

@@ -1,7 +1,8 @@
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
-import {ActionIcon, Button, Flex, Popover, Space, Text, Title} from "@mantine/core";
-import {IconCheck, IconCircleOff, IconInfoCircle, IconX} from "@tabler/icons-react";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
+import {ActionIcon, Button, Flex, Popover, Space, Text, Title} from "@mantine/core";
+import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
+import {IconCheck, IconCircleOff, IconInfoCircle, IconX} from "@tabler/icons-react";
+
 import classes from "../_styles/BrowseEnrollmentsDetails.module.scss";
 
 export const EnrollmentDetailsCommands = () => {

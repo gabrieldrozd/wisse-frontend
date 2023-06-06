@@ -1,6 +1,6 @@
 import testImg from "@assets/start/online_test.gif";
 import {Box, Text, Title, Paper, Grid, Col, Flex, Badge} from "@mantine/core";
-import {useTestResultSlice} from "@store/slices/education/test-result/testResultSlice";
+import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
 
 export const LevelAssessmentTestResult = () => {
     const {selectors: {currentTestResult}} = useTestResultSlice();
