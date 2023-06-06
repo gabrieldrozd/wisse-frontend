@@ -20,6 +20,7 @@ import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
+import {useTestResultSlice} from "@store/slices/education/test-result/testResultSlice";
 
 const maxBirthDate = new Date();
 maxBirthDate.setFullYear(new Date().getFullYear() - 1);
@@ -54,7 +55,7 @@ export const EnrollPage = () => {
 
     const {isTestCompleted} = useEnrollPageContext();
     const {actions: enrollActions, selectors} = useEnrollmentSlice();
-    const {selectors: {currentTestResult}} = useTestSlice();
+    const {selectors: {currentTestResult}} = useTestResultSlice();
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
 

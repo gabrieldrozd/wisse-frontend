@@ -9,10 +9,12 @@ import {authSlice} from "@store/slices/users/auth/authSlice";
 import {studentSlice} from "@store/slices/users/student/studentSlice";
 import {teacherSlice} from "@store/slices/users/teacher/teacherSlice";
 import {initializeAction} from "@store/persistActions";
+import {testResultSlice} from "@store/slices/education/test-result/testResultSlice";
 
 export interface RootState {
     question: ReturnType<typeof questionSlice.reducer>;
     test: ReturnType<typeof testSlice.reducer>;
+    testResult: ReturnType<typeof testResultSlice.reducer>;
     testTemplate: ReturnType<typeof testTemplateSlice.reducer>;
     enrollment: ReturnType<typeof enrollmentSlice.reducer>;
     auth: ReturnType<typeof authSlice.reducer>;
@@ -23,6 +25,7 @@ export interface RootState {
 export const defaultState: RootState = {
     question: questionSlice.reducer(undefined, {type: ""}),
     test: testSlice.reducer(undefined, {type: ""}),
+    testResult: testResultSlice.reducer(undefined, {type: ""}),
     testTemplate: testTemplateSlice.reducer(undefined, {type: ""}),
     enrollment: enrollmentSlice.reducer(undefined, {type: ""}),
     auth: authSlice.reducer(undefined, {type: ""}),
@@ -42,6 +45,7 @@ export const store: EnhancedStore<RootState, AnyAction, Middleware[]> = configur
     reducer: {
         question: questionSlice.reducer,
         test: testSlice.reducer,
+        testResult: testResultSlice.reducer,
         testTemplate: testTemplateSlice.reducer,
         enrollment: enrollmentSlice.reducer,
         auth: authSlice.reducer,

@@ -1,5 +1,4 @@
 import type {ITest} from "@models/education/test";
-import type {ITestResult} from "@models/education/testResult";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import {useTestActions} from "@store/slices/education/test/testActions";
@@ -7,12 +6,10 @@ import {TestSelectors} from "@store/slices/education/test/testSelectors";
 
 export interface TestSliceState {
     currentTest: ITest | null;
-    currentTestResult: ITestResult | null;
 }
 
 const initialState: TestSliceState = {
-    currentTest: {} as ITest,
-    currentTestResult: null
+    currentTest: {} as ITest
 };
 
 export const testSlice = createSlice({
@@ -26,9 +23,6 @@ export const testSlice = createSlice({
             if (state.currentTest?.externalId === action.payload.testId) {
                 state.currentTest = null;
             }
-        },
-        setResult: (state, action: PayloadAction<ITestResult>) => {
-            state.currentTestResult = action.payload;
         }
     }
 });
