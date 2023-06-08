@@ -1,4 +1,4 @@
-export interface PaginationRequest {
+export interface IPaginationRequest {
     pageSize: number;
     pageIndex: number;
     isAscending: boolean;

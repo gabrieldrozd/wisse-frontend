@@ -61,25 +61,6 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
             return <Text>-</Text>;
         },
     }),
-    // columnsHelper.display({
-    //     id: "actions",
-    //     header: "Actions",
-    //     cell: props => {
-    //         return (
-    //             <div className={classes.actionButtons}>
-    //                 <Button
-    //                     onClick={() => {
-    //                         console.log(props.row.original);
-    //                     }}
-    //                 >
-    //                     View
-    //                 </Button>
-    //                 <Button>View</Button>
-    //                 <Button>View</Button>
-    //             </div>
-    //         );
-    //     },
-    // })
 ];
 
 export const BrowseEnrollmentsTable = () => {
