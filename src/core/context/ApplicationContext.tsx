@@ -18,15 +18,15 @@ export declare interface Props {
 export const ApplicationContext = ({children}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const contextObject = useMemo(() => ({
+    const contextObject = () => ({
         isLoading: {
             value: isLoading,
             set: setIsLoading,
         }
-    }), [isLoading]);
+    });
 
     return (
-        <AppContext.Provider value={contextObject}>
+        <AppContext.Provider value={contextObject()}>
             {children}
         </AppContext.Provider>
     );

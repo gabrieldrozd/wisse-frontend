@@ -2,11 +2,11 @@ import type {IPaginationRequest} from "@models/api/pagination";
 import type {ReactNode} from "react";
 import {createContext, useContext, useMemo, useState} from "react";
 
-interface PaginationContextProps {
+export interface IPaginationModel {
     /**
      * The current pagination state.
      */
-    pagination: IPaginationRequest;
+    model: IPaginationRequest;
 
     /**
      * Sets the current page index.
@@ -27,7 +27,7 @@ interface PaginationContextProps {
     setIsAscending: (isAscending: boolean) => void;
 }
 
-const PaginationContext = createContext<PaginationContextProps>({} as PaginationContextProps);
+const PaginationContext = createContext<IPaginationModel>({} as IPaginationModel);
 export const usePagination = () => useContext(PaginationContext);
 
 interface Props {
@@ -64,7 +64,7 @@ export const PaginationContextProvider = ({children}: Props) => {
     const handleSetIsAscending = async (isAscending: boolean) => setPagination({...pagination, isAscending: isAscending});
 
     const contextObject = useMemo(() => ({
-        pagination,
+        model: pagination,
         setPageIndex: handleSetPageIndex,
         setPageSize: handleSetPageSize,
         setIsAscending: handleSetIsAscending,

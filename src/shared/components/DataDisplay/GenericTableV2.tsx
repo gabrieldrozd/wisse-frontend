@@ -1,3 +1,6 @@
+import {useArrowKeySelect} from "@components/DataDisplay/useArrowKeySelect";
+import {DataNotFound} from "@components/DataNotFound/DataNotFound";
+import type {IPaginationModel} from "@context/PaginationContextProvider";
 import {Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
 import type {IPaginatedList} from "@models/api/pagination";
 import {IconSortAscending, IconSortDescending} from "@tabler/icons-react";
@@ -7,51 +10,20 @@ import {createRef, useCallback, useEffect, useState} from "react";
 
 import classes from "./styles/GenericTable.module.scss";
 
-import {useArrowKeySelect} from "@/shared/components/DataDisplay/useArrowKeySelect";
-import {DataNotFound} from "@/shared/components/DataNotFound/DataNotFound";
-
 export interface Props {
-    /**
-     * Tanstack React Table columns definition
-     */
     columns: ColumnDef<any, any>[];
-    /**
-     * Table key for better identification
-     */
     dataName?: string;
-    /**
-     * PaginatedList object as a data holder for the table
-     */
     data: IPaginatedList<any>;
-    /**
-     * Function for fetching data
-     * @param pageIndex - page index | default: 1
-     * @param pageSize - page size | default: 10
-     * @param isAscending - is ascending | default: true
-     */
-    fetchData: (pageIndex: number, pageSize: number, isAscending: boolean) => Promise<any>;
-    /**
-     * Any object as a selected row
-     */
+    pagination: IPaginationModel;
+    refetch: () => Promise<void>;
     selectedRow: any;
-    /**
-     * async function for selecting a row. Should be awaited in order to work properly
-     * @param row - row data
-     */
     selectRow: (objectRow: any) => Promise<void>;
-    /**
-     * async function for unselecting a row. Should be awaited in order to work properly
-     */
     unselectRow: () => Promise<void>;
 }
 
-export const NewGenericTable = ({columns, dataName, data, selectedRow, fetchData, selectRow, unselectRow}: Props) => {
+export const GenericTableV2 = ({columns, dataName, data, pagination, refetch, selectedRow, selectRow, unselectRow}: Props) => {
     const tableBodyRef = createRef<HTMLTableSectionElement>();
-    const [pageIndex, setPageIndex] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [isAscending, setIsAscending] = useState(true);
     const totalPages = Math.ceil(data.pagination.totalItems / data.pagination.pageSize);
-
     const [sorting, setSorting] = useState<SortingState>([]);
     const table = useReactTable({
         data: data.list,
@@ -65,8 +37,8 @@ export const NewGenericTable = ({columns, dataName, data, selectedRow, fetchData
     });
 
     const fetch = useCallback(async () => {
-        await fetchData(pageIndex, pageSize, isAscending);
-    }, [pageIndex, pageSize, isAscending]);
+        await refetch();
+    }, [pagination.model.pageIndex, pagination.model.pageSize, pagination.model.isAscending]);
 
     useEffect(() => {
         fetch().then();
@@ -77,29 +49,29 @@ export const NewGenericTable = ({columns, dataName, data, selectedRow, fetchData
     const handlePageSizeChange = async (size: string | null) => {
         if (size) {
             const newPageSize = parseInt(size);
-            setPageSize(newPageSize);
-            await fetchData(pageIndex, newPageSize, isAscending);
+            await pagination.setPageSize(newPageSize);
+            await refetch();
         }
     };
 
     const handlePageChange = async (page: number) => {
-        setPageIndex(page);
-        await fetchData(page, pageSize, isAscending);
+        await pagination.setPageIndex(page);
+        await refetch();
     };
 
     const handleNextPage = async () => {
         if (data.pagination.hasNextPage) {
-            const newPageIndex = pageIndex + 1;
-            setPageIndex(newPageIndex);
-            await fetchData(newPageIndex, pageSize, isAscending);
+            const newPageIndex = pagination.model.pageIndex + 1;
+            await pagination.setPageIndex(newPageIndex);
+            await refetch();
         }
     };
 
     const handlePreviousPage = async () => {
         if (data.pagination.hasPreviousPage) {
-            const newPageIndex = pageIndex - 1;
-            setPageIndex(newPageIndex);
-            await fetchData(newPageIndex, pageSize, isAscending);
+            const newPageIndex = pagination.model.pageIndex - 1;
+            await pagination.setPageIndex(newPageIndex);
+            await refetch();
         }
     };
 
@@ -210,7 +182,7 @@ export const NewGenericTable = ({columns, dataName, data, selectedRow, fetchData
                             w={80}
                             size="md"
                             variant="default"
-                            value={pageSize.toString()}
+                            value={pagination.model.pageSize.toString()}
                             data={[
                                 {value: "10", label: "10"},
                                 {value: "25", label: "25"},
