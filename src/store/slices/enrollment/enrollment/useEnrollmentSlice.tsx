@@ -1,6 +1,6 @@
 import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
-import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
 import type {IEnrollmentPost, IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
@@ -50,7 +50,7 @@ export const useEnrollmentSlice = () => {
         ): Promise<IPaginatedList<EnrollmentBase>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
                     isAscending: isAscending,
@@ -69,7 +69,7 @@ export const useEnrollmentSlice = () => {
         ): Promise<IPaginatedList<EnrollmentBase>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
                     isAscending: isAscending,
@@ -88,7 +88,7 @@ export const useEnrollmentSlice = () => {
         ): Promise<IPaginatedList<EnrollmentBase>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
                     isAscending: isAscending,

@@ -1,6 +1,6 @@
 import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
-import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import type {IQuestion} from "@models/education/question";
 import {questionSlice} from "@store/slices/education/question/questionSlice";
 import type {ActionDispatch, RootState} from "@store/store";
@@ -19,7 +19,7 @@ export const useQuestionSlice = () => {
         ): Promise<IPaginatedList<IQuestion>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex ?? 1,
                     pageSize: pageSize ?? 10,
                     isAscending: isAscending ?? true,
@@ -38,7 +38,7 @@ export const useQuestionSlice = () => {
         ): Promise<IPaginatedList<IQuestion>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex ?? 1,
                     pageSize: pageSize ?? 10,
                     isAscending: isAscending ?? true,

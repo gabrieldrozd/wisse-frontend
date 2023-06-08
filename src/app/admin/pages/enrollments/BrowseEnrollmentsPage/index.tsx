@@ -3,6 +3,7 @@ import {Col, Grid} from "@mantine/core";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {BrowseEnrollmentsTable} from "./components/BrowseEnrollmentsTable";
 import {BrowseEnrollmentsDetails} from "./components/BrowseEnrollmentsDetails";
+import {PaginationContextProvider} from "@context/PaginationContextProvider";
 
 export const BrowseEnrollmentsPage = () => {
     const context = useEnrollmentsContext();
@@ -22,12 +23,14 @@ export const BrowseEnrollmentsPage = () => {
 
     return (
         <Grid>
-            <Col span={tableSpan}>
-                <BrowseEnrollmentsTable />
-            </Col>
-            <Col span={actionsSpan} hidden={actionsSpan === 0}>
-                <BrowseEnrollmentsDetails />
-            </Col>
+            <PaginationContextProvider>
+                <Col span={tableSpan}>
+                    <BrowseEnrollmentsTable />
+                </Col>
+                <Col span={actionsSpan} hidden={actionsSpan === 0}>
+                    <BrowseEnrollmentsDetails />
+                </Col>
+            </PaginationContextProvider>
         </Grid>
     );
 };

@@ -3,11 +3,17 @@ import {Badge, Text} from "@mantine/core";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import type {ColumnDef} from "@tanstack/react-table";
-import { createColumnHelper} from "@tanstack/react-table";
+import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
-import {useCallback} from "react";
+import {useCallback, useEffect} from "react";
 
 import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {usePagination} from "@context/PaginationContextProvider";
+import {useQuery} from "@tanstack/react-query";
+import {requestAgent} from "@api/requestAgent";
+import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
+import {useAppContext} from "@context/ApplicationContext";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -61,46 +67,48 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
             return <Text>-</Text>;
         },
     }),
-    // columnsHelper.display({
-    //     id: "actions",
-    //     header: "Actions",
-    //     cell: props => {
-    //         return (
-    //             <div className={classes.actionButtons}>
-    //                 <Button
-    //                     onClick={() => {
-    //                         console.log(props.row.original);
-    //                     }}
-    //                 >
-    //                     View
-    //                 </Button>
-    //                 <Button>View</Button>
-    //                 <Button>View</Button>
-    //             </div>
-    //         );
-    //     },
-    // })
 ];
 
+const fetchEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean) => {
+    return await requestAgent.enrollment.enrollment.query.browse({
+        pageIndex,
+        pageSize,
+        isAscending,
+    } as IPaginationRequest);
+};
+
 export const BrowseEnrollmentsTable = () => {
-    const context = useEnrollmentsContext();
-    const {actions, selectors} = useEnrollmentSlice();
+    const appContext = useAppContext();
+    const pagination = usePagination();
+    const exrollmentsContext = useEnrollmentsContext();
 
-    const approvedEnrollments = selectors.enrollmentsList();
+    const {isLoading, data, refetch} = useQuery({
+        queryKey: ["enrollments", pagination.model.pageIndex, pagination.model.pageSize, pagination.model.isAscending],
+        queryFn: async () => await fetchEnrollments(
+            pagination.model.pageIndex,
+            pagination.model.pageSize,
+            pagination.model.isAscending
+        )
+    });
 
-    const browseApprovedEnrollments = useCallback(async (pageIndex: number, pageSize: number, isAscending: boolean) => {
-        await actions.browseEnrollments(pageIndex, pageSize, isAscending);
-    }, [actions]);
+    useEffect(() => {
+        appContext.isLoading.set(isLoading);
+    }, [isLoading]);
 
     return (
-        <GenericTable
-            columns={columns}
-            dataName="Enrollments"
-            data={approvedEnrollments}
-            fetchData={browseApprovedEnrollments}
-            selectedRow={context.selected?.value}
-            selectRow={context.selected?.set}
-            unselectRow={context.selected?.unset}
-        />
+        <>
+            {!isLoading &&
+                <GenericTableV2
+                    columns={columns}
+                    dataName="Enrollments"
+                    data={data?.data as IPaginatedList<EnrollmentBase>}
+                    pagination={pagination}
+                    refetch={refetch as any}
+                    selectedRow={exrollmentsContext.selected?.value}
+                    selectRow={exrollmentsContext.selected?.set}
+                    unselectRow={exrollmentsContext.selected?.unset}
+                />
+            }
+        </>
     );
 };

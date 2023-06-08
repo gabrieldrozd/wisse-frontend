@@ -3,7 +3,7 @@ import {ActionDispatch, RootState} from "@store/store";
 import {studentSlice} from "@store/slices/users/student/studentSlice";
 import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
-import {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import {StudentBase} from "@models/users/student/studentBrowse";
 import {StudentDetails} from "@models/users/student/studentDetails";
 
@@ -20,7 +20,7 @@ export const useStudentSlice = () => {
         ): Promise<IPaginatedList<StudentBase>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
                     isAscending: isAscending,

@@ -1,5 +1,5 @@
 import type {DataEnvelope, Envelope} from "@models/api/dataEnvelope";
-import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import {ApplicationRouter} from "@routing/ApplicationRouter";
 import {Notify} from "@services/Notify";
 import type {AxiosError, AxiosResponse} from "axios";
@@ -81,7 +81,7 @@ export class AxiosClient {
         return await axiosClient.get<DataEnvelope<T>>(`${url}/${id}`).then(getDataEnvelope);
     }
 
-    async browse<T>(url: string, pagination: PaginationRequest) {
+    async browse<T>(url: string, pagination: IPaginationRequest) {
         return await axiosClient.put<DataEnvelope<IPaginatedList<T>>>(url, pagination).then(getDataEnvelope);
     }
 

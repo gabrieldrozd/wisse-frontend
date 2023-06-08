@@ -1,6 +1,6 @@
 import {AxiosClient} from "@api/AxiosClient";
 import type {DataEnvelope} from "@models/api/dataEnvelope";
-import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
@@ -12,13 +12,13 @@ export const EnrollmentQueries = {
     details: (id: string): Promise<DataEnvelope<EnrollmentDetails>> => {
         return client.details<EnrollmentDetails>(`${enrollmentUrlSegment}`, id);
     },
-    browse: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
+    browse: (pagination: IPaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse`, pagination);
     },
-    browseApproved: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
+    browseApproved: (pagination: IPaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/approved`, pagination);
     },
-    browseRejected: (pagination: PaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
+    browseRejected: (pagination: IPaginationRequest): Promise<DataEnvelope<IPaginatedList<EnrollmentBase>>> => {
         return client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/rejected`, pagination);
     }
 };

@@ -1,6 +1,6 @@
 import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
-import type {IPaginatedList, PaginationRequest} from "@models/api/pagination";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
 import type {TeacherDetails} from "@models/users/teacher/teacherDetails";
 import {teacherSlice} from "@store/slices/users/teacher/teacherSlice";
@@ -20,7 +20,7 @@ export const useTeacherSlice = () => {
         ): Promise<IPaginatedList<TeacherBase>> => {
             isLoading.set(true);
             try {
-                const pagination: PaginationRequest = {
+                const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
                     pageSize: pageSize,
                     isAscending: isAscending,
