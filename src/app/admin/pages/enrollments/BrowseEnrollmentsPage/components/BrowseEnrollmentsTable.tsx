@@ -14,6 +14,7 @@ import {useQuery} from "@tanstack/react-query";
 import {requestAgent} from "@api/requestAgent";
 import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import {useAppContext} from "@context/ApplicationContext";
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -81,17 +82,12 @@ export const BrowseEnrollmentsTable = () => {
     const appContext = useAppContext();
     const pagination = usePagination();
     const exrollmentsContext = useEnrollmentsContext();
+    const enrollmentApi = useEnrollmentApi();
 
-    const {isLoading, data, refetch} = useQuery({
-        queryKey: ["enrollments", pagination.model.pageIndex, pagination.model.pageSize, pagination.model.isAscending],
-        queryFn: async () => await fetchEnrollments(
-            pagination.model.pageIndex,
-            pagination.model.pageSize,
-            pagination.model.isAscending
-        )
-    });
+    const {isLoading, data, refetch} = enrollmentApi.browseEnrollments(pagination.model);
 
     useEffect(() => {
+        console.log("BrowseEnrollmentsTable: isLoading", isLoading);
         appContext.isLoading.set(isLoading);
     }, [isLoading]);
 
