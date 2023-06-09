@@ -70,24 +70,16 @@ const columns: ColumnDef<EnrollmentBase, any>[] = [
     }),
 ];
 
-const fetchEnrollments = async (pageIndex: number, pageSize: number, isAscending: boolean) => {
-    return await requestAgent.enrollment.enrollment.query.browse({
-        pageIndex,
-        pageSize,
-        isAscending,
-    } as IPaginationRequest);
-};
-
 export const BrowseEnrollmentsTable = () => {
     const appContext = useAppContext();
     const pagination = usePagination();
     const exrollmentsContext = useEnrollmentsContext();
     const enrollmentApi = useEnrollmentApi();
 
-    const {isLoading, data, refetch} = enrollmentApi.browseEnrollments(pagination.model);
+    const {isLoading, data, refetch} = enrollmentApi.queries
+        .browseEnrollments(pagination.model);
 
     useEffect(() => {
-        console.log("BrowseEnrollmentsTable: isLoading", isLoading);
         appContext.isLoading.set(isLoading);
     }, [isLoading]);
 

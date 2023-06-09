@@ -3,6 +3,8 @@ import type {IPaginationRequest} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {useMutation, useQuery} from "@tanstack/react-query";
+import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import {DataEnvelope} from "@models/api/dataEnvelope";
 
 const client = AxiosClient.initialize();
 const enrollmentUrlSegment = "/enrollments-module";
@@ -13,7 +15,9 @@ export const useEnrollmentApi = () => {
         enrollmentDetails: (id: string) => {
             return useQuery({
                 queryKey: [key, "details", id],
-                queryFn: () => client.details<EnrollmentBase>(`${enrollmentUrlSegment}`, id),
+                queryFn: () => client.get<EnrollmentDetails>(`${enrollmentUrlSegment}/${id}`),
+                select: (data: DataEnvelope<EnrollmentDetails>) => data.data,
+                enabled: false
             });
         },
         browseEnrollments: (pagination: IPaginationRequest) => {

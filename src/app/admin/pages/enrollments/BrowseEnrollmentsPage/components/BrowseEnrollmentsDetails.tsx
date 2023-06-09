@@ -1,6 +1,6 @@
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {Flex} from "@mantine/core";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {useEffect} from "react";
 
 import classes from "./_styles/BrowseEnrollmentsDetails.module.scss";
@@ -8,22 +8,15 @@ import {EnrollmentDetailsCommands} from "./Details/EnrollmentDetailsCommands";
 import {EnrollmentDetailsPresentation} from "./Details/EnrollmentDetailsPresentation";
 
 export const BrowseEnrollmentsDetails = () => {
-    const {actions, selectors} = useEnrollmentSlice();
     const context = useEnrollmentsContext();
-    const enrollmentDetails = selectors.enrollmentDetails();
+    const selectedId = context.selected.value.externalId;
 
-    const fetchEnrollment = async () => {
-        if (!context.selected?.value?.externalId) return;
-
-        const selectedId = context.selected.value.externalId;
-        if (enrollmentDetails?.externalId === selectedId) return;
-
-        await actions.enrollmentDetails(context.selected?.value?.externalId ?? "");
-    };
+    const enrollmentApi = useEnrollmentApi();
+    const {data, refetch} = enrollmentApi.queries.enrollmentDetails(selectedId);
 
     useEffect(() => {
-        fetchEnrollment().then();
-    }, [context.selected?.value?.externalId]);
+        selectedId ? refetch() : null;
+    }, [selectedId]);
 
     return (
         <Flex
@@ -43,8 +36,8 @@ export const BrowseEnrollmentsDetails = () => {
                     flexGrow: 1,
                 }}
             >
-                {enrollmentDetails?.externalId && (
-                    <EnrollmentDetailsPresentation enrollment={enrollmentDetails} />
+                {data?.externalId && (
+                    <EnrollmentDetailsPresentation enrollment={data} />
                 )}
             </Flex>
 
@@ -60,7 +53,7 @@ export const BrowseEnrollmentsDetails = () => {
                     borderRadius: 10,
                 }}
             >
-                {enrollmentDetails?.externalId && (
+                {data?.externalId && (
                     <EnrollmentDetailsCommands />
                 )}
             </Flex>
