@@ -11,11 +11,11 @@ export const useTestSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = testSlice.actions;
     const agent = requestAgent.education.test;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const testActions = {
         prepareLevelAssessmentTest: async () => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.prepare();
                 if (envelope.isSuccess) {
@@ -24,11 +24,11 @@ export const useTestSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         answerQuestion: async (testId: string, questionId: string, answerId: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.answer(testId, questionId, answerId);
                 if (envelope.isSuccess) {
@@ -36,11 +36,11 @@ export const useTestSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         updateQuestionAnswer: async (testId: string, questionId: string, answerId: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.changeAnswer(testId, questionId, answerId);
                 if (envelope.isSuccess) {
@@ -48,11 +48,11 @@ export const useTestSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         completeTest: async (testId: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.complete(testId);
                 if (envelope.isSuccess) {
@@ -60,7 +60,7 @@ export const useTestSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         clearTest: async (testId: string) => {

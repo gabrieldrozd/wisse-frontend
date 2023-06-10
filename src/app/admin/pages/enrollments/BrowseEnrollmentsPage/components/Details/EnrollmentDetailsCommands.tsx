@@ -1,31 +1,34 @@
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {ActionIcon, Button, Flex, Popover, Space, Text, Title} from "@mantine/core";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {IconCheck, IconCircleOff, IconInfoCircle, IconX} from "@tabler/icons-react";
+import {useEffect} from "react";
 
 import classes from "../_styles/BrowseEnrollmentsDetails.module.scss";
 
 export const EnrollmentDetailsCommands = () => {
-    const {actions, selectors: {enrollmentDetails}} = useEnrollmentSlice();
     const context = useEnrollmentsContext();
+    const selectedId = context.selected.value.externalId;
 
-    const handleApprove = async () => {
-        const result = await actions.approve(enrollmentDetails()?.externalId ?? "");
-        if (result) {
-            await context.selected?.unset();
+    const enrollmentApi = useEnrollmentApi();
+    const {data, refetch} = enrollmentApi.queries.enrollmentDetails(selectedId);
+    const {mutate: approveEnrollment, isSuccess: isApproved,} = enrollmentApi.commands.approve;
+    const {mutate: rejectEnrollment, isSuccess: isRejected} = enrollmentApi.commands.reject;
+
+    useEffect(() => {
+        selectedId ? refetch() : null;
+    }, [selectedId]);
+
+    useEffect(() => {
+        if (isApproved || isRejected) {
+            context.selected?.unset();
         }
-    };
+    }, [isApproved, isRejected]);
 
-    const handleReject = async () => {
-        const result = await actions.reject(enrollmentDetails()?.externalId ?? "");
-        if (result) {
-            await context.selected?.unset();
-        }
-    };
-
-    const handleUnselect = async () => {
-        await context.selected?.unset();
-    };
+    const handleApprove = () => approveEnrollment(selectedId ?? "");
+    const handleReject = () => rejectEnrollment(selectedId ?? "");
+    const handleUnselect = () => context.selected?.unset();
 
     return (
         <>
@@ -45,7 +48,7 @@ export const EnrollmentDetailsCommands = () => {
                     h={50}
                     leftIcon={<IconCheck />}
                     onClick={handleApprove}
-                    disabled={enrollmentDetails()?.status !== "Pending"}
+                    disabled={data?.status !== "Pending"}
                 >
                     Approve
                 </Button>
@@ -78,7 +81,7 @@ export const EnrollmentDetailsCommands = () => {
                     h={50}
                     leftIcon={<IconX />}
                     onClick={handleReject}
-                    disabled={enrollmentDetails()?.status !== "Pending"}
+                    disabled={data?.status !== "Pending"}
                 >
                     Reject
                 </Button>

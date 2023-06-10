@@ -14,7 +14,7 @@ export const useEnrollmentSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = enrollmentSlice.actions;
     const agent = requestAgent.enrollment.enrollment;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const enrollmentActions = {
         persistEnrollmentForm: (enrollmentForm: IEnrollmentPost) => {
@@ -45,29 +45,10 @@ export const useEnrollmentSlice = () => {
 
             dispatch(actions.persistForm(formModel));
         },
-        browseEnrollments: async (
-            pageIndex: number, pageSize: number, isAscending: boolean
-        ): Promise<IPaginatedList<EnrollmentBase>> => {
-            isLoading.set(true);
-            try {
-                const pagination: IPaginationRequest = {
-                    pageIndex: pageIndex,
-                    pageSize: pageSize,
-                    isAscending: isAscending,
-                };
-                const envelope = await agent.query.browse(pagination);
-                if (envelope.isSuccess) {
-                    dispatch(actions.setList(envelope.data));
-                }
-                return envelope.data;
-            } finally {
-                isLoading.set(false);
-            }
-        },
         browseApprovedEnrollments: async (
             pageIndex: number, pageSize: number, isAscending: boolean
         ): Promise<IPaginatedList<EnrollmentBase>> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
@@ -80,13 +61,13 @@ export const useEnrollmentSlice = () => {
                 }
                 return envelope.data;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         browseRejectedEnrollments: async (
             pageIndex: number, pageSize: number, isAscending: boolean
         ): Promise<IPaginatedList<EnrollmentBase>> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
@@ -99,27 +80,11 @@ export const useEnrollmentSlice = () => {
                 }
                 return envelope.data;
             } finally {
-                isLoading.set(false);
-            }
-        },
-        reloadEnrollments: async () => {
-            await enrollmentActions.browseEnrollments(1, 10, true);
-        },
-        enrollmentDetails: async (id: string): Promise<EnrollmentDetails> => {
-            isLoading.set(true);
-            try {
-                const envelope = await agent.query.details(id);
-                if (envelope.isSuccess) {
-                    dispatch(actions.setDetails(envelope.data));
-                    return envelope.data;
-                }
-                return {} as EnrollmentDetails;
-            } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         submit: async (enrollmentPostModel: IEnrollmentPost) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.submit(enrollmentPostModel);
                 if (envelope.isSuccess) {
@@ -127,45 +92,43 @@ export const useEnrollmentSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
+        // TODO: Out \/
         approve: async (id: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.approve(id);
                 if (envelope.isSuccess) {
-                    dispatch(actions.approve(id));
                     Notify.success("Success", "Successfully approved!");
                     return true;
                 }
                 return false;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
+        // TODO: Out \/
         reject: async (id: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.reject(id);
                 if (envelope.isSuccess) {
-                    dispatch(actions.reject(id));
                     Notify.success("Success", "Successfully rejected!");
                     return true;
                 }
                 return false;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         }
     };
 
     const enrollmentSelectors = {
         enrollmentForm: () => state.enrollmentForm,
-        enrollmentsList: () => state.list,
         approvedEnrollmentsList: () => state.approvedList,
         rejectedEnrollmentsList: () => state.rejectedList,
-        enrollmentDetails: () => state.details,
     };
 
     return {

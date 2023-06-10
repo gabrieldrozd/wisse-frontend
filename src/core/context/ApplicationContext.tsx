@@ -2,10 +2,8 @@ import type {ReactNode} from "react";
 import {createContext, useContext, useMemo, useState} from "react";
 
 export declare interface AppContextProps {
-    isLoading: {
-        value: boolean;
-        set: (loading: boolean) => void;
-    };
+    isLoading: boolean;
+    setLoading: (loading: boolean) => void;
 }
 
 const AppContext = createContext<AppContextProps>({} as AppContextProps);
@@ -19,10 +17,8 @@ export const ApplicationContext = ({children}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const contextObject = () => ({
-        isLoading: {
-            value: isLoading,
-            set: setIsLoading,
-        }
+        isLoading: isLoading,
+        setLoading: setIsLoading,
     });
 
     return (

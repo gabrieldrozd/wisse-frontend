@@ -14,7 +14,7 @@ const sleep = (delay: number) => {
 const getEnvelope = (response: AxiosResponse<Envelope>): Envelope => response.data;
 const getDataEnvelope = <T>(response: AxiosResponse<DataEnvelope<T>>): DataEnvelope<T> => {
     console.log("getDataEnvelope", response);
-    return response.data;
+    return response.data as DataEnvelope<T>;
 };
 
 const apiURL = "http://localhost:5000";

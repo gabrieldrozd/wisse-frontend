@@ -1,9 +1,10 @@
-import {useEffect, useState} from "react";
-import {Col, Grid} from "@mantine/core";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
-import {BrowseEnrollmentsTable} from "./components/BrowseEnrollmentsTable";
-import {BrowseEnrollmentsDetails} from "./components/BrowseEnrollmentsDetails";
 import {PaginationContextProvider} from "@context/PaginationContextProvider";
+import {Col, Grid} from "@mantine/core";
+import {useEffect, useState} from "react";
+
+import {BrowseEnrollmentsDetails} from "./components/BrowseEnrollmentsDetails";
+import {BrowseEnrollmentsTable} from "./components/BrowseEnrollmentsTable";
 
 export const BrowseEnrollmentsPage = () => {
     const context = useEnrollmentsContext();

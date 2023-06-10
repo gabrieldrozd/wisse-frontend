@@ -62,6 +62,11 @@ const columns = [
 ];
 
 export const ApprovedEnrollmentsPage = () => {
+    // TODO: Modify this page to use the new EnrollmentApi
+    // TODO: Modify this page to use the new EnrollmentApi
+    // TODO: Modify this page to use the new EnrollmentApi
+    // TODO: Modify this page to use the new EnrollmentApi
+
     const context = useEnrollmentsContext();
     const {actions, selectors} = useEnrollmentSlice();
 

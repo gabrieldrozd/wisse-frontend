@@ -8,7 +8,6 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export interface IEnrollmentSliceState {
     enrollmentForm: IEnrollmentPostFormModel;
-    list: IPaginatedList<EnrollmentBase>;
     approvedList: IPaginatedList<EnrollmentBase>;
     rejectedList: IPaginatedList<EnrollmentBase>;
     details: EnrollmentDetails;
@@ -16,7 +15,6 @@ export interface IEnrollmentSliceState {
 
 const initialState: IEnrollmentSliceState = {
     enrollmentForm: {} as IEnrollmentPostFormModel,
-    list: defaultPaginatedList(),
     approvedList: defaultPaginatedList(),
     rejectedList: defaultPaginatedList(),
     details: {} as EnrollmentDetails
@@ -29,9 +27,6 @@ export const enrollmentSlice = createSlice({
         persistForm: (state, action: PayloadAction<IEnrollmentPostFormModel>) => {
             state.enrollmentForm = action.payload;
         },
-        setList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
-            state.list = action.payload;
-        },
         setApprovedList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
             state.approvedList = action.payload;
         },
@@ -40,20 +35,6 @@ export const enrollmentSlice = createSlice({
         },
         setDetails: (state, action: PayloadAction<EnrollmentDetails>) => {
             state.details = action.payload;
-        },
-        approve: (state, action: PayloadAction<string>) => {
-            const enrollment = state.list.list.find(x => x.externalId === action.payload);
-            if (enrollment) {
-                enrollment.status = "Approved";
-                // TODO: Set also the decision date with correct format
-            }
-        },
-        reject: (state, action: PayloadAction<string>) => {
-            const enrollment = state.list.list.find(x => x.externalId === action.payload);
-            if (enrollment) {
-                enrollment.status = "Rejected";
-                // TODO: Set also the decision date with correct format
-            }
         }
     }
 });

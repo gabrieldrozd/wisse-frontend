@@ -12,13 +12,13 @@ export const useStudentSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = studentSlice.actions;
     const agent = requestAgent.users.student;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const studentActions = {
         browseStudents: async (
             pageIndex: number, pageSize: number, isAscending: boolean
         ): Promise<IPaginatedList<StudentBase>> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
@@ -31,14 +31,14 @@ export const useStudentSlice = () => {
                 }
                 return envelope.data;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         reloadStudents: async () => {
             await studentActions.browseStudents(1, 10, true);
         },
         studentDetails: async (id: string): Promise<StudentDetails> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.query.details(id);
                 if (envelope.isSuccess) {
@@ -47,7 +47,7 @@ export const useStudentSlice = () => {
                 }
                 return {} as StudentDetails;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         }
     };

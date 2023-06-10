@@ -36,9 +36,7 @@ export const BrowseEnrollmentsDetails = () => {
                     flexGrow: 1,
                 }}
             >
-                {data?.externalId && (
-                    <EnrollmentDetailsPresentation enrollment={data} />
-                )}
+                {data?.externalId && <EnrollmentDetailsPresentation enrollment={data} />}
             </Flex>
 
             <Flex

@@ -1,20 +1,14 @@
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {useAppContext} from "@context/ApplicationContext";
+import {usePagination} from "@context/PaginationContextProvider";
 import {Badge, Text} from "@mantine/core";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import type {ColumnDef} from "@tanstack/react-table";
 import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
-import {useCallback, useEffect} from "react";
-
-import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
-import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
-import {usePagination} from "@context/PaginationContextProvider";
-import {useQuery} from "@tanstack/react-query";
-import {requestAgent} from "@api/requestAgent";
-import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
-import {useAppContext} from "@context/ApplicationContext";
-import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
+import {useEffect} from "react";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -80,21 +74,19 @@ export const BrowseEnrollmentsTable = () => {
         .browseEnrollments(pagination.model);
 
     useEffect(() => {
-        appContext.isLoading.set(isLoading);
+        appContext.setLoading(isLoading);
     }, [isLoading]);
 
     return (
         <>
-            {!isLoading &&
+            {!isLoading && data &&
                 <GenericTableV2
                     columns={columns}
                     dataName="Enrollments"
-                    data={data?.data as IPaginatedList<EnrollmentBase>}
+                    data={data}
                     pagination={pagination}
-                    refetch={refetch as any}
-                    selectedRow={exrollmentsContext.selected?.value}
-                    selectRow={exrollmentsContext.selected?.set}
-                    unselectRow={exrollmentsContext.selected?.unset}
+                    refetch={refetch}
+                    selected={exrollmentsContext.selected}
                 />
             }
         </>

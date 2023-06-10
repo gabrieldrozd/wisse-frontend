@@ -1,18 +1,10 @@
 import {Box, Group, Text, Title} from "@mantine/core";
-import classes from "../_styles/BrowseEnrollmentsDetails.module.scss";
-import {
-    IconAt,
-    IconHome,
-    IconLanguage,
-    IconMapPin,
-    IconMilitaryRank,
-    IconPhone,
-    IconSchool,
-    IconZip
-} from "@tabler/icons-react";
-import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import {IconAt, IconHome, IconLanguage, IconMapPin, IconMilitaryRank, IconPhone, IconSchool, IconZip} from "@tabler/icons-react";
 
-export interface Props {
+import classes from "../_styles/BrowseEnrollmentsDetails.module.scss";
+
+interface Props {
     enrollment: EnrollmentDetails;
 }
 
