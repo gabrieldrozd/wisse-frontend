@@ -12,13 +12,13 @@ export const useTeacherSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = teacherSlice.actions;
     const agent = requestAgent.users.teacher;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const teacherActions = {
         browseTeachers: async (
             pageIndex: number, pageSize: number, isAscending: boolean
         ): Promise<IPaginatedList<TeacherBase>> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const pagination: IPaginationRequest = {
                     pageIndex: pageIndex,
@@ -31,14 +31,14 @@ export const useTeacherSlice = () => {
                 }
                 return envelope.data;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         reloadTeachers: async () => {
             await teacherActions.browseTeachers(1, 10, true);
         },
         teacherDetails: async (id: string): Promise<TeacherDetails> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.query.details(id);
                 if (envelope.isSuccess) {
@@ -47,7 +47,7 @@ export const useTeacherSlice = () => {
                 }
                 return {} as TeacherDetails;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         }
     };

@@ -12,12 +12,12 @@ export const useAuthSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = authSlice.actions;
     const agent = requestAgent.users.auth;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
     const navigate = useNavigate();
 
     const authActions = {
         refresh: async () => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.query.refresh();
                 if (envelope.isSuccess) {
@@ -27,11 +27,11 @@ export const useAuthSlice = () => {
                 dispatch(actions.logout());
                 return false;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         login: async (email: string, password: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.login(email, password);
                 if (envelope.isSuccess) {
@@ -54,13 +54,13 @@ export const useAuthSlice = () => {
                     }
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         logout: () => {
-            isLoading.set(true);
+            setLoading(true);
             dispatch(actions.logout());
-            isLoading.set(false);
+            setLoading(false);
             navigate("/");
         }
     };

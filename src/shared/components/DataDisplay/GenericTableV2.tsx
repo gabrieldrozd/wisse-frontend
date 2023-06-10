@@ -4,6 +4,7 @@ import type {IPaginationModel} from "@context/PaginationContextProvider";
 import {Flex, Group, Mark, Pagination, ScrollArea, Select, Space, Table, Text, Title} from "@mantine/core";
 import type {IPaginatedList} from "@models/api/pagination";
 import {IconSortAscending, IconSortDescending} from "@tabler/icons-react";
+import type {QueryObserverResult, RefetchOptions, RefetchQueryFilters} from "@tanstack/react-query";
 import type {ColumnDef, SortingState} from "@tanstack/react-table";
 import {flexRender, getCoreRowModel, getSortedRowModel, useReactTable} from "@tanstack/react-table";
 import {createRef, useCallback, useEffect, useState} from "react";
@@ -12,16 +13,18 @@ import classes from "./styles/GenericTable.module.scss";
 
 export interface Props {
     columns: ColumnDef<any, any>[];
-    dataName?: string;
     data: IPaginatedList<any>;
+    dataName?: string;
     pagination: IPaginationModel;
-    refetch: () => Promise<void>;
-    selectedRow: any;
-    selectRow: (objectRow: any) => Promise<void>;
-    unselectRow: () => Promise<void>;
+    refetch: <TPageData>(options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined) => Promise<QueryObserverResult<any>>;
+    selected: {
+        value: any;
+        set: (element: any) => Promise<void>;
+        unset: () => Promise<void>;
+    },
 }
 
-export const GenericTableV2 = ({columns, dataName, data, pagination, refetch, selectedRow, selectRow, unselectRow}: Props) => {
+export const GenericTableV2 = ({columns, data, dataName, pagination, refetch, selected}: Props) => {
     const tableBodyRef = createRef<HTMLTableSectionElement>();
     const totalPages = Math.ceil(data.pagination.totalItems / data.pagination.pageSize);
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -35,6 +38,8 @@ export const GenericTableV2 = ({columns, dataName, data, pagination, refetch, se
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel()
     });
+
+    const {value: selectedRow, set: selectRow, unset: unselectRow} = selected;
 
     const fetch = useCallback(async () => {
         await refetch();

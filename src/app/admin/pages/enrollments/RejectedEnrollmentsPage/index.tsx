@@ -5,6 +5,11 @@ import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
+import {useAppContext} from "@context/ApplicationContext";
+import {usePagination} from "@context/PaginationContextProvider";
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
+import {useEffect} from "react";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns = [
@@ -61,18 +66,30 @@ const columns = [
 ];
 
 export const RejectedEnrollmentsPage = () => {
-    const context = useEnrollmentsContext();
-    const {actions, selectors} = useEnrollmentSlice();
+    const appContext = useAppContext();
+    const pagination = usePagination();
+    const exrollmentsContext = useEnrollmentsContext();
+    const enrollmentApi = useEnrollmentApi();
+
+    const {isLoading, data, refetch} = enrollmentApi.queries
+        .browseRejected(pagination.model);
+
+    useEffect(() => {
+        appContext.setLoading(isLoading);
+    }, [isLoading]);
 
     return (
-        <GenericTable
-            columns={columns}
-            dataName="Rejected Enrollments"
-            data={selectors.rejectedEnrollmentsList()}
-            fetchData={actions.browseRejectedEnrollments}
-            selectedRow={context.selected?.value}
-            selectRow={context.selected?.set}
-            unselectRow={context.selected?.unset}
-        />
+        <>
+            {!isLoading && data &&
+                <GenericTableV2
+                    columns={columns}
+                    dataName="Rejected Enrollments"
+                    data={data}
+                    pagination={pagination}
+                    refetch={refetch}
+                    selected={exrollmentsContext.selected}
+                />
+            }
+        </>
     );
 };

@@ -11,13 +11,13 @@ export const useQuestionSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = questionSlice.actions;
     const agent = requestAgent.education.question;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const questionActions = {
         browseQuestions: async (
             pageIndex?: number, pageSize?: number, isAscending?: boolean
         ): Promise<IPaginatedList<IQuestion>> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const pagination: IPaginationRequest = {
                     pageIndex: pageIndex ?? 1,
@@ -30,13 +30,13 @@ export const useQuestionSlice = () => {
                 }
                 return envelope.data;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         },
         browseQuestionsByLevel: async (
             languageLevel: string, pageIndex?: number, pageSize?: number, isAscending?: boolean
         ): Promise<IPaginatedList<IQuestion>> => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const pagination: IPaginationRequest = {
                     pageIndex: pageIndex ?? 1,
@@ -46,7 +46,7 @@ export const useQuestionSlice = () => {
                 const envelope = await agent.query.browseByLevel(pagination, languageLevel);
                 return envelope.data;
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         }
     };

@@ -11,11 +11,11 @@ export const useTestTemplateSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = testTemplateSlice.actions;
     const agent = requestAgent.education.testTemplate;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const testTemplateActions = {
         createTestTemplate: async (testTemplatePostModel: ITestTemplatePost) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.create(testTemplatePostModel);
                 if (envelope.isSuccess) {
@@ -23,7 +23,7 @@ export const useTestTemplateSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         }
     };

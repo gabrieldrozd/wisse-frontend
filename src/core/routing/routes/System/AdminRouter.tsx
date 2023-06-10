@@ -11,6 +11,7 @@ import {StudentDetailsPage} from "@app.admin/pages/students/StudentDetailsPage";
 import {BrowseTeachersPage} from "@app.admin/pages/teachers/BrowseTeachersPage";
 import {TeacherDetailsPage} from "@app.admin/pages/teachers/TeacherDetailsPage";
 import {CreateTestTemplatePage} from "@app.admin/pages/test-templates/CreateTestTemplatePage";
+import {PaginationContextProvider} from "@context/PaginationContextProvider";
 
 export const AdminRouter = (
     <Route
@@ -26,8 +27,8 @@ export const AdminRouter = (
         <Route index element={<AdminDashboardPage />} />
 
         <Route path="enrollments" element={<BrowseEnrollmentsPage />} />
-        <Route path="enrollments/approved" element={<ApprovedEnrollmentsPage />} />
-        <Route path="enrollments/rejected" element={<RejectedEnrollmentsPage />} />
+        <Route path="enrollments/approved" element={<PaginationContextProvider><ApprovedEnrollmentsPage /></PaginationContextProvider>} />
+        <Route path="enrollments/rejected" element={<PaginationContextProvider><RejectedEnrollmentsPage /></PaginationContextProvider>} />
 
         <Route path="students" element={<BrowseStudentsPage />} />
         <Route path="students/:studentId" element={<StudentDetailsPage />} />

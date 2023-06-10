@@ -10,11 +10,11 @@ export const useTestResultSlice = () => {
     const dispatch = useDispatch<ActionDispatch>();
     const actions = testResultSlice.actions;
     const agent = requestAgent.education.testResult;
-    const {isLoading} = useAppContext();
+    const {setLoading} = useAppContext();
 
     const testResultActions = {
         calculateTestResult: async (testId: string) => {
-            isLoading.set(true);
+            setLoading(true);
             try {
                 const envelope = await agent.command.calculate(testId);
                 if (envelope.isSuccess) {
@@ -23,7 +23,7 @@ export const useTestResultSlice = () => {
                     return true;
                 }
             } finally {
-                isLoading.set(false);
+                setLoading(false);
             }
         }
     };
