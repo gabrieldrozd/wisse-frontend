@@ -5,7 +5,11 @@ import {GenericTable} from "@components/DataDisplay/GenericTable";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
-import {useCallback} from "react";
+import {useCallback, useEffect} from "react";
+import {useAppContext} from "@context/ApplicationContext";
+import {usePagination} from "@context/PaginationContextProvider";
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns = [
@@ -62,29 +66,30 @@ const columns = [
 ];
 
 export const ApprovedEnrollmentsPage = () => {
-    // TODO: Modify this page to use the new EnrollmentApi
-    // TODO: Modify this page to use the new EnrollmentApi
-    // TODO: Modify this page to use the new EnrollmentApi
-    // TODO: Modify this page to use the new EnrollmentApi
+    const appContext = useAppContext();
+    const pagination = usePagination();
+    const exrollmentsContext = useEnrollmentsContext();
+    const enrollmentApi = useEnrollmentApi();
 
-    const context = useEnrollmentsContext();
-    const {actions, selectors} = useEnrollmentSlice();
+    const {isLoading, data, refetch} = enrollmentApi.queries
+        .browseApproved(pagination.model);
 
-    const approvedEnrollments = selectors.approvedEnrollmentsList();
-
-    const browseApprovedEnrollments = useCallback(async (pageIndex: number, pageSize: number, isAscending: boolean) => {
-        await actions.browseApprovedEnrollments(pageIndex, pageSize, isAscending);
-    }, [actions]);
+    useEffect(() => {
+        appContext.setLoading(isLoading);
+    }, [isLoading]);
 
     return (
-        <GenericTable
-            columns={columns}
-            dataName="Approved Enrollments"
-            data={approvedEnrollments}
-            fetchData={browseApprovedEnrollments}
-            selectedRow={context.selected?.value}
-            selectRow={context.selected?.set}
-            unselectRow={context.selected?.unset}
-        />
+        <>
+            {!isLoading && data &&
+                <GenericTableV2
+                    columns={columns}
+                    dataName="Approved Enrollments"
+                    data={data}
+                    pagination={pagination}
+                    refetch={refetch}
+                    selected={exrollmentsContext.selected}
+                />
+            }
+        </>
     );
 };
