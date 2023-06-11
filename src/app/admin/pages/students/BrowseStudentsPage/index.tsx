@@ -3,6 +3,7 @@ import {Col, Grid} from "@mantine/core";
 import {useStudentsContext} from "@app.admin/context/studentsContext";
 import {BrowseStudentsTable} from "@app.admin/pages/students/BrowseStudentsPage/components/BrowseStudentsTable";
 import {BrowseStudentsDetails} from "@app.admin/pages/students/BrowseStudentsPage/components/BrowseStudentsDetails";
+import {PaginationContextProvider} from "@context/PaginationContextProvider";
 
 export const BrowseStudentsPage = () => {
     const context = useStudentsContext();
@@ -22,12 +23,14 @@ export const BrowseStudentsPage = () => {
 
     return (
         <Grid>
-            <Col span={tableSpan}>
-                <BrowseStudentsTable />
-            </Col>
-            <Col span={actionsSpan} hidden={actionsSpan === 0}>
-                <BrowseStudentsDetails />
-            </Col>
+            <PaginationContextProvider>
+                <Col span={tableSpan}>
+                    <BrowseStudentsTable />
+                </Col>
+                <Col span={actionsSpan} hidden={actionsSpan === 0}>
+                    <BrowseStudentsDetails />
+                </Col>
+            </PaginationContextProvider>
         </Grid>
     );
 };

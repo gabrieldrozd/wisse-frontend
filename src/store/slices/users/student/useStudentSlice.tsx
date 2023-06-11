@@ -1,11 +1,10 @@
-import {useDispatch, useSelector} from "react-redux";
-import {ActionDispatch, RootState} from "@store/store";
-import {studentSlice} from "@store/slices/users/student/studentSlice";
 import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
-import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
-import {StudentBase} from "@models/users/student/studentBrowse";
-import {StudentDetails} from "@models/users/student/studentDetails";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
+import type {StudentBase} from "@models/users/student/studentBrowse";
+import {studentSlice} from "@store/slices/users/student/studentSlice";
+import type {ActionDispatch, RootState} from "@store/store";
+import {useDispatch, useSelector} from "react-redux";
 
 export const useStudentSlice = () => {
     const state = useSelector((state: RootState) => state.student);
@@ -33,28 +32,11 @@ export const useStudentSlice = () => {
             } finally {
                 setLoading(false);
             }
-        },
-        reloadStudents: async () => {
-            await studentActions.browseStudents(1, 10, true);
-        },
-        studentDetails: async (id: string): Promise<StudentDetails> => {
-            setLoading(true);
-            try {
-                const envelope = await agent.query.details(id);
-                if (envelope.isSuccess) {
-                    dispatch(actions.setDetails(envelope.data));
-                    return envelope.data;
-                }
-                return {} as StudentDetails;
-            } finally {
-                setLoading(false);
-            }
         }
     };
 
     const studentSelectors = {
-        studentsList: () => state.list,
-        studentDetails: () => state.details
+        studentsList: () => state.list
     };
 
     return {
