@@ -49,13 +49,16 @@ export const useEnrollmentApi = () => {
 
     // Mutations
     const submit = useMutation({
-        mutationFn: (enrollmentPostModel: IEnrollmentPost) => client.post(`${enrollmentUrlSegment}/submit`, {
+        mutationFn: (enrollmentPostModel: IEnrollmentPost) => client.post(enrollmentUrlSegment, {
             enrollment: {
                 applicant: enrollmentPostModel.applicant,
                 contact: enrollmentPostModel.contact,
                 levelTestResult: enrollmentPostModel.testResult,
             },
         }),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries([key, "browse"]);
+        }
     });
     const approve = useMutation({
         mutationFn: (id: string) => client.put(`${enrollmentUrlSegment}/${id}/approve`, {}),

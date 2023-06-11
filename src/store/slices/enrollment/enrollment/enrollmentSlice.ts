@@ -8,16 +8,10 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export interface IEnrollmentSliceState {
     enrollmentForm: IEnrollmentPostFormModel;
-    approvedList: IPaginatedList<EnrollmentBase>;
-    rejectedList: IPaginatedList<EnrollmentBase>;
-    details: EnrollmentDetails;
 }
 
 const initialState: IEnrollmentSliceState = {
-    enrollmentForm: {} as IEnrollmentPostFormModel,
-    approvedList: defaultPaginatedList(),
-    rejectedList: defaultPaginatedList(),
-    details: {} as EnrollmentDetails
+    enrollmentForm: {} as IEnrollmentPostFormModel
 };
 
 export const enrollmentSlice = createSlice({
@@ -26,15 +20,6 @@ export const enrollmentSlice = createSlice({
     reducers: {
         persistForm: (state, action: PayloadAction<IEnrollmentPostFormModel>) => {
             state.enrollmentForm = action.payload;
-        },
-        setApprovedList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
-            state.approvedList = action.payload;
-        },
-        setRejectedList: (state, action: PayloadAction<IPaginatedList<EnrollmentBase>>) => {
-            state.rejectedList = action.payload;
-        },
-        setDetails: (state, action: PayloadAction<EnrollmentDetails>) => {
-            state.details = action.payload;
         }
     }
 });
