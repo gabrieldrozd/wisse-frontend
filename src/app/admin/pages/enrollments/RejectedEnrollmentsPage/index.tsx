@@ -68,7 +68,7 @@ const columns = [
 export const RejectedEnrollmentsPage = () => {
     const appContext = useAppContext();
     const pagination = usePagination();
-    const exrollmentsContext = useEnrollmentsContext();
+    const enrollmentsContext = useEnrollmentsContext();
     const enrollmentApi = useEnrollmentApi();
 
     const {isLoading, data, refetch} = enrollmentApi.queries
@@ -87,7 +87,7 @@ export const RejectedEnrollmentsPage = () => {
                     data={data}
                     pagination={pagination}
                     refetch={refetch}
-                    selected={exrollmentsContext.selected}
+                    selected={enrollmentsContext.selected}
                 />
             }
         </>

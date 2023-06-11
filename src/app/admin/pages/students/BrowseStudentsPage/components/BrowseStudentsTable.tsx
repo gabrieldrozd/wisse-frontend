@@ -6,6 +6,13 @@ import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
 
 import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
+import {useAppContext} from "@context/ApplicationContext";
+import {usePagination} from "@context/PaginationContextProvider";
+import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
+import {useEffect} from "react";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {useStudentApi} from "@api/hooks/useStudentApi";
 
 const columnsHelper = createColumnHelper<StudentBase>();
 const columns: ColumnDef<StudentBase, any>[] = [
@@ -36,18 +43,30 @@ const columns: ColumnDef<StudentBase, any>[] = [
 ];
 
 export const BrowseStudentsTable = () => {
-    const context = useStudentsContext();
-    const {actions, selectors} = useStudentSlice();
+    const appContext = useAppContext();
+    const pagination = usePagination();
+    const studentsContext = useStudentsContext();
+    const studentApi = useStudentApi();
+
+    const {isLoading, data, refetch} = studentApi.queries
+        .browseStudents(pagination.model);
+
+    useEffect(() => {
+        appContext.setLoading(isLoading);
+    }, [isLoading]);
 
     return (
-        <GenericTable
-            columns={columns}
-            dataName="Students"
-            data={selectors.studentsList()}
-            fetchData={actions.browseStudents}
-            selectedRow={context.selected?.value}
-            selectRow={context.selected?.set}
-            unselectRow={context.selected?.unset}
-        />
+        <>
+            {!isLoading && data &&
+                <GenericTableV2
+                    columns={columns}
+                    dataName="Students"
+                    data={data}
+                    pagination={pagination}
+                    refetch={refetch}
+                    selected={studentsContext.selected}
+                />
+            }
+        </>
     );
 };
