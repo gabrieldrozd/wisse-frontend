@@ -14,12 +14,13 @@ import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Notify} from "@services/Notify";
 import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
 import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import type {SubmitHandler} from "react-hook-form";
 import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 
 const maxBirthDate = new Date();
 maxBirthDate.setFullYear(new Date().getFullYear() - 1);
@@ -53,6 +54,9 @@ export const EnrollPage = () => {
     const marginValue = mediaMatch ? 0 : 50;
 
     const {isTestCompleted} = useEnrollPageContext();
+    const enrollmentApi = useEnrollmentApi();
+    const {mutate: submitEnrollment, isSuccess: isEnrollmentSuccess,} = enrollmentApi.commands.submit;
+
     const {actions: enrollActions, selectors} = useEnrollmentSlice();
     const {selectors: {currentTestResult}} = useTestResultSlice();
     const navigate = useNavigate();
@@ -98,6 +102,19 @@ export const EnrollPage = () => {
         setActive(nextStep);
     };
 
+    useEffect(() => {
+        if (isEnrollmentSuccess) {
+            const resetForm = () => {
+                enrollmentForm.reset();
+                enrollActions.persistEnrollmentForm({} as IEnrollmentPost);
+            };
+
+            Notify.success("Enrollment successful");
+            resetForm();
+            navigate("/");
+        }
+    }, [isEnrollmentSuccess]);
+
     const onValidSubmit: SubmitHandler<IEnrollmentPost> = (data) => {
         console.log("[VALID SUBMIT] enrollmentForm: ", data);
 
@@ -105,14 +122,7 @@ export const EnrollPage = () => {
             data.testResult = currentTestResult()!;
         }
 
-        enrollActions.submit(data).then(result => {
-            if (result) {
-                enrollmentForm.reset();
-                navigate("/");
-            }
-        }).then(() => {
-            enrollActions.persistEnrollmentForm({} as IEnrollmentPost);
-        });
+        submitEnrollment(data);
     };
     const onInvalidSubmit: SubmitErrorHandler<IEnrollmentPost> = (data) => {
         console.log("[INVALID SUBMIT] enrollmentForm: ", data);
