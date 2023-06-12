@@ -3,6 +3,7 @@ import {Col, Grid} from "@mantine/core";
 import {useTeachersContext} from "@app.admin/context/teachersContext";
 import {BrowseTeachersTable} from "@app.admin/pages/teachers/BrowseTeachersPage/components/BrowseTeachersTable";
 import {BrowseTeachersDetails} from "@app.admin/pages/teachers/BrowseTeachersPage/components/BrowseTeachersDetails";
+import {PaginationContextProvider} from "@context/PaginationContextProvider";
 
 export const BrowseTeachersPage = () => {
     const context = useTeachersContext();
@@ -22,12 +23,14 @@ export const BrowseTeachersPage = () => {
 
     return (
         <Grid>
-            <Col span={tableSpan}>
-                <BrowseTeachersTable />
-            </Col>
-            <Col span={actionsSpan} hidden={actionsSpan === 0}>
-                <BrowseTeachersDetails />
-            </Col>
+            <PaginationContextProvider>
+                <Col span={tableSpan}>
+                    <BrowseTeachersTable />
+                </Col>
+                <Col span={actionsSpan} hidden={actionsSpan === 0}>
+                    <BrowseTeachersDetails />
+                </Col>
+            </PaginationContextProvider>
         </Grid>
     );
 };
