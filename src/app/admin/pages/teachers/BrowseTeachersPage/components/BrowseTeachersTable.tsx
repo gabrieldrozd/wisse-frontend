@@ -3,7 +3,14 @@ import {GenericTable} from "@components/DataDisplay/GenericTable";
 import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
 import {useTeacherSlice} from "@store/slices/users/teacher/useTeacherSlice";
 import type {ColumnDef} from "@tanstack/react-table";
-import { createColumnHelper} from "@tanstack/react-table";
+import {createColumnHelper} from "@tanstack/react-table";
+import {useAppContext} from "@context/ApplicationContext";
+import {usePagination} from "@context/PaginationContextProvider";
+import {useStudentsContext} from "@app.admin/context/studentsContext";
+import {useStudentApi} from "@api/hooks/useStudentApi";
+import {useEffect} from "react";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {useTeacherApi} from "@api/hooks/useTeacherApi";
 
 const columnsHelper = createColumnHelper<TeacherBase>();
 const columns: ColumnDef<TeacherBase, any>[] = [
@@ -26,18 +33,30 @@ const columns: ColumnDef<TeacherBase, any>[] = [
 ];
 
 export const BrowseTeachersTable = () => {
-    const context = useTeachersContext();
-    const {actions, selectors} = useTeacherSlice();
+    const appContext = useAppContext();
+    const pagination = usePagination();
+    const teachersContext = useTeachersContext();
+    const teacherApi = useTeacherApi();
+
+    const {isLoading, data, refetch} = teacherApi.queries
+        .browseTeachers(pagination.model);
+
+    useEffect(() => {
+        appContext.setLoading(isLoading);
+    }, [isLoading]);
 
     return (
-        <GenericTable
-            columns={columns}
-            dataName="Teachers"
-            data={selectors.teachersList()}
-            fetchData={actions.browseTeachers}
-            selectedRow={context.selected?.value}
-            selectRow={context.selected?.set}
-            unselectRow={context.selected?.unset}
-        />
+        <>
+            {!isLoading && data &&
+                <GenericTableV2
+                    columns={columns}
+                    dataName="Teachers"
+                    data={data}
+                    pagination={pagination}
+                    refetch={refetch}
+                    selected={teachersContext.selected}
+                />
+            }
+        </>
     );
 };
