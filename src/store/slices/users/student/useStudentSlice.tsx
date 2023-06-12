@@ -10,34 +10,11 @@ export const useStudentSlice = () => {
     const state = useSelector((state: RootState) => state.student);
     const dispatch = useDispatch<ActionDispatch>();
     const actions = studentSlice.actions;
-    const agent = requestAgent.users.student;
     const {setLoading} = useAppContext();
 
-    const studentActions = {
-        browseStudents: async (
-            pageIndex: number, pageSize: number, isAscending: boolean
-        ): Promise<IPaginatedList<StudentBase>> => {
-            setLoading(true);
-            try {
-                const pagination: IPaginationRequest = {
-                    pageIndex: pageIndex,
-                    pageSize: pageSize,
-                    isAscending: isAscending,
-                };
-                const envelope = await agent.query.browse(pagination);
-                if (envelope.isSuccess) {
-                    dispatch(actions.setList(envelope.data));
-                }
-                return envelope.data;
-            } finally {
-                setLoading(false);
-            }
-        }
-    };
+    const studentActions = {};
 
-    const studentSelectors = {
-        studentsList: () => state.list
-    };
+    const studentSelectors = {};
 
     return {
         actions: studentActions,

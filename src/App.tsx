@@ -15,7 +15,7 @@ export const App = () => {
         <Flex direction="column" align="flex-start" justify="flex-start">
             <QueryClientProvider client={queryClient}>
                 <LoadingOverlay
-                    visible={isLoading.value}
+                    visible={isLoading}
                     overlayBlur={10}
                     loader={
                         <Flex
