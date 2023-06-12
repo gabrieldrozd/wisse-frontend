@@ -22,6 +22,8 @@ import {z} from "zod";
 import {TestTemplateActionDivider} from "./components/TestTemplateActionDivider";
 import {TestTemplateFormFields} from "./components/TestTemplateFormFields";
 import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
+import {useQuestionApi} from "@api/hooks/useQuestionApi";
+import {data} from "autoprefixer";
 
 const formSchema = z.object({
     name: z.string().nonempty("Name is required"),
@@ -52,6 +54,9 @@ export const CreateTestTemplatePage = () => {
     const {actions: testTemplateActions} = useTestTemplateSlice();
     const [testLevel, setTestLevel] = useState(levels[0].value);
     const [existingQuestions, setExistingQuestions] = useState<IQuestion[]>([]);
+
+    const questionApi = useQuestionApi();
+    const {data: questionsData, refetch: browseQuestionsByLevel} = questionApi.queries.browseQuestionsByLevel(testLevel);
 
     const testTemplateForm = useForm<ITestTemplatePostFormModel>({
         mode: "onSubmit",
@@ -88,13 +93,13 @@ export const CreateTestTemplatePage = () => {
     }, [languageLevelWatch]);
 
     const fetchExistingQuestions = useCallback(async () => {
-        const questions = await questionActions.browseQuestionsByLevel(testLevel);
-        return questions.list.filter((question) => !questionsWatch
+        const questions = await browseQuestionsByLevel().then((data) => data?.data?.list ?? ([] as IQuestion[]));
+        return questions?.filter((question) => !questionsWatch
             .some((existingQuestion) => existingQuestion.externalId === question.externalId));
     }, [questionActions, testLevel, questionsWatch]);
 
     useEffect(() => {
-        fetchExistingQuestions().then(questions => setExistingQuestions(questions));
+        fetchExistingQuestions().then(questions => setExistingQuestions(questions ?? []));
     }, [testLevel]);
 
     const onValidSubmit: SubmitHandler<ITestTemplatePostFormModel> = (data) => {

@@ -55,8 +55,15 @@ export const TestTemplateActionDivider = memo(function TestTemplateActionDivider
                             }}
                         >
                             {existingQuestions && existingQuestions.map((question) => (
+                                // TODO: Add popover which will show whole question text
+                                // TODO: Add popover which will show whole question text
+                                // TODO: Add popover which will show whole question text
+                                // TODO: Add popover which will show whole question text
+                                // TODO: Add popover which will show whole question text
                                 <Dropdown.Item key={question.externalId}>
-                                    {question.text}
+                                    {question.text.length > 25
+                                        ? `${question.text.substring(0, 25)}...`
+                                        : question.text}
                                 </Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
