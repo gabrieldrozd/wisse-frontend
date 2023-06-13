@@ -1,7 +1,7 @@
 import {Button, Container, createStyles, Group, Mark, rem, Space, Text, Title} from "@mantine/core";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IconChevronLeft} from "@tabler/icons-react";
-import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
+import {useAuthState} from "@store/slices/users/auth/useAuthState";
 
 const useStyles = createStyles((theme) => ({
     root: {
@@ -42,7 +42,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export const AccessDeniedPage = () => {
-    const {selectors: {isAuthenticated, accessToken}} = useAuthSlice();
+    const {selectors: {isAuthenticated, accessToken}} = useAuthState();
     const {classes} = useStyles();
     const navigate = useNavigate();
     const location = useLocation();

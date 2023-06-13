@@ -1,6 +1,6 @@
 import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
-import {useTestSlice} from "@store/slices/education/test/useTestSlice";
-import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
+import {useTestState} from "@store/slices/education/test/useTestState";
+import {useTestResultState} from "@store/slices/education/test-result/useTestResultState";
 import type {ReactNode} from "react";
 
 import {LevelAssessmentInformation} from "./components/LevelAssessmentInformation";
@@ -8,8 +8,8 @@ import {LevelAssessmentTestMode} from "./components/LevelAssessmentTestMode";
 import {LevelAssessmentTestResult} from "./components/LevelAssessmentTestResult";
 
 export const StepLevelAssessment = () => {
-    const {actions: {prepareLevelAssessmentTest, clearTest,}} = useTestSlice();
-    const {actions: {calculateTestResult}} = useTestResultSlice();
+    const {actions: {prepareLevelAssessmentTest, clearTest,}} = useTestState();
+    const {actions: {calculateTestResult}} = useTestResultState();
     const {testMode, isTestCompleted} = useEnrollPageContext();
 
     const handleSetTestMode = () => {

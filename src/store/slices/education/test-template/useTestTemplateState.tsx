@@ -6,7 +6,7 @@ import {useAppContext} from "@context/ApplicationContext";
 import {ITestTemplatePost} from "@models/education/testTemplate";
 import {Notify} from "@services/Notify";
 
-export const useTestTemplateSlice = () => {
+export const useTestTemplateState = () => {
     const state = useSelector((state: RootState) => state.testTemplate);
     const dispatch = useDispatch<ActionDispatch>();
     const actions = testTemplateSlice.actions;

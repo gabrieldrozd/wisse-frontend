@@ -1,10 +1,11 @@
 import {Popover, UnstyledButton, Title, Text} from "@mantine/core";
 import classes from "./styles/LoginForm.module.scss";
 import {useForm} from "@mantine/form";
-import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
+import {useAuthState} from "@store/slices/users/auth/useAuthState";
 import {NavLink} from "react-router-dom";
 import {Input} from "@nextui-org/react";
 import {Button} from "@components/Button";
+import {useAuthApi} from "@api/hooks/useAuthApi";
 
 interface LoginFormModel {
     email: string;
@@ -20,7 +21,7 @@ const emailValidator = (value: string) => (!value.trim() ? "Email is required" :
 const passwordValidator = (value: string) => !value.trim() ? "Password is required" : null;
 
 export const LoginForm = ({isDropdown, setActive}: LoginFormProps) => {
-    const {actions: {login}} = useAuthSlice();
+    const {commands: {login}} = useAuthApi();
     const form = useForm<LoginFormModel>({
         initialValues: {
             email: "",
@@ -32,9 +33,7 @@ export const LoginForm = ({isDropdown, setActive}: LoginFormProps) => {
         }
     });
 
-    const onLoginSubmit = (values: LoginFormModel) => {
-        login(values.email, values.password).then();
-    };
+    const onLoginSubmit = (values: LoginFormModel) => login.mutate({email: values.email, password: values.password});
 
     const loginForm = (
         <form

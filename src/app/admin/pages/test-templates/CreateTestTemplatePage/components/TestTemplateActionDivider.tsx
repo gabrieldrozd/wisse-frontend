@@ -55,7 +55,7 @@ export const TestTemplateActionDivider = memo(function TestTemplateActionDivider
                             }}
                         >
                             {existingQuestions && existingQuestions.map((question) => (
-                                <Dropdown.Item key={question.externalId}>
+                                <Dropdown.Item key={question.externalId} textValue="text">
                                     <HoverCard width="100%" shadow="md">
                                         <HoverCard.Target>
                                             <Box>

@@ -2,7 +2,7 @@ import {TestModel} from "@app.start/models/testModel";
 import {Text, Col, Grid, Title, Center, Flex, Divider, Paper, Badge, Box} from "@mantine/core";
 import type {ITest} from "@models/education/test";
 import {Button} from "@nextui-org/react";
-import {useTestSlice} from "@store/slices/education/test/useTestSlice";
+import {useTestState} from "@store/slices/education/test/useTestState";
 import clsx from "clsx";
 import {useEffect, useState} from "react";
 import {MdCircle, MdOutlineCircle} from "react-icons/md";
@@ -21,7 +21,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
             updateQuestionAnswer,
             completeTest
         }
-    } = useTestSlice();
+    } = useTestState();
     const [test] = useState<TestModel>(TestModel.fromTest(currentTestSelector() ?? {} as ITest));
     const allQuestionsVisited = test?.testQuestions?.every(question => question.visited);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

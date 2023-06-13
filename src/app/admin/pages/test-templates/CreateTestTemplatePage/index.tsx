@@ -7,8 +7,8 @@ import {TestTemplatePost} from "@models/education/testTemplate";
 import type {ITestTemplatePostFormModel} from "@models/education/testTemplate";
 import {Button} from "@nextui-org/react";
 import {Notify} from "@services/Notify";
-import {useQuestionSlice} from "@store/slices/education/question/useQuestionSlice";
-import {useTestTemplateSlice} from "@store/slices/education/test-template/useTestTemplateSlice";
+import {useQuestionState} from "@store/slices/education/question/useQuestionState";
+import {useTestTemplateState} from "@store/slices/education/test-template/useTestTemplateState";
 import {IconArrowUp} from "@tabler/icons-react";
 import {uuid} from "@utils/uuidUtils";
 import {motion} from "framer-motion";
@@ -50,8 +50,8 @@ const formSchema = z.object({
 
 export const CreateTestTemplatePage = () => {
     const [scroll, scrollTo] = useWindowScroll();
-    const {actions: questionActions} = useQuestionSlice();
-    const {actions: testTemplateActions} = useTestTemplateSlice();
+    const {actions: questionActions} = useQuestionState();
+    const {actions: testTemplateActions} = useTestTemplateState();
     const [testLevel, setTestLevel] = useState(levels[0].value);
     const [existingQuestions, setExistingQuestions] = useState<IQuestion[]>([]);
 

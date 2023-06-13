@@ -1,7 +1,7 @@
+import {useAuthApi} from "@api/hooks/useAuthApi";
 import {Notify} from "@services/Notify";
-import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
 import type {ReactNode} from "react";
-import { useEffect} from "react";
+import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 
 export interface AuthorizedRouteProps {
@@ -10,11 +10,11 @@ export interface AuthorizedRouteProps {
 
 // TODO: this doesn't work as BE is throwing 500 internal server error
 export const AuthorizedRoute = ({children}: AuthorizedRouteProps) => {
-    const {actions: {refresh}} = useAuthSlice();
+    const {queries: {refreshToken}} = useAuthApi();
     const navigate = useNavigate();
 
     const isAuthorized = async () => {
-        return refresh();
+        return refreshToken().refetch();
     };
 
     useEffect(() => {

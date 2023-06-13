@@ -1,6 +1,6 @@
 import {Navbar} from "@mantine/core";
 import {UserNavigationButton} from "@/shared/components/SystemShell/UserNavigationButton";
-import {useAuthSlice} from "@store/slices/users/auth/useAuthSlice";
+import {useAuthState} from "@store/slices/users/auth/useAuthState";
 import classes from "../styles/StudentSystemShell.module.scss";
 
 export interface UserButtonSectionProps {
@@ -8,7 +8,7 @@ export interface UserButtonSectionProps {
 }
 
 export const StudentUserButtonSection = ({opened}: UserButtonSectionProps) => {
-    const {selectors: {accessToken}} = useAuthSlice();
+    const {selectors: {accessToken}} = useAuthState();
 
     return (
         <Navbar.Section
