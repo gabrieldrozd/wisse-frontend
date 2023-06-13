@@ -1,12 +1,11 @@
 import {useDispatch, useSelector} from "react-redux";
 import {ActionDispatch, RootState} from "@store/store";
-import {enrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
 import {testSlice} from "@store/slices/education/test/testSlice";
 import {Notify} from "@services/Notify";
 
-export const useTestSlice = () => {
+export const useTestState = () => {
     const state = useSelector((state: RootState) => state.test);
     const dispatch = useDispatch<ActionDispatch>();
     const actions = testSlice.actions;

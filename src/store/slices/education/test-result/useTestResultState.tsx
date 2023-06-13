@@ -5,7 +5,7 @@ import {requestAgent} from "@api/requestAgent";
 import {useAppContext} from "@context/ApplicationContext";
 import {Notify} from "@services/Notify";
 
-export const useTestResultSlice = () => {
+export const useTestResultState = () => {
     const state = useSelector((state: RootState) => state.testResult);
     const dispatch = useDispatch<ActionDispatch>();
     const actions = testResultSlice.actions;

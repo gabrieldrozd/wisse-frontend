@@ -1,6 +1,6 @@
 import {useStudentsContext} from "@app.admin/context/studentsContext";
 import type {StudentBase} from "@models/users/student/studentBrowse";
-import {useStudentSlice} from "@store/slices/users/student/useStudentSlice";
+import {useStudentState} from "@store/slices/users/student/useStudentState";
 import type {ColumnDef} from "@tanstack/react-table";
 import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";

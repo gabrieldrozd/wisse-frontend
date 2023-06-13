@@ -12,8 +12,8 @@ import {Box, Container, Group, Stepper} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Notify} from "@services/Notify";
-import {useTestResultSlice} from "@store/slices/education/test-result/useTestResultSlice";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
+import {useTestResultState} from "@store/slices/education/test-result/useTestResultState";
+import {useEnrollmentState} from "@store/slices/enrollment/enrollment/useEnrollmentState";
 import {useCallback, useEffect, useState} from "react";
 import type {SubmitHandler} from "react-hook-form";
 import {FormProvider, useForm} from "react-hook-form";
@@ -57,8 +57,8 @@ export const EnrollPage = () => {
     const enrollmentApi = useEnrollmentApi();
     const {mutate: submitEnrollment, isSuccess: isEnrollmentSuccess,} = enrollmentApi.commands.submit;
 
-    const {actions: enrollActions, selectors} = useEnrollmentSlice();
-    const {selectors: {currentTestResult}} = useTestResultSlice();
+    const {actions: enrollActions, selectors} = useEnrollmentState();
+    const {selectors: {currentTestResult}} = useTestResultState();
     const navigate = useNavigate();
     const [active, setActive] = useState(0);
 

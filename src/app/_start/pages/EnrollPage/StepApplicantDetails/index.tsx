@@ -5,7 +5,7 @@ import {Center, Col, Flex, Grid, Select, TextInput} from "@mantine/core";
 import {DatePickerInput} from "@mantine/dates";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {Button} from "@nextui-org/react";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
+import {useEnrollmentState} from "@store/slices/enrollment/enrollment/useEnrollmentState";
 import {IconCalendar} from "@tabler/icons-react";
 import {deepCopy} from "@utils/objectUtils";
 import {useEffect, useState} from "react";
@@ -48,7 +48,7 @@ export const StepApplicantDetails = ({formControl}: Props) => {
     const [isFormSaved, setIsFormSaved] = useState(false);
     const [hasValuesChanged, setHasValuesChanged] = useState(false);
     const localContext = useEnrollPageContext();
-    const {actions: {persistEnrollmentForm}} = useEnrollmentSlice();
+    const {actions: {persistEnrollmentForm}} = useEnrollmentState();
     const form = useFormContext<IEnrollmentPost>();
     const school = useWatch({
         control: formControl,

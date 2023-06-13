@@ -77,6 +77,8 @@ const nextUITheme = createTheme({
             errorSolidHover: colors.red700,
             errorSolidContrast: colors.white,
             errorShadow: colors.red300,
+            // Neutral
+            gradient: colors.gray400,
         },
         shadows: {
             xs: "0 2px 8px 1px rgb(104 112 118 / 0.07), 0 1px 1px -1px rgb(104 112 118 / 0.04)",

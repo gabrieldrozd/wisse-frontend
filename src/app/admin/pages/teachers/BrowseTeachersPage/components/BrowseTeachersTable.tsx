@@ -1,7 +1,7 @@
 import {useTeachersContext} from "@app.admin/context/teachersContext";
 import {GenericTable} from "@components/DataDisplay/GenericTable";
 import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
-import {useTeacherSlice} from "@store/slices/users/teacher/useTeacherSlice";
+import {useTeacherState} from "@store/slices/users/teacher/useTeacherState";
 import type {ColumnDef} from "@tanstack/react-table";
 import {createColumnHelper} from "@tanstack/react-table";
 import {useAppContext} from "@context/ApplicationContext";

@@ -3,7 +3,7 @@ import {enrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSli
 import type {ActionDispatch, RootState} from "@store/store";
 import {useDispatch, useSelector} from "react-redux";
 
-export const useEnrollmentSlice = () => {
+export const useEnrollmentState = () => {
     const state = useSelector((state: RootState) => state.enrollment);
     const dispatch = useDispatch<ActionDispatch>();
     const actions = enrollmentSlice.actions;

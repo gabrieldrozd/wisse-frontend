@@ -2,7 +2,7 @@ import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {GenericTable} from "@components/DataDisplay/GenericTable";
 import {Badge, Text} from "@mantine/core";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
+import {useEnrollmentState} from "@store/slices/enrollment/enrollment/useEnrollmentState";
 import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
 import {useAppContext} from "@context/ApplicationContext";

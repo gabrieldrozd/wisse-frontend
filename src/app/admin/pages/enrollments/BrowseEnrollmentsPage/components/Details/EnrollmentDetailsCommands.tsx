@@ -1,7 +1,7 @@
 import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {ActionIcon, Button, Flex, Popover, Space, Text, Title} from "@mantine/core";
-import {useEnrollmentSlice} from "@store/slices/enrollment/enrollment/useEnrollmentSlice";
+import {useEnrollmentState} from "@store/slices/enrollment/enrollment/useEnrollmentState";
 import {IconCheck, IconCircleOff, IconInfoCircle, IconX} from "@tabler/icons-react";
 import {useEffect} from "react";
 
