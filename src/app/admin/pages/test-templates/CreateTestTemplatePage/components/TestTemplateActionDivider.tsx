@@ -1,6 +1,6 @@
 import {breakpoints} from "@const/breakpoints";
 import {GrammarlyButton} from "@grammarly/editor-sdk-react";
-import {Box, Divider, Flex, Title} from "@mantine/core";
+import {Box, Divider, Flex, HoverCard, Title, Text} from "@mantine/core";
 import {useMediaQuery} from "@mantine/hooks";
 import {QuestionPostFormModel} from "@models/education/question";
 import type {IQuestion, IQuestionPostFormModel} from "@models/education/question";
@@ -55,15 +55,21 @@ export const TestTemplateActionDivider = memo(function TestTemplateActionDivider
                             }}
                         >
                             {existingQuestions && existingQuestions.map((question) => (
-                                // TODO: Add popover which will show whole question text
-                                // TODO: Add popover which will show whole question text
-                                // TODO: Add popover which will show whole question text
-                                // TODO: Add popover which will show whole question text
-                                // TODO: Add popover which will show whole question text
                                 <Dropdown.Item key={question.externalId}>
-                                    {question.text.length > 25
-                                        ? `${question.text.substring(0, 25)}...`
-                                        : question.text}
+                                    <HoverCard width="100%" shadow="md">
+                                        <HoverCard.Target>
+                                            <Box>
+                                                {question.text.length > 25
+                                                    ? `${question.text.substring(0, 25)}...`
+                                                    : question.text}
+                                            </Box>
+                                        </HoverCard.Target>
+                                        <HoverCard.Dropdown>
+                                            <Box p="md">
+                                                <Title order={4}>{question.text}</Title>
+                                            </Box>
+                                        </HoverCard.Dropdown>
+                                    </HoverCard>
                                 </Dropdown.Item>
                             ))}
                         </Dropdown.Menu>
