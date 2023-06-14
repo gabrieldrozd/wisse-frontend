@@ -1,4 +1,4 @@
-export interface EnrollmentDetails {
+export interface IEnrollmentDetails {
     externalId:   string;
     enrolledOn:   Date;
     decisionDate: Date;

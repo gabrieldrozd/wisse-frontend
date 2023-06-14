@@ -1,15 +1,14 @@
-import {Badge, Text} from "@mantine/core";
-import {createColumnHelper} from "@tanstack/react-table";
-import {getFullYears, getShortDate} from "@utils/dateUtils";
-import {GenericTable} from "@components/DataDisplay/GenericTable";
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {useEnrollmentState} from "@store/slices/enrollment/enrollment/useEnrollmentState";
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
-import {useCallback, useEffect} from "react";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
 import {useAppContext} from "@context/ApplicationContext";
 import {usePagination} from "@context/PaginationContextProvider";
-import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
-import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {Badge, Text} from "@mantine/core";
+import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
+import {createColumnHelper} from "@tanstack/react-table";
+import {getFullYears, getShortDate} from "@utils/dateUtils";
+import {useEffect} from "react";
+import {isDefined} from "@utils/objectUtils";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns = [
@@ -80,7 +79,7 @@ export const ApprovedEnrollmentsPage = () => {
 
     return (
         <>
-            {!isLoading && data &&
+            {!isLoading && isDefined(data) &&
                 <GenericTableV2
                     columns={columns}
                     dataName="Approved Enrollments"

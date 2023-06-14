@@ -1,7 +1,7 @@
 import type {IPaginatedList} from "@models/api/pagination";
 import {defaultPaginatedList} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {IEnrollmentDetails} from "@models/enrollment/IEnrollmentDetails";
 import type {IEnrollmentPostFormModel} from "@models/enrollment/IEnrollmentPost";
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";

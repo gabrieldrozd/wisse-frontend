@@ -1,11 +1,11 @@
 import {Box, Group, Text, Title} from "@mantine/core";
-import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {IEnrollmentDetails} from "@models/enrollment/IEnrollmentDetails";
 import {IconAt, IconHome, IconLanguage, IconMapPin, IconMilitaryRank, IconPhone, IconSchool, IconZip} from "@tabler/icons-react";
 
 import classes from "../_styles/BrowseEnrollmentsDetails.module.scss";
 
 interface Props {
-    enrollment: EnrollmentDetails;
+    enrollment: IEnrollmentDetails;
 }
 
 export const EnrollmentDetailsPresentation = ({enrollment}: Props) => {

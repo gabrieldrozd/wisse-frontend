@@ -10,6 +10,7 @@ import {usePagination} from "@context/PaginationContextProvider";
 import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEffect} from "react";
 import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {isDefined} from "@utils/objectUtils";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns = [
@@ -80,7 +81,7 @@ export const RejectedEnrollmentsPage = () => {
 
     return (
         <>
-            {!isLoading && data &&
+            {!isLoading && isDefined(data) &&
                 <GenericTableV2
                     columns={columns}
                     dataName="Rejected Enrollments"

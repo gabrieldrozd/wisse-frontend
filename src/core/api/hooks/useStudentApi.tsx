@@ -3,7 +3,7 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
 import {DataEnvelope} from "@models/api/dataEnvelope";
-import {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import {IEnrollmentDetails} from "@models/enrollment/IEnrollmentDetails";
 import {StudentBase} from "@models/users/student/studentBrowse";
 import {StudentDetails} from "@models/users/student/studentDetails";
 
