@@ -2,7 +2,7 @@ import {AxiosClient} from "@api/AxiosClient";
 import type {DataEnvelope} from "@models/api/dataEnvelope";
 import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import type {EnrollmentDetails} from "@models/enrollment/enrollmentDetails";
+import type {IEnrollmentDetails} from "@models/enrollment/IEnrollmentDetails";
 import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
@@ -16,8 +16,8 @@ export const useEnrollmentApi = () => {
     const enrollmentDetails = (id: string) => {
         return useQuery({
             queryKey: [key, "details", id],
-            queryFn: () => client.get<EnrollmentDetails>(`${enrollmentUrlSegment}/${id}`),
-            select: (data: DataEnvelope<EnrollmentDetails>) => data.data,
+            queryFn: () => client.get<IEnrollmentDetails>(`${enrollmentUrlSegment}/${id}`),
+            select: (data: DataEnvelope<IEnrollmentDetails>) => data.data,
             enabled: false
         });
     };

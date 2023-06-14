@@ -9,6 +9,7 @@ import type {ColumnDef} from "@tanstack/react-table";
 import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
 import {useEffect} from "react";
+import {isDefined} from "@utils/objectUtils";
 
 const columnsHelper = createColumnHelper<EnrollmentBase>();
 const columns: ColumnDef<EnrollmentBase, any>[] = [
@@ -79,7 +80,7 @@ export const BrowseEnrollmentsTable = () => {
 
     return (
         <>
-            {!isLoading && data &&
+            {!isLoading && isDefined(data) &&
                 <GenericTableV2
                     columns={columns}
                     dataName="Enrollments"

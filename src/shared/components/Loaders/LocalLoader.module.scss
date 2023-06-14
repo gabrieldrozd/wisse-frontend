@@ -1,0 +1,24 @@
+@keyframes moving-gradient {
+    0%, 100% {
+        background-position: 0 0;
+    }
+    20% {
+        background-position: 100% 0;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    80% {
+        background-position: 0 100%;
+    }
+}
+
+.animatedBackground {
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    background: linear-gradient(135deg, #ddd, #eee, #ddd, #eee);
+    background-size: 200% 200%;
+    animation: moving-gradient 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    border-radius: 10px;
+}
