@@ -1,8 +1,10 @@
+import {useTestApi} from "@api/hooks/useTestApi";
 import {TestModel} from "@app.start/models/testModel";
 import {Text, Col, Grid, Title, Center, Flex, Divider, Paper, Badge, Box} from "@mantine/core";
 import type {ITest} from "@models/education/test";
 import {Button} from "@nextui-org/react";
 import {useTestState} from "@store/slices/education/test/useTestState";
+import {isDefined} from "@utils/objectUtils";
 import clsx from "clsx";
 import {useEffect, useState} from "react";
 import {MdCircle, MdOutlineCircle} from "react-icons/md";
@@ -14,21 +16,31 @@ interface Props {
 }
 
 export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
-    const {
-        selectors: {currentTest: currentTestSelector},
-        actions: {
-            answerQuestion,
-            updateQuestionAnswer,
-            completeTest
-        }
-    } = useTestState();
-    const [test] = useState<TestModel>(TestModel.fromTest(currentTestSelector() ?? {} as ITest));
+    const testApi = useTestApi();
+    const answerQuestion = testApi.commands.answerQuestion;
+    const updateQuestionAnswer = testApi.commands.updateQuestionAnswer;
+    const completeTest = testApi.commands.completeTest;
+
+    const {selectors: {currentTest: currentTestSelector}} = useTestState();
+    console.log("currentTestSelector", currentTestSelector());
+
+    /*
+    *  TODO: BUG ALERT -> When 1st test is finished, then page is refreshed and then second attempt is started,
+    *   the test is not loaded from the server, but from the redux store, which is not updated with the new test.
+    *   simply currently saved state is null, and therefore the UI throws an error.
+    */
+    const [test, setTest] = useState<TestModel>(TestModel.fromTest(currentTestSelector() ?? {} as ITest));
     const allQuestionsVisited = test?.testQuestions?.every(question => question.visited);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-    if (!test?.externalId) {
-        return <Text>Test is not available.</Text>;
-    }
+    useEffect(() => {
+        const currTest = currentTestSelector();
+        if (currTest && currTest.externalId === test.externalId) {
+            return;
+        } else {
+            setTest(TestModel.fromTest(currTest ?? {} as ITest));
+        }
+    }, [currentTestSelector()]);
 
     useEffect(() => {
         test.testQuestions[currentQuestionIndex].visited = true;
@@ -55,13 +67,17 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
             if (selectedAnswer) {
                 selectedAnswer.isSelected = true;
             }
-            const result = await answerQuestion(test.externalId, question.externalId, answerId);
-            if (result) {
-                question.isAnswered = true;
-                setTimeout(() => {
-                    handleNavigation("next");
-                }, 200);
-            }
+
+            await answerQuestion.mutate({testId: test.externalId, questionId: question.externalId, answerId}, {
+                onSuccess: (isAnswered) => {
+                    if (isAnswered) {
+                        question.isAnswered = true;
+                        setTimeout(() => {
+                            handleNavigation("next");
+                        }, 200);
+                    }
+                }
+            });
         } else {
             const previouslySelectedAnswer = question.answers.find(answer => answer.isSelected);
             if (previouslySelectedAnswer) {
@@ -70,16 +86,19 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
             if (selectedAnswer) {
                 selectedAnswer.isSelected = true;
             }
-            await updateQuestionAnswer(test.externalId, question.externalId, answerId);
+            await updateQuestionAnswer.mutate({testId: test.externalId, questionId: question.externalId, answerId});
         }
     };
 
     const handleCompleteTest = async () => {
-        const result = await completeTest(test.externalId);
-        if (result) {
-            test.isCompleted = true;
-            setCompleteTest(test.externalId);
-        }
+        completeTest.mutate({testId: test.externalId}, {
+            onSuccess: (isTestCompleted) => {
+                if (isTestCompleted) {
+                    test.isCompleted = true;
+                    setCompleteTest(test.externalId);
+                }
+            }
+        });
     };
 
     return (
@@ -175,12 +194,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                             </Col>
 
                             <Col xs={12}>
-                                <Flex
-                                    my={20}
-                                    wrap="wrap"
-                                    align="center"
-                                    justify="space-evenly"
-                                >
+                                <Flex my={20} wrap="wrap" align="center" justify="space-evenly">
                                     <Button
                                         shadow
                                         disabled={currentQuestionIndex === 0}
@@ -200,11 +214,7 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
                             </Col>
 
                             <Col xs={12}>
-                                <Divider
-                                    label="Finish the test"
-                                    labelPosition="center"
-                                    mb={20}
-                                />
+                                <Divider label="Finish the test" labelPosition="center" mb={20} />
                                 <Flex justify="center">
                                     <Button
                                         disabled={!allQuestionsVisited}

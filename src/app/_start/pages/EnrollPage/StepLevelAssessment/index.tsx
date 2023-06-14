@@ -6,19 +6,24 @@ import type {ReactNode} from "react";
 import {LevelAssessmentInformation} from "./components/LevelAssessmentInformation";
 import {LevelAssessmentTestMode} from "./components/LevelAssessmentTestMode";
 import {LevelAssessmentTestResult} from "./components/LevelAssessmentTestResult";
+import {useTestApi} from "@api/hooks/useTestApi";
+import {useEffect} from "react";
 
 export const StepLevelAssessment = () => {
-    const {actions: {prepareLevelAssessmentTest, clearTest,}} = useTestState();
+    const testApi = useTestApi();
+    const {isLoading, mutate: prepareLevelAssessmentTest, data: test} = testApi.commands.prepareTest;
+
+    const {actions: {clearTest,}} = useTestState();
     const {actions: {calculateTestResult}} = useTestResultState();
     const {testMode, isTestCompleted} = useEnrollPageContext();
 
-    const handleSetTestMode = () => {
-        prepareLevelAssessmentTest().then(
-            () => testMode.set("test")
-        );
+    const handleSetTestMode = async () => {
+        await prepareLevelAssessmentTest();
+        testMode.set("test").then();
     };
 
     const handleCompleteTest = (testId: string) => {
+        // TODO: useTestResultApi
         calculateTestResult(testId).then(
             () => {
                 testMode.set("result").then();
@@ -28,8 +33,6 @@ export const StepLevelAssessment = () => {
             () => clearTest(testId)
         );
     };
-
-    console.log(testMode.value);
 
     let content: ReactNode;
     switch (testMode.value) {
