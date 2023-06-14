@@ -1,5 +1,6 @@
-import {testTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
+import {testSlice} from "@store/slices/education/test/testSlice";
 
 export const _testPersistActions = [
-    // testTemplateSlice.actions.setList,
+    testSlice.actions.set,
+    testSlice.actions.clearTest
 ];

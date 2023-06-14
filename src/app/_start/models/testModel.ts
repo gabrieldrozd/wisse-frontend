@@ -40,6 +40,8 @@ export class TestModel {
             testModel.testQuestions = test.testQuestions.map(
                 (testQuestion: ITestQuestion) => TestQuestionModel.fromTestQuestion(testQuestion)
             );
+
+            testModel.testQuestions[0].visited = true;
         } else {
             testModel.testQuestions = [];
         }

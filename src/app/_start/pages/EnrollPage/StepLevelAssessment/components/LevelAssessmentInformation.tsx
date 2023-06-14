@@ -2,7 +2,7 @@ import {Col, Flex, Grid, Mark, Text} from "@mantine/core";
 import {Button} from "@nextui-org/react";
 
 interface Props {
-    setTestMode: (testMode: boolean) => void;
+    setTestMode: () => void;
 }
 
 export const LevelAssessmentInformation = ({setTestMode}: Props) => {
@@ -75,7 +75,7 @@ export const LevelAssessmentInformation = ({setTestMode}: Props) => {
                     <Button
                         shadow
                         size="lg"
-                        onClick={() => setTestMode(true)}
+                        onClick={() => setTestMode()}
                     >
                         Start Test
                     </Button>
