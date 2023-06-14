@@ -1,4 +1,5 @@
 import {Flex, Loader, Text} from "@mantine/core";
+
 import classes from "./LocalLoader.module.scss";
 
 interface Props {

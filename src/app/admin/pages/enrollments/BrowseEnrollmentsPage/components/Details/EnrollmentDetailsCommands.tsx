@@ -1,8 +1,8 @@
 import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
 import {ActionIcon, Button, Flex, Popover, Space, Text, Title} from "@mantine/core";
-import {useEnrollmentState} from "@store/slices/enrollment/enrollment/useEnrollmentState";
 import {IconCheck, IconCircleOff, IconInfoCircle, IconX} from "@tabler/icons-react";
+import {isDefined} from "@utils/objectUtils";
 import {useEffect} from "react";
 
 import classes from "../_styles/BrowseEnrollmentsDetails.module.scss";
@@ -48,7 +48,7 @@ export const EnrollmentDetailsCommands = () => {
                     h={50}
                     leftIcon={<IconCheck />}
                     onClick={handleApprove}
-                    disabled={data?.status !== "Pending"}
+                    disabled={isDefined(data) && data.status !== "Pending"}
                 >
                     Approve
                 </Button>
@@ -81,7 +81,7 @@ export const EnrollmentDetailsCommands = () => {
                     h={50}
                     leftIcon={<IconX />}
                     onClick={handleReject}
-                    disabled={data?.status !== "Pending"}
+                    disabled={isDefined(data) && data.status !== "Pending"}
                 >
                     Reject
                 </Button>
