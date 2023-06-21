@@ -8,12 +8,13 @@ import {LevelAssessmentTestMode} from "./components/LevelAssessmentTestMode";
 import {LevelAssessmentTestResult} from "./components/LevelAssessmentTestResult";
 import {useTestApi} from "@api/hooks/useTestApi";
 import {useEffect} from "react";
+import {isDefined} from "@utils/objectUtils";
 
 export const StepLevelAssessment = () => {
     const testApi = useTestApi();
     const {isLoading, mutate: prepareLevelAssessmentTest, data: test} = testApi.commands.prepareTest;
 
-    const {actions: {clearTest,}} = useTestState();
+    const {actions: {clearTest}} = useTestState();
     const {actions: {calculateTestResult}} = useTestResultState();
     const {testMode, isTestCompleted} = useEnrollPageContext();
 

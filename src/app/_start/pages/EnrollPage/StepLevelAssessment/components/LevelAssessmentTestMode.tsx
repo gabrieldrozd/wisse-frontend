@@ -28,10 +28,16 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
     *  TODO: BUG ALERT -> When 1st test is finished, then page is refreshed and then second attempt is started,
     *   the test is not loaded from the server, but from the redux store, which is not updated with the new test.
     *   simply currently saved state is null, and therefore the UI throws an error.
-    */
+    */ // https://dev.azure.com/drozdgabriel/Wisse/_workitems/edit/53
     const [test, setTest] = useState<TestModel>(TestModel.fromTest(currentTestSelector() ?? {} as ITest));
     const allQuestionsVisited = test?.testQuestions?.every(question => question.visited);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    // TODO: 21/06/2023 --> After complete and page refresh the state of "test" is null, and should be {} as ITest
+    // There's need to provide some safe checks in order to prevent such situation from happening.
+
+    // IDEA: Move test fetching mechanism directly to the LevelAssessmentTestMode component.
+    // And remove this mechanis from the parent index component.
 
     useEffect(() => {
         const currTest = currentTestSelector();

@@ -1,11 +1,9 @@
 import {AxiosClient} from "@api/AxiosClient";
+import type {DataEnvelope} from "@models/api/dataEnvelope";
+import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
+import type {StudentBase} from "@models/users/student/studentBrowse";
+import type {StudentDetails} from "@models/users/student/studentDetails";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
-import {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
-import {DataEnvelope} from "@models/api/dataEnvelope";
-import {IEnrollmentDetails} from "@models/enrollment/IEnrollmentDetails";
-import {StudentBase} from "@models/users/student/studentBrowse";
-import {StudentDetails} from "@models/users/student/studentDetails";
 
 const client = AxiosClient.initialize();
 const studentUrlSegment = "/users-module/students";

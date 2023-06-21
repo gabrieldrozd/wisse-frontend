@@ -1,3 +1,4 @@
+import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollPageContext} from "@app.start/context/enrollPageContext";
 import {EnrollPageButtons} from "@app.start/pages/EnrollPage/components/EnrollPageButtons";
 import {StepApplicantDetails} from "@app.start/pages/EnrollPage/StepApplicantDetails";
@@ -20,7 +21,6 @@ import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
-import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 
 const maxBirthDate = new Date();
 maxBirthDate.setFullYear(new Date().getFullYear() - 1);

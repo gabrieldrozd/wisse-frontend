@@ -1,15 +1,16 @@
-import {MantineProvider, MantineThemeOverride} from "@mantine/core";
-import React, {StrictMode} from "react";
-import ReactDOM from "react-dom/client";
-
-import "@styles/main.scss";
-import {App} from "@/App";
-import {ApplicationContext} from "@context/ApplicationContext";
-import {Provider} from "react-redux";
-import {store} from "@store/store";
-import {breakpoints} from "@/shared/constants/breakpoints";
-import {createTheme, NextUIProvider} from "@nextui-org/react";
+import {breakpoints} from "@const/breakpoints";
 import {colors} from "@const/colors";
+import {ApplicationContext} from "@context/ApplicationContext";
+import type {MantineThemeOverride} from "@mantine/core";
+import {MantineProvider} from "@mantine/core";
+import {createTheme, NextUIProvider} from "@nextui-org/react";
+import {store} from "@store/store";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "@styles/main.scss";
+import {Provider} from "react-redux";
+
+import {App} from "@/App";
 
 const nextUITheme = createTheme({
     type: "light",
@@ -162,14 +163,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
     //<StrictMode>
-        <ApplicationContext>
-            <Provider store={store}>
-                <NextUIProvider theme={nextUITheme}>
-                    <MantineProvider theme={mantineTheme}>
-                        <App />
-                    </MantineProvider>
-                </NextUIProvider>
-            </Provider>
-        </ApplicationContext>
+    <ApplicationContext>
+        <Provider store={store}>
+            <NextUIProvider theme={nextUITheme}>
+                <MantineProvider theme={mantineTheme}>
+                    <App />
+                </MantineProvider>
+            </NextUIProvider>
+        </Provider>
+    </ApplicationContext>
     //</StrictMode>,
 );

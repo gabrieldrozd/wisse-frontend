@@ -1,15 +1,15 @@
 import type {AnyAction, EnhancedStore, Middleware} from "@reduxjs/toolkit";
 import {configureStore} from "@reduxjs/toolkit";
+import {initializeAction} from "@store/persistActions";
 import {loadStateFromIndexedDB, stateMiddleware} from "@store/persistMiddleware";
 import {questionSlice} from "@store/slices/education/question/questionSlice";
 import {testSlice} from "@store/slices/education/test/testSlice";
+import {testResultSlice} from "@store/slices/education/test-result/testResultSlice";
 import {testTemplateSlice} from "@store/slices/education/test-template/testTemplateSlice";
 import {enrollmentSlice} from "@store/slices/enrollment/enrollment/enrollmentSlice";
 import {authSlice} from "@store/slices/users/auth/authSlice";
 import {studentSlice} from "@store/slices/users/student/studentSlice";
 import {teacherSlice} from "@store/slices/users/teacher/teacherSlice";
-import {initializeAction} from "@store/persistActions";
-import {testResultSlice} from "@store/slices/education/test-result/testResultSlice";
 
 export interface RootState {
     question: ReturnType<typeof questionSlice.reducer>;
