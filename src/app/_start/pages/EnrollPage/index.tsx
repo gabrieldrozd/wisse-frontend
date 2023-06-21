@@ -21,6 +21,8 @@ import {FormProvider, useForm} from "react-hook-form";
 import type {SubmitErrorHandler} from "react-hook-form/dist/types/form";
 import {useNavigate} from "react-router-dom";
 import {z} from "zod";
+import {useTestState} from "@store/slices/education/test/useTestState";
+import {isDefined} from "@utils/objectUtils";
 
 const maxBirthDate = new Date();
 maxBirthDate.setFullYear(new Date().getFullYear() - 1);
@@ -49,18 +51,19 @@ const formSchema = z.object({
 });
 
 export const EnrollPage = () => {
+    const navigate = useNavigate();
+    const [active, setActive] = useState(0);
     const mediaMatch = useMediaQuery(`(max-width: ${breakpoints.lg_xl})`);
     const mobileWidth = mediaMatch ? "100%" : "80rem";
     const marginValue = mediaMatch ? 0 : 50;
 
+    const {actions: {clearTestResult}} = useTestResultState();
     const {isTestCompleted} = useEnrollPageContext();
     const enrollmentApi = useEnrollmentApi();
     const {mutate: submitEnrollment, isSuccess: isEnrollmentSuccess,} = enrollmentApi.commands.submit;
 
     const {actions: enrollActions, selectors} = useEnrollmentState();
     const {selectors: {currentTestResult}} = useTestResultState();
-    const navigate = useNavigate();
-    const [active, setActive] = useState(0);
 
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 1);
@@ -111,7 +114,7 @@ export const EnrollPage = () => {
 
             Notify.success("Enrollment successful");
             resetForm();
-            navigate("/");
+            clearTestResult().then(() => navigate("/"));
         }
     }, [isEnrollmentSuccess]);
 

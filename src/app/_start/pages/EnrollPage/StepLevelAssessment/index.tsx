@@ -12,13 +12,19 @@ import {isDefined} from "@utils/objectUtils";
 
 export const StepLevelAssessment = () => {
     const testApi = useTestApi();
-    const {isLoading, mutate: prepareLevelAssessmentTest, data: test} = testApi.commands.prepareTest;
+    const {mutate: prepareLevelAssessmentTest} = testApi.commands.prepareTest;
 
     const {actions: {clearTest}} = useTestState();
-    const {actions: {calculateTestResult}} = useTestResultState();
+    const {actions: {calculateTestResult}, selectors: {currentTestResult}} = useTestResultState();
     const {testMode, isTestCompleted} = useEnrollPageContext();
 
     const handleSetTestMode = async () => {
+        console.log("handleSetTestMode", currentTestResult(), currentTestResult()?.testExternalId);
+        if (currentTestResult() && currentTestResult()?.testExternalId) {
+            testMode.set("result").then();
+            return;
+        }
+
         await prepareLevelAssessmentTest();
         testMode.set("test").then();
     };
@@ -27,8 +33,8 @@ export const StepLevelAssessment = () => {
         // TODO: useTestResultApi
         calculateTestResult(testId).then(
             () => {
-                testMode.set("result").then();
                 isTestCompleted.set(true).then();
+                testMode.set("result").then();
             },
         ).then(
             () => clearTest(testId)
@@ -46,6 +52,11 @@ export const StepLevelAssessment = () => {
         case "result":
             content = <LevelAssessmentTestResult />;
             break;
+    }
+
+    if (currentTestResult() && isDefined(currentTestResult()?.testExternalId)) {
+        testMode.set("result").then();
+        content = <LevelAssessmentTestResult />;
     }
 
     return (

@@ -16,6 +16,9 @@ export const testResultSlice = createSlice({
     reducers: {
         set: (state, action: PayloadAction<ITestResult>) => {
             state.currentTestResult = action.payload;
+        },
+        clear: (state) => {
+            state.currentTestResult = {} as ITestResult;
         }
     }
 });

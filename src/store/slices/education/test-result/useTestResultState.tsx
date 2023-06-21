@@ -25,6 +25,9 @@ export const useTestResultState = () => {
             } finally {
                 setLoading(false);
             }
+        },
+        clearTestResult: async () => {
+            await dispatch(actions.clear());
         }
     };
 
