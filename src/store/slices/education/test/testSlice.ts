@@ -17,7 +17,7 @@ export const testSlice = createSlice({
         set: (state, action: PayloadAction<ITest>) => {
             state.currentTest = action.payload;
         },
-        clearTest: (state, action: PayloadAction<{testId: string}>) => {
+        clear: (state, action: PayloadAction<{testId: string}>) => {
             if (state.currentTest?.externalId === action.payload.testId) {
                 state.currentTest = {} as ITest;
             }

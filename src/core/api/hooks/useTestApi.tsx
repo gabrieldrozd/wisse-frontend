@@ -84,7 +84,7 @@ export const useTestApi = () => {
     return {
         queries: {},
         commands: {
-            prepareTest,
+            prepareLevelTest: prepareTest,
             answerQuestion,
             updateQuestionAnswer,
             completeTest,

@@ -14,7 +14,7 @@ export const useTestState = () => {
             dispatch(actions.set(test));
         },
         clearTest: (testId: string) => {
-            dispatch(actions.clearTest({testId}));
+            dispatch(actions.clear({testId}));
         }
     };
 
