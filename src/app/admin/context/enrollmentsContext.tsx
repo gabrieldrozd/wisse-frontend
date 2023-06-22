@@ -17,8 +17,6 @@ interface ContextProps {
     children: ReactNode;
 }
 
-// LOCAL STATE - no API calls here
-// only the state of some items that are not stored in the store
 export const EnrollmentsContext: FunctionComponent<ContextProps> = ({children}) => {
     const [selected, setSelected] = useState<EnrollmentBase>({} as EnrollmentBase);
 

@@ -1,5 +1,5 @@
-@import "../../../../../_styles/base";
-@import "../../../../../_styles/colors";
+@import "@base";
+@import "@colors";
 
 .link {
     display: block;
@@ -54,29 +54,6 @@
     font-size: 1.5rem;
     width: 50%;
 }
-
-//.dropdownLink {
-//    display: block;
-//    line-height: 1;
-//    padding: 0.5rem 1rem;
-//    text-decoration: none;
-//    color: $indigo-500;
-//    font-size: 1.5rem;
-//    font-weight: 700;
-//    text-align: center;
-//
-//    border-radius: 50px;
-//
-//    &:hover {
-//        color: $neutral-50;
-//        background-color: $indigo-500;
-//    }
-//
-//    @media (max-width: $break-md) {
-//        border-radius: 0;
-//        padding: 1rem;
-//    }
-//}
 
 .dropdownLinkActive {
     color: #f1f1f1;

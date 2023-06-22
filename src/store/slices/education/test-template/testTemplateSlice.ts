@@ -1,7 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 export interface TestTemplateSliceState {
-    // TODO: store TestTemplate form
 }
 
 const initialState: TestTemplateSliceState = {
