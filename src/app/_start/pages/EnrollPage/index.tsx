@@ -114,7 +114,7 @@ export const EnrollPage = () => {
 
             Notify.success("Enrollment successful");
             resetForm();
-            clearTestResult().then(() => navigate("/"));
+            navigate("/");
         }
     }, [isEnrollmentSuccess]);
 
