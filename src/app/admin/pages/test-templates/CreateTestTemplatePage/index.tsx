@@ -24,6 +24,7 @@ import {TestTemplateFormFields} from "./components/TestTemplateFormFields";
 import {TestTemplateQuestionsGrid} from "./components/TestTemplateQuestionsGrid";
 import {useQuestionApi} from "@api/hooks/useQuestionApi";
 import {data} from "autoprefixer";
+import {useTestTemplateApi} from "@api/hooks/useTestTemplateApi";
 
 const formSchema = z.object({
     name: z.string().nonempty("Name is required"),
@@ -50,13 +51,16 @@ const formSchema = z.object({
 
 export const CreateTestTemplatePage = () => {
     const [scroll, scrollTo] = useWindowScroll();
+
+    const testTemplateApi = useTestTemplateApi();
+    const createTestTemplate = testTemplateApi.commands.createTestTemplate;
+
     const {actions: questionActions} = useQuestionState();
-    const {actions: testTemplateActions} = useTestTemplateState();
     const [testLevel, setTestLevel] = useState(levels[0].value);
     const [existingQuestions, setExistingQuestions] = useState<IQuestion[]>([]);
 
     const questionApi = useQuestionApi();
-    const {data: questionsData, refetch: browseQuestionsByLevel} = questionApi.queries.browseQuestionsByLevel(testLevel);
+    const {refetch: browseQuestionsByLevel} = questionApi.queries.browseQuestionsByLevel(testLevel);
 
     const testTemplateForm = useForm<ITestTemplatePostFormModel>({
         mode: "onSubmit",
@@ -104,9 +108,12 @@ export const CreateTestTemplatePage = () => {
 
     const onValidSubmit: SubmitHandler<ITestTemplatePostFormModel> = (data) => {
         const testTemplateModel = TestTemplatePost.fromFormModel(data);
-
-        testTemplateActions.createTestTemplate(testTemplateModel).then(() => {
-            console.log("Test template created successfully");
+        createTestTemplate.mutate({testTemplatePostModel: testTemplateModel}, {
+            onSuccess: () => {
+                Notify.success("Test template created successfully");
+                testTemplateForm.reset();
+                testTemplateForm.setValue("questions", []);
+            }
         });
     };
     const onInvalidSubmit: SubmitErrorHandler<ITestTemplatePostFormModel> = (data) => {
