@@ -63,8 +63,8 @@ export const LevelAssessmentTestMode = ({setCompleteTest}: Props) => {
             }
 
             await answerQuestion.mutate({testId: test.externalId, questionId: question.externalId, answerId}, {
-                onSuccess: (isAnswered) => {
-                    if (isAnswered) {
+                onSuccess: (data) => {
+                    if (data.isSuccess) {
                         question.isAnswered = true;
                         setTimeout(() => {
                             handleNavigation("next");

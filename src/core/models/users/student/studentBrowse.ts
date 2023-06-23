@@ -1,4 +1,4 @@
-export interface StudentBase {
+export interface IStudentBase {
     externalId: string;
     firstName: string;
     lastName: string;

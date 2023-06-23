@@ -10,7 +10,6 @@ export const useTestState = () => {
 
     const testActions = {
         setTest: (test: ITest) => {
-            console.log("Setting test", test);
             dispatch(actions.set(test));
         },
         clearTest: (testId: string) => {

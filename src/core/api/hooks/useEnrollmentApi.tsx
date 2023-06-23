@@ -1,4 +1,6 @@
 import {AxiosClient} from "@api/AxiosClient";
+import {useEnrollmentApiUrls} from "@api/urls/useEnrollmentApiUrls";
+import {useApiRequest} from "@api/useApiRequest";
 import type {DataEnvelope} from "@models/api/dataEnvelope";
 import type {IPaginatedList, IPaginationRequest} from "@models/api/pagination";
 import type {EnrollmentBase} from "@models/enrollment/enrollmentBrowse";
@@ -7,16 +9,20 @@ import type {IEnrollmentPost} from "@models/enrollment/IEnrollmentPost";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
 const client = AxiosClient.initialize();
-const enrollmentUrlSegment = "/enrollments-module";
 const key = "enrollments";
 
 export const useEnrollmentApi = () => {
     const queryClient = useQueryClient();
+    const urls = useEnrollmentApiUrls();
+    const apiRequest = useApiRequest();
 
     const enrollmentDetails = (id: string) => {
         return useQuery({
             queryKey: [key, "details", id],
-            queryFn: () => client.get<IEnrollmentDetails>(`${enrollmentUrlSegment}/${id}`),
+            queryFn: () => apiRequest.execute({
+                withLoading: false,
+                requestFn: () => client.get<IEnrollmentDetails>(urls.details(id))
+            }),
             select: (data: DataEnvelope<IEnrollmentDetails>) => data.data,
             enabled: false
         });
@@ -25,8 +31,11 @@ export const useEnrollmentApi = () => {
     const browseEnrollments = (pagination: IPaginationRequest) => {
         return useQuery({
             queryKey: [key, "browse", pagination.pageIndex, pagination.pageSize, pagination.isAscending],
-            queryFn: () => client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse`, pagination),
-            select: (data: DataEnvelope<IPaginatedList<EnrollmentBase>>) => data.data as IPaginatedList<EnrollmentBase>,
+            queryFn: () => apiRequest.execute({
+                withLoading: true,
+                requestFn: () => client.browse<EnrollmentBase>(urls.browse(), pagination)
+            }),
+            select: (data) => data.data as IPaginatedList<EnrollmentBase>,
             enabled: true,
         });
     };
@@ -34,7 +43,10 @@ export const useEnrollmentApi = () => {
     const browseApproved = (pagination: IPaginationRequest) => {
         return useQuery({
             queryKey: [key, "browse", "approved", pagination.pageIndex, pagination.pageSize, pagination.isAscending],
-            queryFn: () => client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/approved`, pagination),
+            queryFn: () => apiRequest.execute({
+                withLoading: true,
+                requestFn: () => client.browse<EnrollmentBase>(urls.browseApproved(), pagination)
+            }),
             select: (data: DataEnvelope<IPaginatedList<EnrollmentBase>>) => data.data as IPaginatedList<EnrollmentBase>,
         });
     };
@@ -42,26 +54,33 @@ export const useEnrollmentApi = () => {
     const browseRejected = (pagination: IPaginationRequest) => {
         return useQuery({
             queryKey: [key, "browse", "rejected", pagination.pageIndex, pagination.pageSize, pagination.isAscending],
-            queryFn: () => client.browse<EnrollmentBase>(`${enrollmentUrlSegment}/browse/rejected`, pagination),
+            queryFn: () => apiRequest.execute({
+                withLoading: true,
+                requestFn: () => client.browse<EnrollmentBase>(urls.browseRejected(), pagination)
+            }),
             select: (data: DataEnvelope<IPaginatedList<EnrollmentBase>>) => data.data as IPaginatedList<EnrollmentBase>,
         });
     };
 
     // Mutations
     const submit = useMutation({
-        mutationFn: (enrollmentPostModel: IEnrollmentPost) => client.post(enrollmentUrlSegment, {
-            enrollment: {
-                applicant: enrollmentPostModel.applicant,
-                contact: enrollmentPostModel.contact,
-                levelTestResult: enrollmentPostModel.testResult,
-            },
+        mutationFn: (enrollmentPostModel: IEnrollmentPost) => apiRequest.execute({
+            withLoading: true,
+            requestFn: () => client.post(urls.submit(), {
+                enrollment: {
+                    applicant: enrollmentPostModel.applicant,
+                    contact: enrollmentPostModel.contact,
+                    levelTestResult: enrollmentPostModel.testResult,
+                }
+            })
         }),
-        onSuccess: async () => {
-            await queryClient.invalidateQueries([key, "browse"]);
-        }
+        onSuccess: async () => await queryClient.invalidateQueries([key, "browse"])
     });
     const approve = useMutation({
-        mutationFn: (id: string) => client.put(`${enrollmentUrlSegment}/${id}/approve`, {}),
+        mutationFn: (id: string) => apiRequest.execute({
+            withLoading: true,
+            requestFn: () => client.put(urls.approve(id), {})
+        }),
         onSuccess: async (variables) => {
             await queryClient.invalidateQueries([key, "browse"]);
             await queryClient.invalidateQueries([key, "details", variables]);
@@ -69,7 +88,10 @@ export const useEnrollmentApi = () => {
     });
 
     const reject = useMutation({
-        mutationFn: (id: string) => client.put(`${enrollmentUrlSegment}/${id}/reject`, {}),
+        mutationFn: (id: string) => apiRequest.execute({
+            withLoading: true,
+            requestFn: () => client.put(urls.reject(id), {})
+        }),
         onSuccess: async (variables) => {
             await queryClient.invalidateQueries([key, "browse"]);
             await queryClient.invalidateQueries([key, "details", variables]);

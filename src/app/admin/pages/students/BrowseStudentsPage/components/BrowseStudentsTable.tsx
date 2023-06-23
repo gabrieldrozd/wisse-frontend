@@ -1,5 +1,5 @@
 import {useStudentsContext} from "@app.admin/context/studentsContext";
-import type {StudentBase} from "@models/users/student/studentBrowse";
+import type {IStudentBase} from "@models/users/student/studentBrowse";
 import {useStudentState} from "@store/slices/users/student/useStudentState";
 import type {ColumnDef} from "@tanstack/react-table";
 import {createColumnHelper} from "@tanstack/react-table";
@@ -14,8 +14,8 @@ import {useEffect} from "react";
 import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
 import {useStudentApi} from "@api/hooks/useStudentApi";
 
-const columnsHelper = createColumnHelper<StudentBase>();
-const columns: ColumnDef<StudentBase, any>[] = [
+const columnsHelper = createColumnHelper<IStudentBase>();
+const columns: ColumnDef<IStudentBase, any>[] = [
     columnsHelper.accessor(x => x.firstName, {
         header: "First Name",
         cell: value => value.getValue(),

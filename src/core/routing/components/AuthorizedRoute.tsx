@@ -10,11 +10,12 @@ export interface AuthorizedRouteProps {
 
 // TODO: this doesn't work as BE is throwing 500 internal server error
 export const AuthorizedRoute = ({children}: AuthorizedRouteProps) => {
-    const {queries: {refreshToken}} = useAuthApi();
+    const authApi = useAuthApi();
+    const refreshToken = authApi.queries.refreshToken();
     const navigate = useNavigate();
 
     const isAuthorized = async () => {
-        return refreshToken().refetch();
+        return refreshToken.refetch();
     };
 
     useEffect(() => {

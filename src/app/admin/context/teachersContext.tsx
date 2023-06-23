@@ -1,5 +1,5 @@
 import {createContext, FunctionComponent, ReactNode, useContext, useMemo, useState} from "react";
-import {StudentBase} from "@models/users/student/studentBrowse";
+import {IStudentBase} from "@models/users/student/studentBrowse";
 import {TeacherBase} from "@models/users/teacher/teacherBrowse";
 
 export interface Props {
