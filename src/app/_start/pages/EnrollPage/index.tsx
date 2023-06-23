@@ -119,8 +119,6 @@ export const EnrollPage = () => {
     }, [isEnrollmentSuccess]);
 
     const onValidSubmit: SubmitHandler<IEnrollmentPost> = (data) => {
-        console.log("[VALID SUBMIT] enrollmentForm: ", data);
-
         if (isTestCompleted && currentTestResult()) {
             data.testResult = currentTestResult()!;
         }
@@ -128,7 +126,6 @@ export const EnrollPage = () => {
         submitEnrollment(data);
     };
     const onInvalidSubmit: SubmitErrorHandler<IEnrollmentPost> = (data) => {
-        console.log("[INVALID SUBMIT] enrollmentForm: ", data);
         Notify.info("Please fill in all required fields");
     };
 
