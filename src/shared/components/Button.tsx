@@ -1,6 +1,7 @@
-import {FC} from "react";
+import type {ButtonProps} from "@nextui-org/react";
+import {Button as NextButton} from "@nextui-org/react";
+import type {FC} from "react";
 import {Link} from "react-router-dom";
-import {Button as NextButton, ButtonProps} from "@nextui-org/react";
 
 interface Props extends ButtonProps {
     to?: string;

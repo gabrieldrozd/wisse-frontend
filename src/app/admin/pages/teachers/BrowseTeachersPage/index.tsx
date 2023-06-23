@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {Col, Grid} from "@mantine/core";
 import {useTeachersContext} from "@app.admin/context/teachersContext";
-import {BrowseTeachersTable} from "@app.admin/pages/teachers/BrowseTeachersPage/components/BrowseTeachersTable";
 import {BrowseTeachersDetails} from "@app.admin/pages/teachers/BrowseTeachersPage/components/BrowseTeachersDetails";
+import {BrowseTeachersTable} from "@app.admin/pages/teachers/BrowseTeachersPage/components/BrowseTeachersTable";
 import {PaginationContextProvider} from "@context/PaginationContextProvider";
+import {Col, Grid} from "@mantine/core";
+import React, {useEffect, useState} from "react";
 
 export const BrowseTeachersPage = () => {
     const context = useTeachersContext();

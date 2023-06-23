@@ -1,9 +1,9 @@
 import {UnstyledButton, Group, Avatar, Text, createStyles, Menu, Popover, Divider} from "@mantine/core";
 import type {IAccessToken} from "@models/auth/IAccessToken";
+import {Button} from "@nextui-org/react";
 import {useAuthState} from "@store/slices/users/auth/useAuthState";
 import {IconChevronRight, IconLogout, IconX} from "@tabler/icons-react";
 import {useEffect, useState} from "react";
-import {Button} from "@nextui-org/react";
 
 const useStyles = createStyles((theme) => ({
     user: {

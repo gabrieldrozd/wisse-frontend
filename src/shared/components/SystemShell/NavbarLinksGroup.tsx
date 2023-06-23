@@ -1,9 +1,11 @@
-import React, {FC, useEffect, useState} from "react";
 import {Group, Box, Collapse, ThemeIcon, Text, UnstyledButton} from "@mantine/core";
 import {IconChevronRight} from "@tabler/icons-react";
-import classes from "./styles/NavbarLinksGroup.module.scss";
-import {useLocation, useNavigate} from "react-router-dom";
 import clsx from "clsx";
+import type {FC} from "react";
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+
+import classes from "./styles/NavbarLinksGroup.module.scss";
 
 interface LinksGroupProps {
     label: string;

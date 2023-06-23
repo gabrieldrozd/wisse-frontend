@@ -1,18 +1,13 @@
+import {useStudentApi} from "@api/hooks/useStudentApi";
 import {useStudentsContext} from "@app.admin/context/studentsContext";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
+import {useAppContext} from "@context/ApplicationContext";
+import {usePagination} from "@context/PaginationContextProvider";
 import type {IStudentBase} from "@models/users/student/studentBrowse";
-import {useStudentState} from "@store/slices/users/student/useStudentState";
 import type {ColumnDef} from "@tanstack/react-table";
 import {createColumnHelper} from "@tanstack/react-table";
 import {getFullYears, getShortDate} from "@utils/dateUtils";
-
-import {GenericTable} from "@/shared/components/DataDisplay/GenericTable";
-import {useAppContext} from "@context/ApplicationContext";
-import {usePagination} from "@context/PaginationContextProvider";
-import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
-import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEffect} from "react";
-import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
-import {useStudentApi} from "@api/hooks/useStudentApi";
 
 const columnsHelper = createColumnHelper<IStudentBase>();
 const columns: ColumnDef<IStudentBase, any>[] = [

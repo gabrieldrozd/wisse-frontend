@@ -1,7 +1,7 @@
-import {useNavigate} from "react-router-dom";
 import notFound from "@assets/common/data-not-found.gif";
 import {Button, Flex, Title} from "@mantine/core";
 import {IconChevronLeft} from "@tabler/icons-react";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
     dataName: string;
@@ -22,7 +22,7 @@ export const DataNotFound = ({dataName}: Props) => {
             w="100%"
             h="100%"
         >
-            <Title>Unfortunately, we couldn't find any {dataName}.</Title>
+            <Title>Unfortunately, we could not find any {dataName}.</Title>
 
             <img src={notFound} alt="Data not found" />
 

@@ -1,5 +1,6 @@
-import {RefObject, useEffect} from "react";
-import {Table} from "@tanstack/react-table";
+import type {Table} from "@tanstack/react-table";
+import type {RefObject} from "react";
+import {useEffect} from "react";
 
 export interface Props {
     tableBodyRef: RefObject<HTMLTableSectionElement>;

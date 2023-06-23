@@ -1,16 +1,12 @@
+import {useTeacherApi} from "@api/hooks/useTeacherApi";
 import {useTeachersContext} from "@app.admin/context/teachersContext";
-import {GenericTable} from "@components/DataDisplay/GenericTable";
-import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
-import {useTeacherState} from "@store/slices/users/teacher/useTeacherState";
-import type {ColumnDef} from "@tanstack/react-table";
-import {createColumnHelper} from "@tanstack/react-table";
+import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
 import {useAppContext} from "@context/ApplicationContext";
 import {usePagination} from "@context/PaginationContextProvider";
-import {useStudentsContext} from "@app.admin/context/studentsContext";
-import {useStudentApi} from "@api/hooks/useStudentApi";
+import type {TeacherBase} from "@models/users/teacher/teacherBrowse";
+import type {ColumnDef} from "@tanstack/react-table";
+import {createColumnHelper} from "@tanstack/react-table";
 import {useEffect} from "react";
-import {GenericTableV2} from "@components/DataDisplay/GenericTableV2";
-import {useTeacherApi} from "@api/hooks/useTeacherApi";
 
 const columnsHelper = createColumnHelper<TeacherBase>();
 const columns: ColumnDef<TeacherBase, any>[] = [
