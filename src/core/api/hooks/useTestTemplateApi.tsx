@@ -1,16 +1,17 @@
 import {AxiosClient} from "@api/AxiosClient";
+import {useTestTemplateApiUrls} from "@api/urls/useTestTemplateApiUrls";
 import {useAppContext} from "@context/ApplicationContext";
 import type {ITestTemplatePost} from "@models/education/testTemplate";
 import {useTestTemplateState} from "@store/slices/education/test-template/useTestTemplateState";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const client = AxiosClient.initialize();
-const testTemplateUrlSegment = "/education-module/test-templates";
 const key = "test-templates";
 
 export const useTestTemplateApi = () => {
     const appContext = useAppContext();
     const queryClient = useQueryClient();
+    const urls = useTestTemplateApiUrls();
     const testResultState = useTestTemplateState();
 
     const createTestTemplate = useMutation({
@@ -18,7 +19,7 @@ export const useTestTemplateApi = () => {
         mutationFn: async (payload: { testTemplatePostModel: ITestTemplatePost }) => {
             try {
                 appContext.setLoading(true);
-                const response = await client.post(testTemplateUrlSegment, {testTemplate: payload.testTemplatePostModel});
+                const response = await client.post(urls.createTestTemplate(), {testTemplate: payload.testTemplatePostModel});
                 appContext.setLoading(false);
                 return response;
             } catch (err) {

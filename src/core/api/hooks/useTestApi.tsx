@@ -1,16 +1,17 @@
 import {AxiosClient} from "@api/AxiosClient";
+import {useTestApiUrls} from "@api/urls/useTestApiUrls";
 import {useAppContext} from "@context/ApplicationContext";
 import type {ITest} from "@models/education/test";
 import {useTestState} from "@store/slices/education/test/useTestState";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const client = AxiosClient.initialize();
-const testUrlSegment = "/education-module/tests";
 const key = "tests";
 
 export const useTestApi = () => {
     const appContext = useAppContext();
     const queryClient = useQueryClient();
+    const urls = useTestApiUrls();
     const testState = useTestState();
 
     const prepareTest = useMutation({
@@ -18,7 +19,7 @@ export const useTestApi = () => {
         mutationFn: async () => {
             try {
                 appContext.setLoading(true);
-                const response = await client.post<ITest>(testUrlSegment, {});
+                const response = await client.post<ITest>(urls.prepareTest(), {});
                 appContext.setLoading(false);
                 return response;
             } catch (e) {
@@ -43,7 +44,7 @@ export const useTestApi = () => {
         mutationKey: [key, "answerQuestion"],
         mutationFn: async (payload: { testId: string, questionId: string, answerId: string }): Promise<boolean> => {
             appContext.setLoading(true);
-            const response = await client.put(`${testUrlSegment}/${payload.testId}/answer`, {
+            const response = await client.put(urls.answerQuestion(payload.testId), {
                 testExternalId: payload.testId,
                 questionExternalId: payload.questionId,
                 answerExternalId: payload.answerId,
@@ -59,7 +60,7 @@ export const useTestApi = () => {
         mutationKey: [key, "updateQuestionAnswer"],
         mutationFn: async (payload: { testId: string, questionId: string, answerId: string }) => {
             appContext.setLoading(true);
-            const response = await client.put(`${testUrlSegment}/${payload.testId}/change-answer`, {
+            const response = await client.put(urls.updateQuestionAnswer(payload.testId), {
                 testExternalId: payload.testId,
                 questionExternalId: payload.questionId,
                 answerExternalId: payload.answerId,
@@ -74,7 +75,7 @@ export const useTestApi = () => {
         mutationKey: [key, "completeTest"],
         mutationFn: async (payload: { testId: string }) => {
             appContext.setLoading(true);
-            const response = await client.put<any>(`${testUrlSegment}/${payload.testId}/complete`, {});
+            const response = await client.put<any>(urls.completeTest(payload.testId), {});
             appContext.setLoading(false);
             return response.isSuccess;
         },
