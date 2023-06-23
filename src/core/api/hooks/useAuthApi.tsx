@@ -1,6 +1,6 @@
 import {AxiosClient} from "@api/AxiosClient";
 import {useAuthApiUrls} from "@api/urls/useAuthApiUrls";
-import {useAppContext} from "@context/ApplicationContext";
+import {useApiRequest} from "@api/useApiRequest";
 import type {DataEnvelope} from "@models/api/dataEnvelope";
 import type {IAccessToken} from "@models/auth/IAccessToken";
 import {useAuthState} from "@store/slices/users/auth/useAuthState";
@@ -10,29 +10,19 @@ const client = AxiosClient.initialize();
 const key = "auth";
 
 export const useAuthApi = () => {
-    const appContext = useAppContext();
     const queryClient = useQueryClient();
     const urls = useAuthApiUrls();
     const authState = useAuthState();
+    const apiRequest = useApiRequest();
 
     const refreshToken = () => {
         return useQuery({
             queryKey: [key, "refreshToken"],
-            queryFn: async () => {
-                try {
-                    appContext.setLoading(true);
-                    const accessToken = await client.get<IAccessToken>(urls.refresh());
-                    authState.actions.refresh(accessToken.data);
-                    appContext.setLoading(false);
-                    return accessToken;
-                } catch (err) {
-                    authState.actions.logout();
-                    appContext.setLoading(false);
-                    throw err;
-                } finally {
-                    appContext.setLoading(false);
-                }
-            },
+            queryFn: async () => await apiRequest.execute(
+                () => client.get<IAccessToken>(urls.refresh()),
+                (data) => authState.actions.refresh(data.data),
+                () => authState.actions.logout(),
+            ),
             select: (data: DataEnvelope<IAccessToken>) => data.data as IAccessToken,
             enabled: false,
         });
@@ -40,16 +30,17 @@ export const useAuthApi = () => {
 
     const login = useMutation({
         mutationKey: [key, "login"],
-        mutationFn: async (credentials: { email: string, password: string }) => {
-            appContext.setLoading(true);
-            const accessToken = await client.post<IAccessToken>(urls.login(), {
-                email: credentials.email,
-                password: credentials.password,
-            });
-            authState.actions.login(accessToken.data);
-            appContext.setLoading(false);
-            return accessToken;
-        },
+        mutationFn: async (payload: {
+            email: string,
+            password: string
+        }) => await apiRequest.execute(
+            () => client.post<IAccessToken>(urls.login(), {
+                email: payload.email,
+                password: payload.password,
+            }),
+            (data) => authState.actions.login(data.data),
+            () => authState.actions.logout(),
+        ),
         onSuccess: async () => await queryClient.invalidateQueries([key, "refreshToken"])
     });
 
