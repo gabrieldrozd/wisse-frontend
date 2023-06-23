@@ -1,10 +1,10 @@
 import {createContext, FunctionComponent, ReactNode, useContext, useMemo, useState} from "react";
-import {StudentBase} from "@models/users/student/studentBrowse";
+import {IStudentBase} from "@models/users/student/studentBrowse";
 
 export interface Props {
     selected: {
-        value: StudentBase;
-        set: (student: StudentBase) => Promise<void>;
+        value: IStudentBase;
+        set: (student: IStudentBase) => Promise<void>;
         unset: () => Promise<void>;
     },
 }
@@ -17,19 +17,19 @@ interface ContextProps {
 }
 
 export const StudentsContext: FunctionComponent<ContextProps> = ({children}) => {
-    const [selected, setSelected] = useState<StudentBase>({} as StudentBase);
+    const [selected, setSelected] = useState<IStudentBase>({} as IStudentBase);
 
-    const handleSelectStudent = async (student: StudentBase) => {
+    const handleSelectStudent = async (student: IStudentBase) => {
         setSelected(student);
     };
 
     const handleUnsetStudent = async () => {
-        setSelected({} as StudentBase);
+        setSelected({} as IStudentBase);
     };
 
     const contextObject = useMemo(() => ({
         selected: {
-            value: selected ?? {} as StudentBase,
+            value: selected ?? {} as IStudentBase,
             set: handleSelectStudent,
             unset: handleUnsetStudent,
         }

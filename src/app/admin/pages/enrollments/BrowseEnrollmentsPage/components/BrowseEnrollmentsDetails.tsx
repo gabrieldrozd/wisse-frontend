@@ -1,13 +1,13 @@
 import {useEnrollmentApi} from "@api/hooks/useEnrollmentApi";
 import {useEnrollmentsContext} from "@app.admin/context/enrollmentsContext";
-import {Flex, Loader, Skeleton} from "@mantine/core";
+import {LocalLoader} from "@components/Loaders/LocalLoader";
+import {Flex} from "@mantine/core";
 import {isDefined} from "@utils/objectUtils";
 import {useEffect} from "react";
 
 import classes from "./_styles/BrowseEnrollmentsDetails.module.scss";
 import {EnrollmentDetailsCommands} from "./Details/EnrollmentDetailsCommands";
 import {EnrollmentDetailsPresentation} from "./Details/EnrollmentDetailsPresentation";
-import {LocalLoader} from "@components/Loaders/LocalLoader";
 
 export const BrowseEnrollmentsDetails = () => {
     const context = useEnrollmentsContext();

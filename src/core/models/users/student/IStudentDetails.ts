@@ -1,4 +1,4 @@
-export interface StudentDetails {
+export interface IStudentDetails {
     externalId: string;
     firstName: string;
     lastName: string;

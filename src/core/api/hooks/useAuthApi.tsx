@@ -18,11 +18,12 @@ export const useAuthApi = () => {
     const refreshToken = () => {
         return useQuery({
             queryKey: [key, "refreshToken"],
-            queryFn: async () => await apiRequest.execute(
-                () => client.get<IAccessToken>(urls.refresh()),
-                (data) => authState.actions.refresh(data.data),
-                () => authState.actions.logout(),
-            ),
+            queryFn: async () => await apiRequest.execute({
+                withLoading: false,
+                requestFn: async () => await client.get<IAccessToken>(urls.refresh()),
+                onSuccess: (data) => authState.actions.refresh(data.data),
+                onFailure: () => authState.actions.logout(),
+            }),
             select: (data: DataEnvelope<IAccessToken>) => data.data as IAccessToken,
             enabled: false,
         });
@@ -33,14 +34,15 @@ export const useAuthApi = () => {
         mutationFn: async (payload: {
             email: string,
             password: string
-        }) => await apiRequest.execute(
-            () => client.post<IAccessToken>(urls.login(), {
+        }) => await apiRequest.execute({
+            withLoading: true,
+            requestFn: async () => await client.post<IAccessToken>(urls.login(), {
                 email: payload.email,
                 password: payload.password,
             }),
-            (data) => authState.actions.login(data.data),
-            () => authState.actions.logout(),
-        ),
+            onSuccess: (data) => authState.actions.login(data.data),
+            onFailure: () => authState.actions.logout(),
+        }),
         onSuccess: async () => await queryClient.invalidateQueries([key, "refreshToken"])
     });
 

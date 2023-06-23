@@ -18,9 +18,11 @@ export const useArrowKeySelect = ({tableBodyRef, table, selectedRow, selectRow}:
 
         if (event.key === arrowUp && currentRowIndex > 0) {
             const newRow = table.getRowModel().rows[currentRowIndex - 1].original;
+            console.log("newRow", newRow);
             await selectRow(newRow);
         } else if (event.key === arrowDown && currentRowIndex < table.getRowModel().rows.length - 1) {
             const newRow = table.getRowModel().rows[currentRowIndex + 1].original;
+            console.log("newRow", newRow);
             await selectRow(newRow);
         }
     };
