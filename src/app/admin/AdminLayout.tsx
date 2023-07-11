@@ -1,11 +1,12 @@
+import {AdminHints} from "@app.admin/components/header/AdminHints";
+import {AdminPageTitle} from "@app.admin/components/header/AdminPageTitle";
+import {AdminLinksSection} from "@app.admin/components/navbar/AdminLinksSection";
+import {AdminLogoSection} from "@app.admin/components/navbar/AdminLogoSection";
+import {AdminUserButtonSection} from "@app.admin/components/navbar/AdminUserButtonSection";
+import {AppShell, Burger, Flex, Group, Header, MediaQuery, Navbar, Paper, ScrollArea} from "@mantine/core";
 import {useState} from "react";
 import {Outlet} from "react-router-dom";
-import {AppShell, Burger, Flex, Group, Header, MediaQuery, Navbar, Paper, ScrollArea} from "@mantine/core";
-import {AdminLogoSection} from "@app.admin/components/navbar/AdminLogoSection";
-import {AdminLinksSection} from "@app.admin/components/navbar/AdminLinksSection";
-import {AdminUserButtonSection} from "@app.admin/components/navbar/AdminUserButtonSection";
-import {AdminPageTitle} from "@app.admin/components/header/AdminPageTitle";
-import {AdminHints} from "@app.admin/components/header/AdminHints";
+
 import classes from "./components/styles/AdminLayout.module.scss";
 
 export const AdminLayout = () => {

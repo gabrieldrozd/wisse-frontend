@@ -37,6 +37,9 @@ export const AdminRouter = (
         <Route path="teachers/:teacherId" element={<TeacherDetailsPage />} />
         {/*<Route path="teachers/create" element={<CreateTeacherPage />} />*/}
 
+        <Route path="courses" element={<>Courses</>} />
+        <Route path="courses/:courseId" element={<>Course Details</>} />
+
         <Route path="test-templates" element={<>Test templates</>} />
         <Route path="test-templates/create" element={<CreateTestTemplatePage />} />
     </Route>

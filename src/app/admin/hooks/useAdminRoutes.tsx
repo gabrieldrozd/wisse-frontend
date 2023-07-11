@@ -1,7 +1,17 @@
 import {useLocation} from "react-router-dom";
 import {useMemo} from "react";
 import {LinkModel} from "@routing/models/links";
-import {MdDashboard, MdEditDocument, MdHistoryEdu, MdPersonAdd, MdSchool} from "react-icons/md";
+import {
+    Md2KPlus,
+    MdDashboard,
+    MdEditDocument,
+    MdHistoryEdu,
+    MdLens,
+    MdPersonAdd,
+    MdPlayLesson,
+    MdSchool,
+    MdTrendingUp
+} from "react-icons/md";
 import {useStudentsContext} from "@app.admin/context/studentsContext";
 import {useTeachersContext} from "@app.admin/context/teachersContext";
 
@@ -9,6 +19,9 @@ export const useAdminRoutes = () => {
     const {pathname} = useLocation();
     const {selected: {value: student}} = useStudentsContext();
     const {selected: {value: teacher}} = useTeachersContext();
+    const course = {
+        externalId: "course-external-id",
+    };
 
     const routes: LinkModel[] = useMemo(() => [
         {
@@ -121,6 +134,30 @@ export const useAdminRoutes = () => {
             ]
         },
         {
+            label: "Courses",
+            icon: MdTrendingUp,
+            links: [
+                {
+                    label: "Browse",
+                    path: "/admin/courses",
+                    title: "All Courses",
+                    active: pathname === "/admin/courses",
+                    hints: [
+                        "No hints for this page YET"
+                    ]
+                },
+                {
+                    label: "Details",
+                    path: `/admin/courses/${course?.externalId}`,
+                    title: "Specific Course",
+                    active: pathname === `/admin/courses/${course?.externalId}`,
+                    hints: [
+                        "No hints for this page YET"
+                    ]
+                }
+            ]
+        },
+        {
             label: "Tests Templates",
             icon: MdEditDocument,
             links: [
@@ -135,9 +172,9 @@ export const useAdminRoutes = () => {
                 },
                 {
                     label: "Create",
-                    path: `/admin/test-templates/create`,
+                    path: "/admin/test-templates/create",
                     title: "Create Test Template",
-                    active: pathname === `/admin/test-templates/create`,
+                    active: pathname === "/admin/test-templates/create",
                     hints: [
                         "Provide basic information about test template and select language level",
                         "Selected language level will be used to get existing questions",
